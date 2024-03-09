@@ -1,0 +1,8 @@
+{
+    "config": {
+        "vendor-dir": "src/vendor"
+    },
+    "require": {
+        "minishlink/web-push": "^7.0"
+    }
+}

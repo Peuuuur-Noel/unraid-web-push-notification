@@ -1,0 +1,56 @@
+<?php
+$wpm_lang = [
+    // index.page
+    'Show registered devices' => 'Afficher les appareils enregistrés',
+    'Hide registered devices' => 'Hide registered devices',
+    'VAPID public key:' => 'Clé publique VAPID :',
+    'VAPID private key:' => 'Clé privée VAPID :',
+    'Key needed to encrypt and send notification to push notification service.' => 'Clé nécessaire pour chiffrer et envoyer une notification au service de notification push.',
+    'Key needed to authenticate your message and send notification to push notification service.' => 'Clé nécessaire pour authentifier votre message et envoyer une notification au service de notification push.',
+    'Must be generated' => 'Doit être générée',
+    'Generate VAPID keys' => 'Générer les clés VAPID',
+    'Generating a new VAPID will revoke registered devices. You will need to register them again.' => 'La génération d\'un nouveau VAPID révoquera les appareils enregistrés. Vous devrez les enregistrer à nouveau.',
+    'Permission:' => 'Permission :',
+    'Request Permission and Register to push notification.' => 'Demandez l\'autorisation et inscrivez-vous pour envoyer une notification push.',
+    'Click the button below to request permission and register to push notification. You need to browse this page with each devices you want to use push notification and click on the button below.' => 'Cliquez sur le bouton ci-dessous pour demander l\'autorisation et vous inscrire au service de notification push. Vous devez aller sur cette page avec chaque appareil avec lequel vous souhaitez utiliser la notification push, puis cliquer sur le bouton ci-dessous.',
+    'Error:' => 'Erreur :',
+    'Request permission and Register' => 'Autoriser et s\'inscrire',
+
+    // actions.php
+    'Maybe or not OK, but something happened...' => 'C\'est peut-être OK ou pas, mais quelque chose s\'est passé...',
+    'Device removed.' => 'Appareil supprimé.',
+    'No message to push.' => 'Aucun message à envoyer.',
+    'No registered device to push notification to.' => 'Aucun appareil enregistré vers lequel envoyer la notification.',
+    'Push to %1$d device%2$s.' => 'Message envoyé à %1$d appareil%2$s.',
+    'Unknown action. Doing nothing.' => 'Action inconnue. Ne rien faire.',
+
+    // index.js
+    'No Service Worker support in browser.' => 'Service worker non pris en charge par le navigateur.',
+    'No Push API support in browser.' => 'API Push non prise en charge par le navigateur.',
+    'Permissions granted but not registered. Register to push notification.' => 'Autorisations accordées mais non inscrit au service. Inscrivez-vous pour recevoir les notifications push.',
+    'Permissions granted and registered to push notification.' => 'Autorisations accordées et inscription faite pour les notifications push.',
+    'Error thrown while retrieving push notification subscription:' => 'Erreur lors de la récupération de l\'inscription aux notifications push :',
+    'Error thrown while retrieving service workers registrations:' => 'Erreur lors de la récupération des inscriptions des service workers :',
+    'Permissions denied for notification. Allow notification for this website in browser preferences.' => 'Autorisations refusées pour les notifications. Autoriser les notifications pour ce site dans les préférences du navigateur.',
+    'Permissions not granted for notification.' => 'Autorisations non accordées pour les notifications.',
+    'Error thrown while subscribing to push notification.' => 'Erreur lors de l\'inscription aux notifications push.',
+    'Error thrown while registering service worker.' => 'Erreur lors de l\'enregistrement du service worker.',
+    'Service worker not registered.' => 'Service worker non enregistré.',
+    'Error thrown while unregistering service worker:' => 'Erreur lors de la désinscription du service worker :',
+    'Error thrown while unsubscribing from push notification:' => 'Erreur lors de la désinscription des notifications push :',
+    'Action' => 'Action',
+    'Date' => 'Date',
+    'User Agent' => 'User Agent',
+    'IP Address' => 'Adresse IP',
+    'Loading...' => 'Chargement...',
+    'No devices.' => 'Pas d\'appareil.',
+    'Remove' => 'Supprimer',
+    'Remove this device?' => 'Supprimer cet appareil ?',
+    'Current device' => 'Appareil actuel',
+    'Doing a lot of stuff...' => 'En train de faire plein de trucs...',
+    'Generate VAPID keys?' => 'Générer les clés VAPID ?',
+    'Error' => 'Erreur',
+
+    // serviceworker.js
+    'Failed to update notification service. Connect this device to the same network as your Unraid server and send a test to update it again.' => 'Échec de la mise à jour du service de notification. Connectez cet appareil au même réseau que votre serveur Unraid et envoyez un test pour le mettre à jour à nouveau.',
+];
