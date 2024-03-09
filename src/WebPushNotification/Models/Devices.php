@@ -100,6 +100,8 @@ class Devices implements JsonSerializable
 
     private function writeToFile(): bool
     {
+        if (!is_dir(WPN_DATA_FOLDER_PATH))
+            mkdir(WPN_DATA_FOLDER_PATH, 0700, true);
         $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
 
         if ($return === false)

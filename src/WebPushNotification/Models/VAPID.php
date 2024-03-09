@@ -7,7 +7,7 @@ use WebPushNotification\Libraries\ExceptionToConsole;
 
 class VAPID implements JsonSerializable
 {
-    private ?array $vapid = null;
+    private ?array $vapid = [];
 
     public function __construct()
     {
@@ -27,12 +27,12 @@ class VAPID implements JsonSerializable
 
     public function getPublicKey(): ?string
     {
-        return $this->vapid['publicKey'] ?: null;
+        return $this->vapid['publicKey'] ?? null;
     }
 
     public function getPrivateKey(): ?string
     {
-        return $this->vapid['privateKey'] ?: null;
+        return $this->vapid['privateKey'] ?? null;
     }
 
     private function readFromFile(): bool
@@ -55,6 +55,8 @@ class VAPID implements JsonSerializable
 
     private function writeToFile(): bool
     {
+        if (!is_dir(WPN_DATA_FOLDER_PATH))
+            mkdir(WPN_DATA_FOLDER_PATH, 0700, true);
         $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
 
         if ($return === false)

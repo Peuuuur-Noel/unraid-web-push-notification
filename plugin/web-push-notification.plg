@@ -10,18 +10,18 @@
 <!ENTITY emhttp "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varState "/var/local/emhttp/plugins/&name;">
 <!ENTITY notifications "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "ee6b6236643015343e56e284b6e22f55">
-<!ENTITY SHA256 "9163b7cac9920b0de2455882f9dbcf2c8fb536a1789191ae846427855fa2a951">
+<!ENTITY MD5 "baa93e033ea84e33d7a32c7f8a1fdf03">
+<!ENTITY SHA256 "b50fee5c95114a88be7a18e9961f37488131829655d9ed540707121379c42495">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
-###2024.03.09
+###2024.03.01
 - Initial release
     </CHANGES>
 
     <FILE Name="&source;/&name;.txz" Run="upgradepkg --install-new">
-        <URL>&gitURL;/releases/download/&version;/&name;-&version;-x86_64.txz</URL>
+        <URL>&gitURL;releases/download/&version;/&name;-plugin-&version;-x86_64.txz</URL>
         <MD5>&MD5;</MD5>
         <SHA256>&SHA256;</SHA256>
     </FILE>
@@ -29,10 +29,9 @@
     <!-- Post install -->
     <FILE Run="/bin/bash" Method="install">
         <INLINE>
-            <![CDATA[
             if [ -d &source;/private ]; then
                 mkdir &varState;
-                cp -r &source;/private &varState;
+                cp -r &source;/private/*.json &varState;
             fi
             echo ""
             echo "----------------------------------------------------"
@@ -40,18 +39,16 @@
             echo " Version: &version;"
             echo "----------------------------------------------------"
             echo ""
-            ]]>
         </INLINE>
     </FILE>
 
     <FILE Run="/bin/bash" Method="remove">
         <INLINE>
-            <![CDATA[
             echo "Removing &name;..."
             removepkg &source;/*.txz
             rm -rf &source;/&name;.txz
             rm -rf &emhttp;
-            if [ -f &varState; ]; then
+            if [ -d &varState; ]; then
                 rm -rf &varState;
             fi
             if [ -f &notifications;/agents/WebPushNotification.sh ]; then
@@ -60,11 +57,15 @@
             if [ -f &notifications;/agents-disabled/WebPushNotification.sh ]; then
                 rm -rf &notifications;/agents-disabled/WebPushNotification.sh;
             fi
+            echo ""
+            echo "----------------------------------------------------"
             echo "&name; has been removed"
+            echo ""
             echo "⚠️ VAPID and Devices config files not removed from the USB stick."
-            echo "You can remove them manually if not reinstalling plugin."
-            echo "Files location on the USK stick: \"config/plugins/&name;/&name;\""
-            ]]>
+            echo "You can remove them manually if not reinstalling this plugin."
+            echo "Files location on USB stick: \"config/plugins/&name;/private\""
+            echo "----------------------------------------------------"
+            echo ""
         </INLINE>
     </FILE>
 </PLUGIN>

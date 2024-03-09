@@ -10,7 +10,7 @@ define('WPN_AGENT_NAME', 'WebPushNotification');
 define('WPN_AGENT_PATH', '/boot/config/plugins/dynamix/notifications');
 define('WPN_USB_DATA_FOLDER_PATH', '/boot/config/plugins/web-push-notification/private/');
 define('WPN_PATH', __DIR__ . '/../');
-define('WPN_DATA_FOLDER_PATH', WPN_DOCROOT . '/state/plugins/web-push-notification/');
+define('WPN_DATA_FOLDER_PATH', WPN_DOCROOT . 'state/plugins/web-push-notification/');
 define('WPN_VAPID_FILENAME', 'vapid.json');
 define('WPN_DEVICES_FILENAME', 'devices.json');
 define('WPN_LOCALE', isset($dynamixVar['locale']) && $dynamixVar['locale'] ? $dynamixVar['locale'] : 'en_US');
