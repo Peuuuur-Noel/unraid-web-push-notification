@@ -4,6 +4,7 @@
 <!ENTITY author "Peuuuur Noel">
 <!ENTITY version "2024.03.09">
 <!ENTITY launch "Settings/Notifications">
+<!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
 <!ENTITY source "/boot/config/plugins/&name;">
 <!ENTITY emhttp "/usr/local/emhttp/plugins/&name;">
@@ -15,12 +16,12 @@
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
-###2024.03.01
+###2024.03.09
 - Initial release
     </CHANGES>
 
     <FILE Name="&source;/&name;.txz" Run="upgradepkg --install-new">
-        <URL>&gitURL;/releases/download/&version;/&name;-&version;.txz</URL>
+        <URL>&gitURL;/releases/download/&version;/&name;-&version;-x86_64.txz</URL>
         <MD5>&MD5;</MD5>
         <SHA256>&SHA256;</SHA256>
     </FILE>
