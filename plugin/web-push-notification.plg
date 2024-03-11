@@ -10,8 +10,8 @@
 <!ENTITY emhttp "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varState "/var/local/emhttp/plugins/&name;">
 <!ENTITY notifications "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "baa93e033ea84e33d7a32c7f8a1fdf03">
-<!ENTITY SHA256 "b50fee5c95114a88be7a18e9961f37488131829655d9ed540707121379c42495">
+<!ENTITY MD5 "1c92caac12e3fece0763bfea4017241d">
+<!ENTITY SHA256 "89bc9df4a800d5c7c81327116735e00b7413a4b66a2397056767f56626211704">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
