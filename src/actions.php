@@ -67,6 +67,8 @@ LOG="/var/log/notify_${SCRIPTNAME%.*}"
 
 bash -c "php /usr/local/emhttp/plugins/web-push-notification/actions.php -e \"${EVENT}\" -i \"${IMPORTANCE}\" -s \"${SUBJECT}\" -d \"${DESCRIPTION}\" -c \"${CONTENT}\" -l \"${LINK}\" -t \"${TIMESTAMP}\" -o \"${SOUND}\""
 EOF;
+                if (!is_dir(WPN_AGENT_PATH . '/agents-disabled/'))
+                    mkdir(WPN_AGENT_PATH . '/agents-disabled/', 0700, true);
                 file_put_contents(WPN_AGENT_PATH . '/agents-disabled/' . WPN_AGENT_NAME . '.sh', $agent);
             }
 
