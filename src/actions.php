@@ -69,6 +69,7 @@ bash -c "php /usr/local/emhttp/plugins/web-push-notification/actions.php -e \"${
 EOF;
                 if (!is_dir(WPN_AGENT_PATH . '/agents-disabled/'))
                     mkdir(WPN_AGENT_PATH . '/agents-disabled/', 0700, true);
+
                 file_put_contents(WPN_AGENT_PATH . '/agents-disabled/' . WPN_AGENT_NAME . '.sh', $agent);
             }
 

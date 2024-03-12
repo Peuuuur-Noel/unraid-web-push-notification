@@ -1,6 +1,7 @@
 <?php
 $wpm_lang = [
     // index.page
+    'First generate a VAPID if not already done, then request permission and register to enable push notification on this browser. You need to browse this page with each devices you want to use push notification and register them.' => 'Générer le VAPID en premier si ce n\'est pas déjà fait, puis demandez l\'autorisation afin de vous inscrire au service de notification push. Vous devez aller sur cette page avec chaque appareil avec lequel vous souhaitez utiliser la notification push afin de les enregistrer aussi.',
     'Show registered devices' => 'Afficher les appareils enregistrés',
     'Hide registered devices' => 'Hide registered devices',
     'VAPID public key:' => 'Clé publique VAPID :',
