@@ -466,7 +466,7 @@ class WebPushNotification {
                     const data = publicKey.data || { 'publicKey': this.__('Error'), 'privateKey': this.__('Error') };
                     document.querySelector('#wpn-publicKey').value = data.publicKey;
                     document.querySelector('#wpn-privateKey').value = data.privateKey;
-                    document.querySelector('#wpn-test-btn').removeAttribute('disabled');
+                    document.querySelectorAll('#wpn-test-bt, #wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));
 
                     document.querySelector('#wpn-list-btn')?.classList.remove('active');
                     const html = document.querySelector('#wpn-device-list');
