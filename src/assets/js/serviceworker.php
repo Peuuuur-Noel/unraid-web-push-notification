@@ -41,27 +41,8 @@ const onPush = (event) => {
         data.data.forEach(element => {
             switch (element.type) {
                 case 'version':
-                    if (element.version != WPM_SW_VERSION) {
-                        self.registration.update().catch((e) => {
-                            const options = {
-                                title: data.title,
-                                body: '<?php wpm_e('Failed to update notification service. Connect this device to the same network as your Unraid server and send a test to update it again.'); ?>',
-                                icon: 'https://craftassets.unraid.net/uploads/discord/notify-warning.png',
-                                // image: data.image,
-                                badge: data.badge,
-                                // dir: data.dir,
-                                timestamp: data.timestamp,
-                                data: [],
-                                // tag: data.tag,
-                                // renotify: data.renotify,
-                                // vibrate: data.vibrate,
-                                sound: data.sound,
-                                silent: data.silent,
-                            };
-
-                            showNotification(event, options);
-                        });
-                    }
+                    if (element.version != WPM_SW_VERSION)
+                        self.registration.update();
                     break;
 
                 case 'remove':
