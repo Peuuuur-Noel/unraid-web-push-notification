@@ -17,6 +17,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
 ###2024.03.12
+- Add help text
+- Fix "REQUEST PERMISSION AND REGISTER" disabled button after VAPID is generate
+- Remove notification on service worker update failure
+
+###2024.03.12
 - Create agents-disabled folder if not present
 - Fix some path errors
 - Fix release url
