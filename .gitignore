@@ -1,7 +1,5 @@
 .DS_Store
 Thumbs.db
 
-composer.lock
-
 dist/
 src/vendor
