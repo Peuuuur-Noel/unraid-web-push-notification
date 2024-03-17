@@ -1,6 +1,7 @@
 {
     "name": "peuuuur-noel/unraid-web-push-notification",
     "description": "Add web push notification to Unraid",
+    "license": "MIT",
     "config": {
         "vendor-dir": "src/vendor"
     },
