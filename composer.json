@@ -1,4 +1,6 @@
 {
+    "name": "peuuuur-noel/unraid-web-push-notification",
+    "description": "Add web push notification to Unraid",
     "config": {
         "vendor-dir": "src/vendor"
     },
