@@ -14,7 +14,7 @@
 <!ENTITY SHA256 "58ca1161a4d600bff80008351395a20165fe24193229d493c1c92dfdda115cff">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell-o" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
 ###2024.03.20
 - Add ability to silent notifications by level
@@ -33,7 +33,7 @@
 - Initial release
     </CHANGES>
 
-    <FILE Name="&source;/&name;.txz" Run="upgradepkg --install-new">
+    <FILE Name="&source;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new">
         <URL>&gitURL;releases/download/&version;/&name;-plugin-&version;-x86_64.txz</URL>
         <MD5>&MD5;</MD5>
         <SHA256>&SHA256;</SHA256>
@@ -50,10 +50,10 @@
                 cp &source;/config.json &varState;
             fi
             echo ""
-            echo "------------------------------------------------------------------"
+            echo "---------------------------------------------------------------------------"
             echo " &name; has been installed."
             echo " Version: &version;"
-            echo "------------------------------------------------------------------"
+            echo "---------------------------------------------------------------------------"
             echo ""
         </INLINE>
     </FILE>
@@ -62,7 +62,7 @@
         <INLINE>
             echo "Removing &name;..."
             removepkg &source;/*.txz
-            rm &source;/&name;.txz
+            rm &source;/*.txz
             rm &source;/config.json
             rm -rf &emhttp;
             if [ -d &varState; ]; then
@@ -75,14 +75,14 @@
                 rm -rf &notifications;/agents-disabled/WebPushNotification.sh;
             fi
             echo ""
-            echo "------------------------------------------------------------------"
+            echo "---------------------------------------------------------------------------"
             echo "&name; has been removed"
             echo ""
             echo "Note:"
             echo "⚠️ VAPID and Devices config files not removed from the USB stick."
             echo "You can remove them manually if not reinstalling this plugin."
             echo "Files location on USB stick: \"config/plugins/&name;/private\""
-            echo "------------------------------------------------------------------"
+            echo "---------------------------------------------------------------------------"
             echo ""
         </INLINE>
     </FILE>
