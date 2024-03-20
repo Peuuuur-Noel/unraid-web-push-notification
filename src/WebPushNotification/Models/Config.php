@@ -60,7 +60,7 @@ EOF;
             if (!is_dir(WPN_AGENT_PATH . '/agents-disabled/'))
                 mkdir(WPN_AGENT_PATH . '/agents-disabled/', 0700, true);
 
-            $agent = preg_replace('/\r\n/', '\n', $agent);
+            $agent = preg_replace('/\r\n/', PHP_EOL, $agent);
             file_put_contents(WPN_AGENT_PATH . '/agents-disabled/' . WPN_AGENT_NAME . '.sh', $agent);
         }
 

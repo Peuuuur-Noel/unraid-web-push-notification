@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.03.20a">
+<!ENTITY version "2024.03.20c">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,13 +10,13 @@
 <!ENTITY emhttp "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varState "/var/local/emhttp/plugins/&name;">
 <!ENTITY notifications "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "2d580fe3ce8a0962debe1df68bc0a7a6">
-<!ENTITY SHA256 "bc056826904110d15114f69ed903b94738f64460bec4d7be52da6e093128a1dd">
+<!ENTITY MD5 "48529dc95d4befe89555d8a23b00a7a7">
+<!ENTITY SHA256 "54f4b40f50e80dffd2221e766d75998486612bfe4f45046cc1f4a05190fb5433">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell-o" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
-###2024.03.20a
+###2024.03.20c
 - Fix CRLF in bash script
 
 ###2024.03.20
@@ -36,7 +36,7 @@
 - Initial release
     </CHANGES>
 
-    <FILE Name="&source;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new">
+    <FILE Name="&source;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new --reinstall">
         <URL>&gitURL;releases/download/&version;/&name;-plugin-&version;-x86_64.txz</URL>
         <MD5>&MD5;</MD5>
         <SHA256>&SHA256;</SHA256>
