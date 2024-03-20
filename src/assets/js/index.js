@@ -121,6 +121,28 @@ class WebPushNotification {
             this.error(e);
         }
     }
+    async saveConfig() {
+        try {
+            const csrfToken = await this.getCSRFToken();
+            const data = new URLSearchParams();
+            data.append('csrf_token', csrfToken.data.csrf_token);
+            data.append('wpn-enable', document.querySelector('#wpn-enable-select').value == '1' ? 'enable' : 'disable');
+            document.querySelectorAll('input[name="wpn-silent[]"]:checked').forEach((elem) => data.append('wpn-silent[]', elem.value));
+
+            const response = await fetch(this.pluginUrl + 'actions.php?action=config', {
+                method: 'post',
+                body: data,
+            });
+            const result = await response.json();
+
+            if (result.errno)
+                this.error(result.errmsg);
+
+            return result;
+        } catch (e) {
+            this.error(e);
+        }
+    }
     async saveSubscription(subscription) {
         try {
             const csrfToken = await this.getCSRFToken();
@@ -422,22 +444,15 @@ class WebPushNotification {
         document.querySelector('head').append(linkIconTag);
     }
     bindEvents() {
-        document.querySelector('#wpn-enable-select').onchange = (event) => {
-            document.querySelector('#wpn-apply-btn').removeAttribute('disabled');
-        }
-        document.querySelector('#wpn-apply-btn').onclick = async (event) => {
-            try {
-                const action = parseInt(document.querySelector('#wpn-enable-select').value) ? 'enable' : 'disable';
-                const response = await fetch(this.pluginUrl + 'actions.php?action=' + action);
-                const result = await response.json();
-
-                if (result.errno)
-                    this.error(result.errmsg);
-                else
-                    location.reload();
-            } catch (e) {
-                this.error(e);
+        document.querySelectorAll('#wpn-enable-select, input[name="wpn-silent[]"]').forEach((elem) => {
+            elem.onchange = (event) => {
+                document.querySelector('#wpn-apply-btn').removeAttribute('disabled');
             }
+        });
+        document.querySelector('#wpn-apply-btn').onclick = async (event) => {
+            const result = await this.saveConfig();
+            if (!result.errno)
+                location.reload();
         }
         document.querySelector('#wpn-list-btn').onclick = (event) => {
             const html = document.querySelector('#wpn-device-list');

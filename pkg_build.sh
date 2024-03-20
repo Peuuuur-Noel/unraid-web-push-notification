@@ -4,7 +4,7 @@ if [ $# -eq 0 ]; then
 else
     DIR="$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"
     TMPDIR=/tmp/tmp.$(($RANDOM * 19318203981230 + 40))
-    PLUGIN=$(basename ${DIR})
+    PLUGIN="$(basename "${DIR}")"
     DIST="${DIR}/dist"
     DESTDIR="${TMPDIR}/usr/local/emhttp/plugins/${PLUGIN}"
     PLG_FILE="${DIR}/plugin/${PLUGIN}.plg"
@@ -18,7 +18,7 @@ else
 
     for x in '' a b c d e d f g h; do
         PKG="${DIST}/${PLUGIN}-plugin-${VERSION}${x}${ARCH}.txz"
-        if [[ ! -f $PKG ]]; then
+        if [[ ! -f "$PKG" ]]; then
             PACKAGE=$PKG
             VERSION="${VERSION}${x}"
             MD5="${DIST}/${PLUGIN}-plugin-${VERSION}${ARCH}.md5"
@@ -29,13 +29,13 @@ else
 
     mkdir -p "${DESTDIR}/"
     cd "${DIR}/src/"
-    cp --parents -f $(find . -type f ! \( -iname "pkg_build.sh" \) -not -path "./dist/*" -not -path "./plugins/*" ) "${DESTDIR}/"
+    cp --parents -r -f $(find .) "${DESTDIR}/"
     cd "${TMPDIR}/"
     makepkg -l y -c y "${PACKAGE}"
     cd "${DIST}/"
-    MD5_SUM=$(md5sum $(basename "${PACKAGE}"))
+    MD5_SUM=$(md5sum "$(basename "${PACKAGE}")")
     echo $MD5_SUM > "${MD5}"
-    SHA256_SUM=$(sha256sum $(basename "${PACKAGE}"))
+    SHA256_SUM=$(sha256sum "$(basename "${PACKAGE}")")
     echo $SHA256_SUM > "${SHA256}"
     rm -rf "${TMPDIR}"
 

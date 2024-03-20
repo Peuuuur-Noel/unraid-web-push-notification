@@ -6,6 +6,7 @@ Tag="bell"
 <?php
 require_once $docroot . '/plugins/web-push-notification/include/loader.php';
 
+use WebPushNotification\Models\Config;
 use WebPushNotification\Models\VAPID;
 
 $isWpnEnabled = false;
@@ -102,15 +103,6 @@ else if (is_file($enabledAgent))
 <blockquote class="inline_help">
     <?php wpm_e('First generate a VAPID if not already done, then request permission and register to enable push notification on this browser. You need to browse this page with each devices you want to use push notification and register them.'); ?>
 </blockquote>
-<dl>
-    <dt>&nbsp;</dt>
-    <dd>
-        <button id="wpn-apply-btn" disabled><?php echo _('Apply'); ?></button>
-        <button id="wpn-test-btn" <?php echo $vapid->getPrivateKey() && $vapid->getPublicKey() && $isWpnEnabled ? '' : 'disabled'; ?>><?php echo _('Test'); ?></button>
-        <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('Show registered devices'); ?></span><span class="hide"><?php wpm_e('Hide registered devices'); ?></span></button>
-    </dd>
-</dl>
-<div id="wpn-device-list"></div>
 <div class="<?php echo $shade; ?>">
     <dl>
         <dt><?php wpm_e('VAPID public key:'); ?></dt>
@@ -153,7 +145,52 @@ else if (is_file($enabledAgent))
         <dd><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('Request permission and Register'); ?></button></dd>
     </dl>
 </div>
+<div class="<?php echo $shade; ?>">
+    <dl>
+        <dt><?php wpm_e('Silent notification:'); ?></dt>
+        <dd>
+            <?php
+            $levels = [
+                [
+                    'id' => 'wpn-silent-notices',
+                    'name' => 'wpn-silent[]',
+                    'value' => 'notice',
+                    'label' => 'Notices',
+                ],
+                [
+                    'id' => 'wpn-silent-warnings',
+                    'name' => 'wpn-silent[]',
+                    'value' => 'warning',
+                    'label' => 'Warnings',
+                ],
+                [
+                    'id' => 'wpn-silent-alerts',
+                    'name' => 'wpn-silent[]',
+                    'value' => 'alert',
+                    'label' => 'Alerts',
+                ],
+            ];
+            $config = new Config();
+            $silent = $config->getSilent();
+            foreach ($levels as $level)
+                echo '<input type="checkbox" id="'. $level['id'] .'" name="'. $level['name'] .'" value="'. $level['value'] .'"' . (in_array($level['value'], $silent) ? ' checked' : '') . '><label for="'. $level['id'] .'">'. $level['label'] .'</label> &nbsp;';
+            ?>
+        </dd>
+    </dl>
+    <blockquote class="inline_help">
+        <?php wpm_e('Select which notification levels you do not want to vibrate/play sound when you receive them.'); ?>
+    </blockquote>
+</div>
+<dl>
+    <dt>&nbsp;</dt>
+    <dd>
+        <button id="wpn-apply-btn" disabled><?php echo _('Apply'); ?></button>
+        <button id="wpn-test-btn" <?php echo $vapid->getPrivateKey() && $vapid->getPublicKey() && $isWpnEnabled ? '' : 'disabled'; ?>><?php echo _('Test'); ?></button>
+        <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('Show registered devices'); ?></span><span class="hide"><?php wpm_e('Hide registered devices'); ?></span></button>
+    </dd>
+</dl>
+<div id="wpn-device-list"></div>
 <script>
-var wpm_lng = <?php echo json_encode($wpm_lang) ?: []; ?>
+    var wpm_lng = <?php echo json_encode($wpm_lang) ?: []; ?>
 </script>
 <script src="/plugins/web-push-notification/assets/js/index.js"></script>

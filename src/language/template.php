@@ -16,6 +16,7 @@ $wpm_lang = [
     'Click the button below to request permission and register to push notification. You need to browse this page with each devices you want to use push notification and click on the button below.' => '',
     'Error:' => '',
     'Request permission and Register' => '',
+    'Select which notification levels you do not want to vibrate/play sound when you receive them.' => '',
 
     // actions.php
     'Maybe or not OK, but something happened...' => '',

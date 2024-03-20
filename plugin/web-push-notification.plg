@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.03.12">
+<!ENTITY version "2024.03.20">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,12 +10,15 @@
 <!ENTITY emhttp "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varState "/var/local/emhttp/plugins/&name;">
 <!ENTITY notifications "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "1c92caac12e3fece0763bfea4017241d">
-<!ENTITY SHA256 "89bc9df4a800d5c7c81327116735e00b7413a4b66a2397056767f56626211704">
+<!ENTITY MD5 "11badfb1020a4066a76be397e4f3bcfe">
+<!ENTITY SHA256 "58ca1161a4d600bff80008351395a20165fe24193229d493c1c92dfdda115cff">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
+###2024.03.20
+- Add ability to silent notifications by level
+
 ###2024.03.12
 - Add help text
 - Fix "REQUEST PERMISSION AND REGISTER" disabled button after VAPID is generate
@@ -43,11 +46,14 @@
                 mkdir &varState;
                 cp -r &source;/private/*.json &varState;
             fi
+            if [ -f &source;/config.json ]; then
+                cp &source;/config.json &varState;
+            fi
             echo ""
-            echo "----------------------------------------------------"
+            echo "------------------------------------------------------------------"
             echo " &name; has been installed."
             echo " Version: &version;"
-            echo "----------------------------------------------------"
+            echo "------------------------------------------------------------------"
             echo ""
         </INLINE>
     </FILE>
@@ -56,7 +62,8 @@
         <INLINE>
             echo "Removing &name;..."
             removepkg &source;/*.txz
-            rm -rf &source;/&name;.txz
+            rm &source;/&name;.txz
+            rm &source;/config.json
             rm -rf &emhttp;
             if [ -d &varState; ]; then
                 rm -rf &varState;
@@ -68,13 +75,14 @@
                 rm -rf &notifications;/agents-disabled/WebPushNotification.sh;
             fi
             echo ""
-            echo "----------------------------------------------------"
+            echo "------------------------------------------------------------------"
             echo "&name; has been removed"
             echo ""
+            echo "Note:"
             echo "⚠️ VAPID and Devices config files not removed from the USB stick."
             echo "You can remove them manually if not reinstalling this plugin."
             echo "Files location on USB stick: \"config/plugins/&name;/private\""
-            echo "----------------------------------------------------"
+            echo "------------------------------------------------------------------"
             echo ""
         </INLINE>
     </FILE>
