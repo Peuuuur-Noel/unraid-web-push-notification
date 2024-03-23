@@ -101,53 +101,53 @@ else if (is_file($enabledAgent))
     </dd>
 </dl>
 <blockquote class="inline_help">
-    <?php wpm_e('First generate a VAPID if not already done, then request permission and register to enable push notification on this browser. You need to browse this page with each devices you want to use push notification and register them.'); ?>
+    <?php wpm_e('help_agent_function'); ?>
 </blockquote>
 <div class="<?php echo $shade; ?>">
     <dl>
-        <dt><?php wpm_e('VAPID public key:'); ?></dt>
-        <dd><input id="wpn-publicKey" type="text" placeholder="<?php wpm_e('Must be generated'); ?>" value="<?php echo $vapid->getPublicKey(); ?>" disabled></dd>
+        <dt><?php wpm_e('vapid_public_key'); ?></dt>
+        <dd><input id="wpn-publicKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPublicKey(); ?>" disabled></dd>
     </dl>
     <blockquote class="inline_help">
-        <?php wpm_e('Key needed to encrypt and send notification to push notification service.'); ?>
+        <?php wpm_e('help_vapid_public_key'); ?>
     </blockquote>
     <dl>
-        <dt><?php wpm_e('VAPID private key:'); ?></dt>
-        <dd><input id="wpn-privateKey" type="text" placeholder="<?php wpm_e('Must be generated'); ?>" value="<?php echo $vapid->getPrivateKey(); ?>" disabled></dd>
+        <dt><?php wpm_e('vapid_private_key'); ?></dt>
+        <dd><input id="wpn-privateKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPrivateKey(); ?>" disabled></dd>
     </dl>
     <blockquote class="inline_help">
-        <?php wpm_e('Key needed to authenticate your message and send notification to push notification service.'); ?>
+        <?php wpm_e('help_vapid_private_key'); ?>
     </blockquote>
     <dl>
         <dt>&nbsp;</dt>
         <dd>
-            <button id="wpn-generate-vapid-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><?php wpm_e('Generate VAPID keys'); ?></button>
-            <?php wpm_e('Generating a new VAPID will revoke registered devices. You will need to register them again.'); ?>
+            <button id="wpn-generate-vapid-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><?php wpm_e('button_generate_vapid_keys'); ?></button>
+            <?php wpm_e('help_generate_vapid_keys'); ?>
         </dd>
     </dl>
 </div>
 <div class="<?php echo $shade; ?>">
     <dl>
-        <dt><?php wpm_e('Permission:'); ?></dt>
+        <dt><?php wpm_e('permission'); ?></dt>
         <dd>
-            <span id="wpn-permission-status"><?php wpm_e('Request Permission and Register to push notification.'); ?></span>
+            <span id="wpn-permission-status"><?php wpm_e('permission_status'); ?></span>
         </dd>
     </dl>
     <blockquote class="inline_help">
-        <?php wpm_e('Click the button below to request permission and register to push notification. You need to browse this page with each devices you want to use push notification and click on the button below.'); ?>
+        <?php wpm_e('help_permission'); ?>
     </blockquote>
     <dl id="wpn-error">
-        <dt><?php wpm_e('Error:'); ?></dt>
+        <dt><?php wpm_e('error'); ?></dt>
         <dd id="wpn-error-text"></dd>
     </dl>
     <dl>
         <dt>&nbsp;</dt>
-        <dd><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('Request permission and Register'); ?></button></dd>
+        <dd><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('button_request_register'); ?></button></dd>
     </dl>
 </div>
 <div class="<?php echo $shade; ?>">
     <dl>
-        <dt><?php wpm_e('Silent notification:'); ?></dt>
+        <dt><?php wpm_e('silent_notification'); ?></dt>
         <dd>
             <?php
             $levels = [
@@ -178,7 +178,7 @@ else if (is_file($enabledAgent))
         </dd>
     </dl>
     <blockquote class="inline_help">
-        <?php wpm_e('Select which notification levels you do not want to vibrate/play sound when you receive them.'); ?>
+        <?php wpm_e('help_silent_notification'); ?>
     </blockquote>
 </div>
 <dl>
@@ -186,7 +186,7 @@ else if (is_file($enabledAgent))
     <dd>
         <button id="wpn-apply-btn" disabled><?php echo _('Apply'); ?></button>
         <button id="wpn-test-btn" <?php echo $vapid->getPrivateKey() && $vapid->getPublicKey() && $isWpnEnabled ? '' : 'disabled'; ?>><?php echo _('Test'); ?></button>
-        <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('Show registered devices'); ?></span><span class="hide"><?php wpm_e('Hide registered devices'); ?></span></button>
+        <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_registered_devices'); ?></span><span class="hide"><?php wpm_e('button_hide_registered_devices'); ?></span></button>
     </dd>
 </dl>
 <div id="wpn-device-list"></div>

@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 $dynamixVar = @parse_ini_file('/boot/config/plugins/dynamix/dynamix.cfg');
 
 define('WPN_DOCROOT', ($_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp') . '/');

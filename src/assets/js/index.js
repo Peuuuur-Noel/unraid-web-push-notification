@@ -10,17 +10,17 @@ class WebPushNotification {
     }
     checkAPI() {
         if (!('serviceWorker' in navigator))
-            this.error(this.__('No Service Worker support in browser.'));
+            this.error(this.__('no_service_worker_support'));
 
         if (!('PushManager' in window))
-            this.error(this.__('No Push API support in browser.'));
+            this.error(this.__('no_push_api_support'));
     }
     checkResgistration() {
         // Get service worker registrations
         navigator.serviceWorker.getRegistrations()
             .then((registrations) => {
                 if (!registrations || !registrations.length) {
-                    document.querySelector('#wpn-permission-status').innerText = this.__('Permissions granted but not registered. Register to push notification.');
+                    document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_not_registered');
                     document.querySelector('#wpn-permission-status').setAttribute('data-status', 'orange');
                     document.querySelectorAll('#wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));
                     return;
@@ -29,15 +29,15 @@ class WebPushNotification {
                 registrations.forEach((registration) => {
                     registration?.pushManager.getSubscription()
                         .then((subscription) => {
-                            document.querySelector('#wpn-permission-status').innerText = this.__('Permissions granted and registered to push notification.');
+                            document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_registered');
                             document.querySelector('#wpn-permission-status').setAttribute('data-status', 'green');
                             document.querySelectorAll('#wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));
                         }).catch((e) => {
-                            this.error(this.__('Error thrown while retrieving push notification subscription:'), e);
+                            this.error(this.__('error_retrieving_subscription'), e);
                         });
                 });
             }).catch((e) => {
-                this.error(this.__('Error thrown while retrieving service workers registrations:'), e);
+                this.error(this.__('error_retrieving_registrations'), e);
             });
     }
     displayWebPushNotificationStatus() {
@@ -47,12 +47,12 @@ class WebPushNotification {
                 break;
 
             case 'denied':
-                document.querySelector('#wpn-permission-status').innerText = this.__('Permissions denied for notification. Allow notification for this website in browser preferences.');
+                document.querySelector('#wpn-permission-status').innerText = this.__('permissions_denied');
                 document.querySelector('#wpn-permission-status').setAttribute('data-status', 'red');
                 break;
 
             case 'default':
-                document.querySelector('#wpn-permission-status').innerText = this.__('Permissions not granted for notification.');
+                document.querySelector('#wpn-permission-status').innerText = this.__('permissions_not_granted');
                 document.querySelector('#wpn-permission-status').setAttribute('data-status', 'orange');
                 document.querySelector('#wpn-permission-btn').removeAttribute('disabled');
                 break;
@@ -238,7 +238,7 @@ class WebPushNotification {
                                     }).catch((e) => {
                                         const permissionStatus = document.querySelector('#wpn-permission-status');
 
-                                        permissionStatus.innerText = this.__('Error thrown while subscribing to push notification.');
+                                        permissionStatus.innerText = this.__('error_subscribing');
                                         permissionStatus.setAttribute('data-status', 'red');
 
                                         this.error('', e);
@@ -249,7 +249,7 @@ class WebPushNotification {
             }).catch((e) => {
                 const permissionStatus = document.querySelector('#wpn-permission-status');
 
-                permissionStatus.innerText = this.__('Error thrown while registering service worker.');
+                permissionStatus.innerText = this.__('error_registering');
                 permissionStatus.setAttribute('data-status', 'red');
 
                 this.error('', e);
@@ -267,17 +267,17 @@ class WebPushNotification {
                     registration?.pushManager.getSubscription()
                         .then((subscription) => {
                             if (!subscription) {
-                                this.error(this.__('Service worker not registered.'));
+                                this.error(this.__('service_worker_not_registered'));
                                 return;
                             }
 
                             callback(subscription, registration);
                         }).catch((e) => {
-                            this.error(this.__('Error thrown while retrieving push notification subscription:'), e);
+                            this.error(this.__('error_retrieving_subscription'), e);
                         });
                 });
             }).catch((e) => {
-                this.error(this.__('Error thrown while retrieving service workers registrations:'), e);
+                this.error(this.__('error_retrieving_registrations'), e);
             });
     }
     unregisterServiceWorker() {
@@ -293,10 +293,10 @@ class WebPushNotification {
                         .then(() => {
                             this.displayWebPushNotificationStatus();
                         }).catch((e) => {
-                            this.error(this.__('Error thrown while unregistering service worker:'), e);
+                            this.error(this.__('error_unregistering'), e);
                         });
                 }).catch((e) => {
-                    this.error(this.__('Error thrown while unsubscribing from push notification:'), e);
+                    this.error(this.__('error_unsubscribing'), e);
                 });
         });
     }
@@ -304,10 +304,10 @@ class WebPushNotification {
         Promise.resolve(this.getDevicesList())
             .then((devices) => {
                 const tableCols = [
-                    this.__('Action'),
-                    this.__('Date'),
-                    this.__('User Agent'),
-                    this.__('IP Address'),
+                    this.__('action'),
+                    this.__('date'),
+                    this.__('user_agent'),
+                    this.__('ip_address'),
                 ];
                 const html = document.querySelector('#wpn-device-list');
 
@@ -329,11 +329,11 @@ class WebPushNotification {
 
                 const p = document.createElement('p');
                 html.append(p);
-                p.innerText = this.__('Loading...');
+                p.innerText = this.__('loading');
 
                 this.getCurrentSubscription((subscription) => {
                     if (!devices?.data?.length) {
-                        p.innerText = this.__('No devices.');
+                        p.innerText = this.__('no_devices');
                         return;
                     } else {
                         p.remove();
@@ -351,9 +351,9 @@ class WebPushNotification {
 
                         const tdActionRemove = document.createElement('button');
                         tdAction.append(tdActionRemove);
-                        tdActionRemove.innerText = this.__('Remove');
+                        tdActionRemove.innerText = this.__('remove');
                         tdActionRemove.onclick = async () => {
-                            if (!confirm(this.__('Remove this device?')))
+                            if (!confirm(this.__('remove_device')))
                                 return;
 
                             let remoteDelete = true;
@@ -380,7 +380,7 @@ class WebPushNotification {
                         if (device.subscription.endpoint == subscription.endpoint) {
                             const currentDevice = document.createElement('strong');
                             tdUserAgent.append(currentDevice);
-                            currentDevice.innerText = ` (${this.__('Current device')})`;
+                            currentDevice.innerText = ` (${this.__('current_device')})`;
                             currentDevice.style.color = 'green';
                         }
                         tdUserAgent.innerHTML += '<br>';
@@ -469,16 +469,16 @@ class WebPushNotification {
         }
         document.querySelector('#wpn-permission-btn').onclick = (event) => {
             this.checkAPI();
-            document.querySelector('#wpn-permission-status').innerText = this.__('Doing a lot of stuff...');
+            document.querySelector('#wpn-permission-status').innerText = this.__('registration_progress');
             document.querySelector('#wpn-permission-status').setAttribute('data-status', '');
             this.requestNotificationPermission();
         };
         document.querySelector('#wpn-generate-vapid-btn').onclick = (event) => {
-            if (!confirm(this.__('Generate VAPID keys?')))
+            if (!confirm(this.__('generate_vapid_keys')))
                 return;
             Promise.resolve(this.generateVapid())
                 .then((publicKey) => {
-                    const data = publicKey.data || { 'publicKey': this.__('Error'), 'privateKey': this.__('Error') };
+                    const data = publicKey.data || { 'publicKey': this.__('error_while_generating'), 'privateKey': this.__('error_while_generating') };
                     document.querySelector('#wpn-publicKey').value = data.publicKey;
                     document.querySelector('#wpn-privateKey').value = data.privateKey;
                     document.querySelectorAll('#wpn-test-bt, #wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));

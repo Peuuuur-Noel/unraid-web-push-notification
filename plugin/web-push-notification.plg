@@ -2,20 +2,23 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.03.20c">
+<!ENTITY version "2024.03.23">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
-<!ENTITY source "/boot/config/plugins/&name;">
-<!ENTITY emhttp "/usr/local/emhttp/plugins/&name;">
-<!ENTITY varState "/var/local/emhttp/plugins/&name;">
-<!ENTITY notifications "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "48529dc95d4befe89555d8a23b00a7a7">
-<!ENTITY SHA256 "54f4b40f50e80dffd2221e766d75998486612bfe4f45046cc1f4a05190fb5433">
+<!ENTITY pluginPATH "/boot/config/plugins/&name;">
+<!ENTITY emhttpPATH "/usr/local/emhttp/plugins/&name;">
+<!ENTITY varStatePATH "/var/local/emhttp/plugins/&name;">
+<!ENTITY notificationsPATH "/boot/config/plugins/dynamix/notifications">
+<!ENTITY MD5 "2e01cd1704e85c1214fc658ba7aa2d69">
+<!ENTITY SHA256 "c0680abe7d5fc34203f4759ce99bba82ee4df43f95ad49aea15f717601dd909a">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell-o" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
+###2024.03.23
+- Update languages
+
 ###2024.03.20c
 - Fix CRLF in bash script
 
@@ -36,7 +39,7 @@
 - Initial release
     </CHANGES>
 
-    <FILE Name="&source;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new --reinstall">
+    <FILE Name="&pluginPATH;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new">
         <URL>&gitURL;releases/download/&version;/&name;-plugin-&version;-x86_64.txz</URL>
         <MD5>&MD5;</MD5>
         <SHA256>&SHA256;</SHA256>
@@ -45,12 +48,12 @@
     <!-- Post install -->
     <FILE Run="/bin/bash" Method="install">
         <INLINE>
-            if [ -d &source;/private ]; then
-                mkdir &varState;
-                cp -r &source;/private/*.json &varState;
+            if [ -d &pluginPATH;/private ]; then
+                mkdir &varStatePATH;
+                cp -r &pluginPATH;/private/*.json &varStatePATH;
             fi
-            if [ -f &source;/config.json ]; then
-                cp &source;/config.json &varState;
+            if [ -f &pluginPATH;/config.json ]; then
+                cp &pluginPATH;/config.json &varStatePATH;
             fi
             echo ""
             echo "---------------------------------------------------------------------------"
@@ -64,18 +67,18 @@
     <FILE Run="/bin/bash" Method="remove">
         <INLINE>
             echo "Removing &name;..."
-            removepkg &source;/*.txz
-            rm &source;/*.txz
-            rm &source;/config.json
-            rm -rf &emhttp;
-            if [ -d &varState; ]; then
-                rm -rf &varState;
+            removepkg &pluginPATH;/*.txz
+            rm &pluginPATH;/*.txz
+            rm &pluginPATH;/config.json
+            rm -rf &emhttpPATH;
+            if [ -d &varStatePATH; ]; then
+                rm -rf &varStatePATH;
             fi
-            if [ -f &notifications;/agents/WebPushNotification.sh ]; then
-                rm -rf &notifications;/agents/WebPushNotification.sh;
+            if [ -f &notificationsPATH;/agents/WebPushNotification.sh ]; then
+                rm -rf &notificationsPATH;/agents/WebPushNotification.sh;
             fi
-            if [ -f &notifications;/agents-disabled/WebPushNotification.sh ]; then
-                rm -rf &notifications;/agents-disabled/WebPushNotification.sh;
+            if [ -f &notificationsPATH;/agents-disabled/WebPushNotification.sh ]; then
+                rm -rf &notificationsPATH;/agents-disabled/WebPushNotification.sh;
             fi
             echo ""
             echo "---------------------------------------------------------------------------"

@@ -10,20 +10,22 @@ use WebPushNotification\Models\VAPID;
 
 $out = [
     'errno' => WPN_LEVEL_WARNING,
-    'errmsg' => wpm__('Maybe or not OK, but something happened...'),
+    'errmsg' => wpm__('error_msg_default'),
     'data' => [],
 ];
 
 try {
     $action = null;
+    $options = [];
     if (PHP_SAPI == 'cli' && $argc <= 1) {
         wpm_usage();
         exit;
     } else if (PHP_SAPI == 'cli' && $argc > 1) {
-        $options = getopt('e:i:s:d:c:l:t:o:', ['event:', 'importance:', 'subject:', 'description:', 'content:', 'link:', 'timestamp:', 'sound:']);
         $action = 'push';
+        $options = getopt('e:i:s:d:c:l:t:o:', ['event:', 'importance:', 'subject:', 'description:', 'content:', 'link:', 'timestamp:', 'sound:']);
     } else if (isset($_GET['action'])) {
         $action = $_GET['action'];
+        $options = $_GET['options'];
     }
 
     switch ($action) {
@@ -106,7 +108,6 @@ try {
         case 'save_device':
             $subscription = json_decode($_POST['subscription'] ?? '', true) ?: [];
 
-            // If no data or not JSON, throw an exception
             if (!$subscription)
                 throw new ExceptionToConsole('[ACTIONS] Error Processing Request', WPN_LEVEL_ERROR);
 
@@ -141,7 +142,7 @@ try {
             $return = $devices->unregister($endpoint);
 
             $out['errno'] = WPN_NO_ERROR;
-            $out['errmsg'] = wpm__('Device removed.');
+            $out['errmsg'] = wpm__('device_removed');
             break;
 
         case 'get_devices_list':
@@ -165,7 +166,7 @@ try {
 
             if (!$description) {
                 $out['errno'] = WPN_NO_ERROR;
-                $out['errmsg'] = wpm__('No message to push.');
+                $out['errmsg'] = wpm__('no_message_to_push');
                 break;
             }
 
@@ -174,12 +175,12 @@ try {
 
             if (!$devicesList) {
                 $out['errno'] = WPN_NO_ERROR;
-                $out['errmsg'] = wpm__('No registered device to push notification to.');
+                $out['errmsg'] = wpm__('no_registered_device');
                 break;
             }
 
             /*
-             * Message formating:
+             * Message format:
              * [LEVEL] EVENT - SUBJECT
              * DESCRIPTION
              * CONTENT
@@ -219,7 +220,7 @@ try {
             $notification->setTimestamp($timestamp);
             $notification->setData(['type' => 'version', 'version' => WPN_SW_VERSION,]);
             $notification->setSound($sound);
-            // Silence chosen notification
+
             $config = new Config();
             $silent = $config->getSilent();
             $notification->setSilent(in_array($error_level['level'], $silent));
@@ -231,16 +232,17 @@ try {
             $push->queueDevices($notification, $devicesList);
             $count = $push->send();
 
-            $out['errno'] = WPN_NO_ERROR;
-            $out['errmsg'] = wpm__('Push to %1$d device%2$s.', $count, $count > 1 ? 's' : '');
-
-            if (PHP_SAPI == 'cli' && $argc > 1)
+            if (PHP_SAPI == 'cli' && $argc > 1) {
                 exit;
+            } else {
+                $out['errno'] = WPN_NO_ERROR;
+                $out['errmsg'] = wpm__('push_to_x_devices', $count, $count > 1 ? 's' : '');
+            }
             break;
 
         default:
             $out['errno'] = WPN_NO_ERROR;
-            $out['errmsg'] = wpm__('Unknown action. Doing nothing.');
+            $out['errmsg'] = wpm__('unknown_action');
             break;
     }
 } catch (ExceptionToConsole $e) {
