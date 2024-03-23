@@ -1,7 +1,12 @@
 <?php
 $wpm_lang = [
     // index.page
-    'help_agent_function' => "First generate a VAPID if not already done, then request permission and register to enable push notification on this browser. You need to browse this page with each devices you want to use push notification and register them. On mobile, you may need to add to Home Screen this page to enable push notifications.",
+    'help_agent_function' => "First generate a VAPID if not already done, then request permission and register to enable push notification on this browser.
+
+    You need to browse this page with each devices you want to use push notification and register them.
+    You must keep your browser open to receive notifications. If it's closed, notifications will be pending and arrive when you start it.
+
+    On mobile, you may need to add this page to your device's Home Screen to enable push notifications.",
     'button_show_registered_devices' => "Show registered devices",
     'button_hide_registered_devices' => "Hide registered devices",
     'vapid_public_key' => "VAPID public key:",
@@ -12,12 +17,12 @@ $wpm_lang = [
     'button_generate_vapid_keys' => "Generate VAPID keys",
     'help_generate_vapid_keys' => "Generating a new VAPID will revoke registered devices. You will need to register them again.",
     'permission' => "Permission:",
-    'permission_status' => "Request Permission and Register to push notification.",
-    'help_permission' => "Click the button below to request permission and register to push notification. You need to browse this page with each devices you want to use push notification and click on the button below.",
+    'permission_status' => "Click the button below to request permission and register to push notification or check status.",
+    'help_permission' => "Click the button below to request permission and register to push notification or check status. You need to browse this page with each devices you want to use push notification and click on the button below.",
     'error' => "Error:",
     'button_request_register' => "Request permission and Register",
     'silent_notification' => "Silent notification:",
-    'help_silent_notification' => "Select which notification levels you do not want to vibrate/play sound when you receive them.",
+    'help_silent_notification' => "Select which notification levels you don't want them to vibrate/play sound when received.",
 
     // actions.php
     'error_msg_default' => "Maybe or not OK, but something happened...",
@@ -28,8 +33,8 @@ $wpm_lang = [
     'unknown_action' => "Unknown action.",
 
     // index.js
-    'no_service_worker_support' => "No Service Worker support in browser.",
-    'no_push_api_support' => "No Push API support in browser.",
+    'no_service_worker_support' => "No Service Worker browser support.",
+    'no_push_api_support' => "No Push API browser support.",
     'permissions_granted_not_registered' => "Permissions granted but not registered. Register to push notification.",
     'permissions_granted_registered' => "Permissions granted and registered to push notification.",
     'error_retrieving_subscription' => "Error thrown while retrieving push notification subscription:",
@@ -51,6 +56,6 @@ $wpm_lang = [
     'remove_device' => "Remove this device?",
     'current_device' => "Current device",
     'registration_progress' => "Doing a lot of stuff...",
-    'generate_vapid_keys' => "Generate VAPID keys?",
+    'generate_vapid_keys' => "Do you want to generate VAPID keys?",
     'error_while_generating' => "Error while generating",
 ];

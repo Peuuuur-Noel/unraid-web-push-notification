@@ -10,7 +10,7 @@ function wpm__(string $text = '', ?string ...$args): string
 {
     global $wpm_lang;
 
-    return sprintf(isset($wpm_lang[$text]) ? $wpm_lang[$text] : $text, ...$args);
+    return nl2br(sprintf(isset($wpm_lang[$text]) ? $wpm_lang[$text] : $text, ...$args));
 }
 
 function wpm_e(string $text = '', ?string ...$args): void

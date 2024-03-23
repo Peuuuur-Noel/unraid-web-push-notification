@@ -1,7 +1,12 @@
 <?php
 $wpm_lang = [
     // index.page
-    'help_agent_function' => "Générer le VAPID en premier si ce n'est pas déjà fait, puis demandez l'autorisation afin de vous inscrire au service de notification push. Vous devez aller sur cette page avec chaque appareil avec lequel vous souhaitez utiliser la notification push afin de les enregistrer aussi. Sur mobile, il peut être nécessaire d'ajouter cette page à l'écran d'accueil afin d'activer les notifications push.",
+    'help_agent_function' => "Générer le VAPID en premier si ce n'est pas déjà fait, puis demandez l'autorisation afin de vous inscrire au service de notification push.
+
+    Vous devez aller sur cette page avec chaque appareil avec lequel vous souhaitez utiliser la notification push afin de les enregistrer aussi.
+    Vous devez garder votre navigateur ouvert pour recevoir les notifications. S'il est fermé, les notifications seront en attente et arriveront lorsque vous l'ouvrirez à nouveau.
+
+    Sur mobile, il peut être nécessaire d'ajouter cette page à l'écran d'accueil de votre appareil afin d'activer les notifications push.",
     'button_show_registered_devices' => "Afficher les appareils enregistrés",
     'button_hide_registered_devices' => "Cacher les appareils enregistrés",
     'vapid_public_key' => "Clé publique VAPID :",
@@ -12,12 +17,12 @@ $wpm_lang = [
     'button_generate_vapid_keys' => "Générer les clés VAPID",
     'help_generate_vapid_keys' => "La génération d'un nouveau VAPID révoquera les appareils enregistrés. Vous devrez les enregistrer à nouveau.",
     'permission' => "Permission :",
-    'permission_status' => "Demandez l'autorisation et inscrivez-vous pour envoyer une notification push.",
-    'help_permission' => "Cliquez sur le bouton ci-dessous pour demander l'autorisation et vous inscrire au service de notification push. Vous devez aller sur cette page avec chaque appareil avec lequel vous souhaitez utiliser la notification push, puis cliquer sur le bouton ci-dessous.",
+    'permission_status' => "Cliquez sur le bouton ci-dessous pour demander l'autorisation et vous inscrire aux notifications push ou vérifier le statut.",
+    'help_permission' => "Cliquez sur le bouton ci-dessous pour demander l'autorisation et vous inscrire aux notifications push ou vérifier le statut. Vous devez accéder à cette page avec chaque appareils pour lesquels vous souhaitez utiliser la notification push, puis cliquer sur le bouton ci-dessous.",
     'error' => "Erreur :",
-    'button_request_register' => "Autoriser et s'inscrire",
+    'button_request_register' => "Autoriser et Inscrire",
     'silent_notification' => "Notificiation silencieuse :",
-    'help_silent_notification' => "Sélectionnez les niveaux de notification pour lesquels vous ne souhaitez pas qu'elles vibrent/émettent de son lorsque vous les recevez.",
+    'help_silent_notification' => "Sélectionnez les niveaux de notification pour lesquels vous ne souhaitez pas qu'elles vibrent/émettent de son à leur réception.",
 
     // actions.php
     'error_msg_default' => "C'est peut-être OK ou pas, mais quelque chose s'est passé...",
@@ -51,6 +56,6 @@ $wpm_lang = [
     'remove_device' => "Supprimer cet appareil ?",
     'current_device' => "Appareil actuel",
     'registration_progress' => "En train de faire plein de trucs...",
-    'generate_vapid_keys' => "Générer les clés VAPID ?",
+    'generate_vapid_keys' => "Voulez-vous générer les clés VAPID ?",
     'error_while_generating' => "Erreur lors de la génération",
 ];
