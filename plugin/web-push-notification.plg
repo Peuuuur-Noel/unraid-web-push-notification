@@ -39,7 +39,7 @@
 - Initial release
     </CHANGES>
 
-    <FILE Name="&pluginPATH;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new">
+    <FILE Name="&pluginPATH;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new --reinstall">
         <URL>&gitURL;releases/download/&version;/&name;-plugin-&version;-x86_64.txz</URL>
         <MD5>&MD5;</MD5>
         <SHA256>&SHA256;</SHA256>
@@ -48,48 +48,53 @@
     <!-- Post install -->
     <FILE Run="/bin/bash" Method="install">
         <INLINE>
-            if [ -d &pluginPATH;/private ]; then
-                mkdir &varStatePATH;
-                cp -r &pluginPATH;/private/*.json &varStatePATH;
-            fi
-            if [ -f &pluginPATH;/config.json ]; then
-                cp &pluginPATH;/config.json &varStatePATH;
-            fi
-            echo ""
-            echo "---------------------------------------------------------------------------"
-            echo " &name; has been installed."
-            echo " Version: &version;"
-            echo "---------------------------------------------------------------------------"
-            echo ""
+# Remove old package when new is available
+find &pluginPATH;/*.txz ! -name '&name;-plugin-&version;-x86_64.txz' -type f -exec rm -f {} +
+
+if [ -d &pluginPATH;/private ]; then
+    mkdir &varStatePATH;
+    cp -r &pluginPATH;/private/*.json &varStatePATH;
+fi
+if [ -f &pluginPATH;/config.json ]; then
+    cp &pluginPATH;/config.json &varStatePATH;
+fi
+
+echo ""
+echo "---------------------------------------------------------------------------"
+echo " &name; has been installed."
+echo " Version: &version;"
+echo "---------------------------------------------------------------------------"
+echo ""
         </INLINE>
     </FILE>
 
     <FILE Run="/bin/bash" Method="remove">
         <INLINE>
-            echo "Removing &name;..."
-            removepkg &pluginPATH;/*.txz
-            rm &pluginPATH;/*.txz
-            rm &pluginPATH;/config.json
-            rm -rf &emhttpPATH;
-            if [ -d &varStatePATH; ]; then
-                rm -rf &varStatePATH;
-            fi
-            if [ -f &notificationsPATH;/agents/WebPushNotification.sh ]; then
-                rm -rf &notificationsPATH;/agents/WebPushNotification.sh;
-            fi
-            if [ -f &notificationsPATH;/agents-disabled/WebPushNotification.sh ]; then
-                rm -rf &notificationsPATH;/agents-disabled/WebPushNotification.sh;
-            fi
-            echo ""
-            echo "---------------------------------------------------------------------------"
-            echo "&name; has been removed"
-            echo ""
-            echo "Note:"
-            echo "⚠️ VAPID and Devices config files not removed from the USB stick."
-            echo "You can remove them manually if not reinstalling this plugin."
-            echo "Files location on USB stick: \"config/plugins/&name;/private\""
-            echo "---------------------------------------------------------------------------"
-            echo ""
+echo "Removing &name;..."
+removepkg &pluginPATH;/*.txz
+rm &pluginPATH;/*.txz
+rm &pluginPATH;/config.json
+rm -rf &emhttpPATH;
+if [ -d &varStatePATH; ]; then
+    rm -rf &varStatePATH;
+fi
+if [ -f &notificationsPATH;/agents/WebPushNotification.sh ]; then
+    rm -rf &notificationsPATH;/agents/WebPushNotification.sh;
+fi
+if [ -f &notificationsPATH;/agents-disabled/WebPushNotification.sh ]; then
+    rm -rf &notificationsPATH;/agents-disabled/WebPushNotification.sh;
+fi
+
+echo ""
+echo "---------------------------------------------------------------------------"
+echo "&name; has been removed"
+echo ""
+echo "Note:"
+echo "⚠️ VAPID and Devices config files not removed from the USB stick."
+echo "You can remove them manually if not reinstalling this plugin."
+echo "Files location on USB stick: \"config/plugins/&name;/private\""
+echo "---------------------------------------------------------------------------"
+echo ""
         </INLINE>
     </FILE>
 </PLUGIN>
