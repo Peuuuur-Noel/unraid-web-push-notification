@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.03.23a">
+<!ENTITY version "2024.04.02.0032">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,12 +10,16 @@
 <!ENTITY emhttpPATH "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varStatePATH "/var/local/emhttp/plugins/&name;">
 <!ENTITY notificationsPATH "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "bda81dbb622f18c76737462610bba014">
-<!ENTITY SHA256 "f4280353162d352563e1bf04c9dbc6df7a1b651adecb4292c46e574e7a4a63f8">
+<!ENTITY MD5 "a222a446ca511dd3d8fe6c9ca8c9ff03">
+<!ENTITY SHA256 "5533da2a9cbf2d19819c1f827017dac6c3dd119b8ff57242e17f6cc0cb9b99dd">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
+###2024.04.02.0032
+- Fix status message on registration check
+- Change package version naming
+
 ###2024.03.23a
 - Update languages
 
@@ -39,7 +43,7 @@
 - Initial release
     </CHANGES>
 
-    <FILE Name="&pluginPATH;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new --reinstall">
+    <FILE Name="&pluginPATH;/&name;-plugin-&version;-x86_64.txz" Run="upgradepkg --install-new">
         <URL>&gitURL;releases/download/&version;/&name;-plugin-&version;-x86_64.txz</URL>
         <MD5>&MD5;</MD5>
         <SHA256>&SHA256;</SHA256>
