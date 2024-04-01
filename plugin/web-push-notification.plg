@@ -14,7 +14,7 @@
 <!ENTITY SHA256 "5533da2a9cbf2d19819c1f827017dac6c3dd119b8ff57242e17f6cc0cb9b99dd">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.12.8" support="https://forums.unraid.net/forum/61-plugin-support/">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.13" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
 ###2024.04.02.0032
 - Fix status message on registration check
