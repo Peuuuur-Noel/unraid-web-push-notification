@@ -29,8 +29,14 @@ class WebPushNotification {
                 registrations.forEach((registration) => {
                     registration?.pushManager.getSubscription()
                         .then((subscription) => {
-                            document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_registered');
-                            document.querySelector('#wpn-permission-status').setAttribute('data-status', 'green');
+                            if (!subscription?.endpoint) {
+                                document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_not_registered');
+                                document.querySelector('#wpn-permission-status').setAttribute('data-status', 'orange');
+                            } else {
+                                document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_registered');
+                                document.querySelector('#wpn-permission-status').setAttribute('data-status', 'green');
+                            }
+
                             document.querySelectorAll('#wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));
                         }).catch((e) => {
                             this.error(this.__('error_retrieving_subscription'), e);
