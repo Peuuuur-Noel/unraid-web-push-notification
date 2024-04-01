@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.04.02.0032">
+<!ENTITY version "2024.04.02.0043">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,12 +10,15 @@
 <!ENTITY emhttpPATH "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varStatePATH "/var/local/emhttp/plugins/&name;">
 <!ENTITY notificationsPATH "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "a222a446ca511dd3d8fe6c9ca8c9ff03">
-<!ENTITY SHA256 "5533da2a9cbf2d19819c1f827017dac6c3dd119b8ff57242e17f6cc0cb9b99dd">
+<!ENTITY MD5 "c334cfe891322f975e5136cc0c7e28fa">
+<!ENTITY SHA256 "0a5554e61917b04fa5ac7cb261b8864f6c2d5e75eb6052ee3a3d4b6e499e9319">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.13" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
+###2024.04.02.0043
+- Fix package version naming
+
 ###2024.04.02.0032
 - Fix status message on registration check
 - Change package version naming

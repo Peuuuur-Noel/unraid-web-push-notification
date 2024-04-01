@@ -10,9 +10,9 @@ else
     PLG_FILE="${DIR}/plugin/${PLUGIN}.plg"
     VERSION=$(date +"%Y.%m.%d.%H%M")
     ARCH="-x86_64"
-    PACKAGE="${DIST}/${PLUGIN}-${VERSION}${ARCH}.txz"
-    MD5="${DIST}/${PLUGIN}-${VERSION}${ARCH}.md5"
-    SHA256="${DIST}/${PLUGIN}-${VERSION}${ARCH}.sha256"
+    PACKAGE="${DIST}/${PLUGIN}-plugin-${VERSION}${ARCH}.txz"
+    MD5="${DIST}/${PLUGIN}-plugin-${VERSION}${ARCH}.md5"
+    SHA256="${DIST}/${PLUGIN}-plugin-${VERSION}${ARCH}.sha256"
 
     mkdir -p "${DIST}"
     mkdir -p "${DESTDIR}/"
