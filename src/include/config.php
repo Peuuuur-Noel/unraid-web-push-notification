@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of Web Push Notification Agent plugin for Unraid.
+ *
+ * (c) Peuuuur Noel
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 $dynamixVar = @parse_ini_file('/boot/config/plugins/dynamix/dynamix.cfg');
 
 define('WPN_DOCROOT', ($_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp') . '/');
@@ -22,25 +32,25 @@ define('WPN_MESSAGE_ERROR_LEVEL', [
     'normal' => [
         'errorno' => 0,
         'level' => 'info',
-        'icon' => "https://craftassets.unraid.net/uploads/discord/notify-normal.png",
+        'icon' => 'https://craftassets.unraid.net/uploads/discord/notify-normal.png',
         'push_urgency' => 'normal',
     ],
     'warning' => [
         'errorno' => 1,
         'level' => 'warning',
-        'icon' => "https://craftassets.unraid.net/uploads/discord/notify-warning.png",
+        'icon' => 'https://craftassets.unraid.net/uploads/discord/notify-warning.png',
         'push_urgency' => 'normal',
     ],
     'alert' => [
         'errorno' => 2,
         'level' => 'error',
-        'icon' => "https://craftassets.unraid.net/uploads/discord/notify-alert.png",
+        'icon' => 'https://craftassets.unraid.net/uploads/discord/notify-alert.png',
         'push_urgency' => 'high',
     ],
     'unknown' => [
         'errorno' => -1,
         'level' => 'unknown',
-        'icon' => "https://craftassets.unraid.net/uploads/discord/notify-warning.png",
+        'icon' => 'https://craftassets.unraid.net/uploads/discord/notify-warning.png',
         'push_urgency' => 'normal',
     ],
 ]);

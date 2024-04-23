@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * This file is part of Web Push Notification Agent plugin for Unraid.
+ *
+ * (c) Peuuuur Noel
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace WebPushNotification\Libraries;
 
-use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
+use Minishlink\WebPush\WebPush;
 use WebPushNotification\Models\Device;
 use WebPushNotification\Models\Devices;
 use WebPushNotification\Models\Notification;
@@ -39,8 +48,9 @@ class Push
 
     public function queueDevices(Notification $notificaiton, array $devices = []): void
     {
-        foreach ($devices as $device)
+        foreach ($devices as $device) {
             $this->queueDevice($notificaiton, $device);
+        }
     }
 
     public function send(): int

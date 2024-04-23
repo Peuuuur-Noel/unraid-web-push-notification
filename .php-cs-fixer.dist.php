@@ -32,9 +32,10 @@ $rules = [
     'method_chaining_indentation' => true,
     'phpdoc_indent' => true,
     'doctrine_annotation_indentation' => true,
-    'explicit_string_variable' => true,
     'heredoc_to_nowdoc' => true,
     'multiline_string_to_heredoc' => true,
+    'single_quote' => ['strings_containing_single_quote_chars' => true],
+    'explicit_string_variable' => true,
     'simple_to_complex_string_variable' => true,
     'array_indentation' => true,
 ];

@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of Web Push Notification Agent plugin for Unraid.
+ *
+ * (c) Peuuuur Noel
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 require_once 'include/loader.php';
 
 use WebPushNotification\Libraries\ExceptionToConsole;
@@ -20,10 +30,10 @@ try {
     if (PHP_SAPI == 'cli' && $argc <= 1) {
         wpm_usage();
         exit;
-    } else if (PHP_SAPI == 'cli' && $argc > 1) {
+    } elseif (PHP_SAPI == 'cli' && $argc > 1) {
         $action = 'push';
         $options = getopt('e:i:s:d:c:l:t:o:', ['event:', 'importance:', 'subject:', 'description:', 'content:', 'link:', 'timestamp:', 'sound:']);
-    } else if (isset($_GET['action'])) {
+    } elseif (isset($_GET['action'])) {
         $action = $_GET['action'];
         $options = $_GET['options'];
     }
@@ -33,10 +43,11 @@ try {
             $config = new Config();
 
             if (isset($_POST['wpn-enable'])) {
-                if ($_POST['wpn-enable'] == 'enable')
+                if ($_POST['wpn-enable'] == 'enable') {
                     $config->enableAgent();
-                else if ($_POST['wpn-enable'] == 'disable')
+                } elseif ($_POST['wpn-enable'] == 'disable') {
                     $config->disableAgent();
+                }
             }
 
             $config->setSilent($_POST['wpn-silent'] ?? []);
@@ -70,7 +81,7 @@ try {
                 $notification = new Notification();
                 $notification->setTitle(gethostname());
                 $notification->setData([
-                    'type' => 'remove'
+                    'type' => 'remove',
                 ]);
 
                 $push = new Push();
@@ -95,8 +106,9 @@ try {
             $vapid = new VAPID();
             $publicKey = $vapid->getPublicKey();
 
-            if (!$publicKey)
+            if (!$publicKey) {
                 throw new ExceptionToConsole('[ACTIONS] VAPID public key not found', WPN_LEVEL_ERROR);
+            }
 
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';
@@ -108,13 +120,15 @@ try {
         case 'save_device':
             $subscription = json_decode($_POST['subscription'] ?? '', true) ?: [];
 
-            if (!$subscription)
+            if (!$subscription) {
                 throw new ExceptionToConsole('[ACTIONS] Error Processing Request', WPN_LEVEL_ERROR);
+            }
 
             $devices = new Devices();
 
-            if (!$devices->register($subscription, $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR']))
+            if (!$devices->register($subscription, $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'])) {
                 throw new ExceptionToConsole('[ACTIONS] Unable to register device', WPN_LEVEL_ERROR);
+            }
 
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';
@@ -131,7 +145,7 @@ try {
                 $notification = new Notification();
                 $notification->setTitle(gethostname());
                 $notification->setData([
-                    'type' => 'remove'
+                    'type' => 'remove',
                 ]);
 
                 $push = new Push();
@@ -187,30 +201,37 @@ try {
              */
             $temp_body = [];
             $temp_message = [];
-            if ($event)
+            if ($event) {
                 $temp_message[] = $event;
-            if ($subject)
+            }
+            if ($subject) {
                 $temp_message[] = $subject;
-            if ($temp_message)
+            }
+            if ($temp_message) {
                 $temp_body[] = implode(' - ', $temp_message);
+            }
 
             $temp_message = [];
-            if ($description)
+            if ($description) {
                 $temp_message[] = $description;
-            if ($content)
+            }
+            if ($content) {
                 $temp_message[] = $content;
-            if ($temp_message)
+            }
+            if ($temp_message) {
                 $temp_body[] = implode(PHP_EOL, $temp_message);
+            }
 
             $error_level = WPN_MESSAGE_ERROR_LEVEL[$importance] ?: WPN_MESSAGE_ERROR_LEVEL['unknown'];
             $body = '[' . $importance . '] ' . implode(PHP_EOL, $temp_body);
 
-            if (is_numeric($timestamp) && strlen($timestamp) == 10)
-                $timestamp *= 1000;
-            else if (is_numeric($timestamp) && strlen($timestamp) != 10)
+            if (is_numeric($timestamp) && strlen($timestamp) == 10) {
+                $timestamp *= 1_000;
+            } elseif (is_numeric($timestamp) && strlen($timestamp) != 10) {
                 $timestamp = 'now';
-            else if ($timestamp && !is_numeric($timestamp))
-                $timestamp = date_timestamp_get(date_create($timestamp)) * 1000;
+            } elseif ($timestamp && !is_numeric($timestamp)) {
+                $timestamp = date_timestamp_get(date_create($timestamp)) * 1_000;
+            }
 
             $notification = new Notification();
             $notification->setTitle(gethostname());
@@ -225,8 +246,9 @@ try {
             $silent = $config->getSilent();
             $notification->setSilent(in_array($error_level['level'], $silent));
 
-            if ($link)
+            if ($link) {
                 $notification->setData(['type' => 'url', 'url' => $link]);
+            }
 
             $push = new Push();
             $push->queueDevices($notification, $devicesList);

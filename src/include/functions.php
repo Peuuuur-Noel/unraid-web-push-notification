@@ -1,26 +1,36 @@
 <?php
-spl_autoload_register(fn ($class_name) => require_once WPN_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $class_name) . '.php');
+
+/*
+ * This file is part of Web Push Notification Agent plugin for Unraid.
+ *
+ * (c) Peuuuur Noel
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+spl_autoload_register(fn($class_name) => require_once WPN_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $class_name) . '.php');
 
 function wpm_log_to_console(string $message = ''): void
 {
     exec('logger -t WebPushNotification -- ' . escapeshellarg($message));
 }
 
-function wpm__(string $text = '', string|int ...$args): string
+function wpm__(string $text = '', int|string ...$args): string
 {
     global $wpm_lang;
 
     return nl2br(sprintf(isset($wpm_lang[$text]) ? $wpm_lang[$text] : $text, ...$args));
 }
 
-function wpm_e(string $text = '', string|int ...$args): void
+function wpm_e(string $text = '', int|string ...$args): void
 {
     echo wpm__($text, ...$args);
 }
 
 function wpm_usage(): int
 {
-    echo <<<EOT
+    echo <<<'EOT'
     php actions.php [-e "event"] [-i "normal|warning|alert"] [-s "subject"] [-d "description"] [-c "message"] [-l "link"] [-t "timestamp"] [-o "sound"]
 
       Push a web notification

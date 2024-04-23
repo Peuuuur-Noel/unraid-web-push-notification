@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Web Push Notification Agent plugin for Unraid.
+ *
+ * (c) Peuuuur Noel
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace WebPushNotification\Models;
 
 use JsonSerializable;
@@ -11,8 +20,9 @@ class Config implements JsonSerializable
 
     public function __construct()
     {
-        if (file_exists(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME))
+        if (file_exists(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME)) {
             $this->readFromFile();
+        }
     }
 
     public function enableAgent(): void
@@ -57,8 +67,9 @@ LOG="/var/log/notify_${SCRIPTNAME%.*}"
 
 bash -c "php /usr/local/emhttp/plugins/web-push-notification/actions.php -e \"${EVENT}\" -i \"${IMPORTANCE}\" -s \"${SUBJECT}\" -d \"${DESCRIPTION}\" -c \"${CONTENT}\" -l \"${LINK}\" -t \"${TIMESTAMP}\" -o \"${SOUND}\""
 EOF;
-            if (!is_dir(WPN_AGENT_PATH . '/agents-disabled/'))
+            if (!is_dir(WPN_AGENT_PATH . '/agents-disabled/')) {
                 mkdir(WPN_AGENT_PATH . '/agents-disabled/', 0700, true);
+            }
 
             $agent = preg_replace('/\r\n/', PHP_EOL, $agent);
             file_put_contents(WPN_AGENT_PATH . '/agents-disabled/' . WPN_AGENT_NAME . '.sh', $agent);
@@ -85,39 +96,46 @@ EOF;
 
     private function readFromFile(): bool
     {
-        if (!file_exists(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME))
+        if (!file_exists(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME)) {
             throw new ExceptionToConsole('[Config] File not found "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
+        }
 
         $file = file_get_contents(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME);
 
-        if ($file === false)
+        if ($file === false) {
             throw new ExceptionToConsole('[Config] Unable to read file "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
+        }
 
         $config = json_decode($file, true) ?: [];
         $this->silent = $config['silent'];
 
-        if (json_last_error() !== JSON_ERROR_NONE)
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new ExceptionToConsole('[Config] JSON error: ' . json_last_error_msg(), WPN_LEVEL_ERROR);
+        }
 
         return true;
     }
 
     private function writeToFile(): bool
     {
-        if (!is_dir(WPN_DATA_FOLDER_PATH))
+        if (!is_dir(WPN_DATA_FOLDER_PATH)) {
             mkdir(WPN_DATA_FOLDER_PATH, 0700, true);
+        }
         $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
 
-        if ($return === false)
+        if ($return === false) {
             throw new ExceptionToConsole('[Config] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
+        }
 
         // Copy .dat file to USB device to keep data after a reboot
-        if (!is_dir(WPN_USB_FOLDER_PATH))
+        if (!is_dir(WPN_USB_FOLDER_PATH)) {
             mkdir(WPN_USB_FOLDER_PATH, 0700, true);
+        }
         $return = copy(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME, WPN_USB_FOLDER_PATH . WPN_CONFIG_FILENAME);
 
-        if ($return === false)
+        if ($return === false) {
             throw new ExceptionToConsole('[Config] Unable to copy file to "' . WPN_USB_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
+        }
 
         return $return;
     }
