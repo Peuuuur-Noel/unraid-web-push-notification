@@ -1,5 +1,6 @@
 .DS_Store
 Thumbs.db
+.php-cs-fixer.cache
 
 dist/
 src/vendor
