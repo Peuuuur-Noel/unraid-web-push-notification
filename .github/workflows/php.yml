@@ -14,6 +14,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    container:
+      image: php:${{ matrix.php_version }}
+
+    strategy:
+      matrix:
+        php_version: ["8.2"]
+
     steps:
     - uses: actions/checkout@v3
 
@@ -31,9 +38,3 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
