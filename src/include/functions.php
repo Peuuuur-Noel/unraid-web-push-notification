@@ -6,14 +6,14 @@ function wpm_log_to_console(string $message = ''): void
     exec('logger -t WebPushNotification -- ' . escapeshellarg($message));
 }
 
-function wpm__(string $text = '', ?string ...$args): string
+function wpm__(string $text = '', string|int ...$args): string
 {
     global $wpm_lang;
 
     return nl2br(sprintf(isset($wpm_lang[$text]) ? $wpm_lang[$text] : $text, ...$args));
 }
 
-function wpm_e(string $text = '', ?string ...$args): void
+function wpm_e(string $text = '', string|int ...$args): void
 {
     echo wpm__($text, ...$args);
 }
