@@ -1,9 +1,10 @@
 
 class WebPushNotification {
     pluginUrl = '/plugins/web-push-notification/';
+    csrfToken = null;
     constructor() {
-        this.addPwaManifest();
         this.bindEvents();
+        this.addPwaManifest();
     }
     __(text = '') {
         return wpm_lng[text] || text;
@@ -129,56 +130,52 @@ class WebPushNotification {
     }
     async saveConfig() {
         try {
-            const csrfToken = await this.getCSRFToken();
-            const data = new URLSearchParams();
-            data.append('csrf_token', csrfToken.data.csrf_token);
-            data.append('wpn-enable', document.querySelector('#wpn-enable-select').value == '1' ? 'enable' : 'disable');
-            document.querySelectorAll('input[name="wpn-silent[]"]:checked').forEach((elem) => data.append('wpn-silent[]', elem.value));
+            const data = {
+                'wpn-enable': document.querySelector('#wpn-enable-select').value == '1' ? 'enable' : 'disable',
+                'wpn-silent': [],
+            };
+            document.querySelectorAll('input[name="wpn-silent[]"]:checked').forEach((elem) => data['wpn-silent'].push(elem.value));
 
-            const response = await fetch(this.pluginUrl + 'actions.php?action=config', {
-                method: 'post',
-                body: data,
-            });
-            const result = await response.json();
-
-            if (result.errno)
-                this.error(result.errmsg);
-
-            return result;
+            return await this.postRequest(this.pluginUrl + 'actions.php?action=config', data);
         } catch (e) {
             this.error(e);
         }
     }
     async saveSubscription(subscription) {
         try {
-            const csrfToken = await this.getCSRFToken();
-            const data = new URLSearchParams();
-            data.append('csrf_token', csrfToken.data.csrf_token);
-            data.append('subscription', JSON.stringify(subscription));
+            const data = {
+                'subscription': JSON.stringify(subscription)
+            };
 
-            const response = await fetch(this.pluginUrl + 'actions.php?action=save_device', {
-                method: 'post',
-                body: data,
-            });
-            const result = await response.json();
-
-            if (result.errno)
-                this.error(result.errmsg);
-
-            return result;
+            return await this.postRequest(this.pluginUrl + 'actions.php?action=save_device', data);
         } catch (e) {
             this.error(e);
         }
     }
     async removeSubscription(endpoint, remoteDelete = false) {
         try {
+            const data = {
+                'subscription': JSON.stringify(endpoint),
+                'remote_delete': remoteDelete
+            };
+
+            return await this.postRequest(this.pluginUrl + 'actions.php?action=remove_device', data);
+        } catch (e) {
+            this.error(e);
+        }
+    }
+    async postRequest(url = '', params = null) {
+        try {
+            if (!url || !params)
+                return false;
+
             const csrfToken = await this.getCSRFToken();
             const data = new URLSearchParams();
             data.append('csrf_token', csrfToken.data.csrf_token);
-            data.append('subscription', JSON.stringify(endpoint));
-            data.append('remote_delete', remoteDelete);
+            for (let p in params)
+                data.append(p, params[p]);
 
-            const response = await fetch(this.pluginUrl + 'actions.php?action=remove_device', {
+            const response = await fetch(url, {
                 method: 'post',
                 body: data,
             });
@@ -434,22 +431,13 @@ class WebPushNotification {
 
         return out.join(' / ');
     }
-    addPwaManifest() {
-        const linkManifestTag = document.createElement('link');
-        linkManifestTag.href = '/plugins/web-push-notification/assets/site.webmanifest';
-        linkManifestTag.rel = 'manifest';
-        linkManifestTag.crossOrigin = 'use-credentials';
-        document.querySelector('head').append(linkManifestTag);
-
-        const linkIconTag = document.createElement('link');
-        linkIconTag.href = '/plugins/web-push-notification/assets/images/icon512_maskable.png';
-        linkIconTag.rel = 'icon';
-        linkIconTag.type = 'image/png';
-        linkIconTag.sizes = '512x512';
-        linkIconTag.crossOrigin = 'use-credentials';
-        document.querySelector('head').append(linkIconTag);
-    }
     bindEvents() {
+        const csrfToken = new NchanSubscriber('/sub/session,var');
+        csrfToken.on('message', function (data) {
+            this.csrfToken = data;
+        });
+        csrfToken.start();
+
         document.querySelectorAll('#wpn-enable-select, input[name="wpn-silent[]"]').forEach((elem) => {
             elem.onchange = (event) => {
                 document.querySelector('#wpn-apply-btn').removeAttribute('disabled');
@@ -502,6 +490,21 @@ class WebPushNotification {
                 this.error(e);
             }
         }
+    }
+    addPwaManifest() {
+        const linkManifestTag = document.createElement('link');
+        linkManifestTag.href = '/plugins/web-push-notification/assets/site.webmanifest';
+        linkManifestTag.rel = 'manifest';
+        linkManifestTag.crossOrigin = 'use-credentials';
+        document.querySelector('head').append(linkManifestTag);
+
+        const linkIconTag = document.createElement('link');
+        linkIconTag.href = '/plugins/web-push-notification/assets/images/icon512_maskable.png';
+        linkIconTag.rel = 'icon';
+        linkIconTag.type = 'image/png';
+        linkIconTag.sizes = '512x512';
+        linkIconTag.crossOrigin = 'use-credentials';
+        document.querySelector('head').append(linkIconTag);
     }
     error(msg, e = null) {
         const error = document.querySelector('#wpn-error');
