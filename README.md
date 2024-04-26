@@ -4,6 +4,8 @@ Add push notification agent to Unraid to receive notifications in your browser.
 
 ## What is it?
 
+You know, that's the notification you receive in the top/bottom right corner of your desktop computer or in the notification panel on your mobile device.
+
 Take a quick look to this [Push notifications overview](https://web.dev/articles/push-notifications-overview) article.
 
 ## Usage
@@ -48,4 +50,4 @@ To enable push notifications, add unraid notifications settings page to Home Scr
 
 You *may* need to add unraid notifications page to Home Screen in Android to enable push notification.
 
-Notifications may not arrive instantly. It will depend on several factors: OS deep sleep, power management profile, application frozen when idle, battery level, network usage, ... and the way notifications are implemented (see this [comment](https://issues.chromium.org/issues/41351071#comment57) on chromium issues tracker).
+Notifications may not arrive instantly. It will depend on several factors: OS deep sleep, power management profile, application frozen when idle, battery level, network usage, ... and the way notifications are implemented (see this [comment](https://issues.chromium.org/issues/41351071#comment57) on Chromium Issue Tracker).

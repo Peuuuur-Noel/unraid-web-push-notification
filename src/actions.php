@@ -50,7 +50,7 @@ try {
                 }
             }
 
-            $config->setSilent($_POST['wpn-silent'] ?? []);
+            $config->setSilent(explode(',', $_POST['wpn-silent'] ?? ''));
 
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';
