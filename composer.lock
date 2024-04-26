@@ -2056,7 +2056,7 @@
         },
         {
             "name": "web-token/jwt-key-mgmt",
-            "version": "3.4.1",
+            "version": "3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-key-mgmt.git",
@@ -2111,7 +2111,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/web-token/jwt-key-mgmt/tree/3.4.1"
+                "source": "https://github.com/web-token/jwt-key-mgmt/tree/3.4.3"
             },
             "funding": [
                 {
@@ -2222,7 +2222,7 @@
         },
         {
             "name": "web-token/jwt-signature",
-            "version": "3.4.1",
+            "version": "3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature.git",
@@ -2274,7 +2274,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/web-token/jwt-signature/tree/3.4.1"
+                "source": "https://github.com/web-token/jwt-signature/tree/3.4.3"
             },
             "funding": [
                 {
@@ -2287,7 +2287,7 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "3.4.1",
+            "version": "3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
@@ -2340,7 +2340,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/web-token/jwt-signature-algorithm-ecdsa/tree/3.4.1"
+                "source": "https://github.com/web-token/jwt-signature-algorithm-ecdsa/tree/3.4.3"
             },
             "funding": [
                 {
@@ -2353,7 +2353,7 @@
         },
         {
             "name": "web-token/jwt-util-ecc",
-            "version": "3.4.1",
+            "version": "3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-util-ecc.git",
@@ -2406,7 +2406,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/web-token/jwt-util-ecc/tree/3.4.1"
+                "source": "https://github.com/web-token/jwt-util-ecc/tree/3.4.3"
             },
             "funding": [
                 {
