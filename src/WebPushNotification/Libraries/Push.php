@@ -28,7 +28,7 @@ class Push
 
         $this->webPush = new WebPush([
             'VAPID' => [
-                'subject' => 'unraid-notification',
+                'subject' => 'http://127.0.0.1', // Add localhost address to allow push on Apple push service
                 'publicKey' => $vapid->getPublicKey(),
                 'privateKey' => $vapid->getPrivateKey(),
             ],

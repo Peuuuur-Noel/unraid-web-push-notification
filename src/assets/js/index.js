@@ -269,11 +269,6 @@ class WebPushNotification {
                     // Get subscription
                     registration?.pushManager.getSubscription()
                         .then((subscription) => {
-                            if (!subscription) {
-                                this.error(this.__('service_worker_not_registered'));
-                                return;
-                            }
-
                             callback(subscription, registration);
                         }).catch((e) => {
                             this.error(this.__('error_retrieving_subscription'), e);
@@ -285,6 +280,9 @@ class WebPushNotification {
     }
     unregisterServiceWorker() {
         this.getCurrentSubscription((subscription, registration) => {
+            if (!subscription?.endpoint)
+                return;
+
             // Remove subscription
             subscription.unsubscribe()
                 .then(() => {
@@ -360,7 +358,7 @@ class WebPushNotification {
                                 return;
 
                             let remoteDelete = true;
-                            if (device.subscription.endpoint == subscription.endpoint) {
+                            if (subscription?.endpoint && device?.subscription?.endpoint && device.subscription.endpoint == subscription.endpoint) {
                                 this.unregisterServiceWorker();
                                 remoteDelete = false;
                             }
@@ -380,7 +378,7 @@ class WebPushNotification {
                         tr.append(tdUserAgent);
                         const d = this.parseUserAgent(device.user_agent);
                         tdUserAgent.innerHTML = d ? `<strong>${d}</strong>` : '';
-                        if (device.subscription.endpoint == subscription.endpoint) {
+                        if (subscription?.endpoint && device?.subscription?.endpoint && device.subscription.endpoint == subscription.endpoint) {
                             const currentDevice = document.createElement('strong');
                             tdUserAgent.append(currentDevice);
                             currentDevice.innerText = ` (${this.__('current_device')})`;
@@ -497,14 +495,6 @@ class WebPushNotification {
         linkManifestTag.rel = 'manifest';
         linkManifestTag.crossOrigin = 'use-credentials';
         document.querySelector('head').append(linkManifestTag);
-
-        const linkIconTag = document.createElement('link');
-        linkIconTag.href = '/plugins/web-push-notification/assets/images/icon512_maskable.png';
-        linkIconTag.rel = 'icon';
-        linkIconTag.type = 'image/png';
-        linkIconTag.sizes = '512x512';
-        linkIconTag.crossOrigin = 'use-credentials';
-        document.querySelector('head').append(linkIconTag);
     }
     error(msg, e = null) {
         const error = document.querySelector('#wpn-error');
