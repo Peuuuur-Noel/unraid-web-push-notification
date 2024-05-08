@@ -37,7 +37,7 @@ More details on [Can I use](https://caniuse.com/push-api).
 
 ### Not tested on
 
-* Safari on mobile
+* Safari (mobile)
 
 I don't have access to any Apple mobile devices, so I can't test Safari on them.
 
