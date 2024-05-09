@@ -182,7 +182,7 @@ class WebPushNotification {
             const result = await response.json();
 
             if (result.errno)
-                this.error(result.errmsg);
+                throw result.errmsg;
 
             return result;
         } catch (e) {
@@ -230,6 +230,9 @@ class WebPushNotification {
                                 // Subscribe to push service
                                 registration?.pushManager.subscribe(options)
                                     .then(async (subscription) => {
+                                        if (!subscription?.endpoint)
+                                            throw this.__('error_subscribing');
+
                                         await this.saveSubscription(subscription);
 
                                         document.querySelector('#wpn-list-btn')?.classList.remove('active');
@@ -239,22 +242,12 @@ class WebPushNotification {
 
                                         this.displayWebPushNotificationStatus();
                                     }).catch((e) => {
-                                        const permissionStatus = document.querySelector('#wpn-permission-status');
-
-                                        permissionStatus.innerText = this.__('error_subscribing');
-                                        permissionStatus.setAttribute('data-status', 'red');
-
                                         this.error('', e);
                                     });
                             });
                     }
                 };
             }).catch((e) => {
-                const permissionStatus = document.querySelector('#wpn-permission-status');
-
-                permissionStatus.innerText = this.__('error_registering');
-                permissionStatus.setAttribute('data-status', 'red');
-
                 this.error('', e);
             });
     }
@@ -517,7 +510,6 @@ class WebPushNotification {
             console.error(e);
         }
         text.style.display = 'block';
-        throw new Error(msg);
     }
 }
 new WebPushNotification();
