@@ -208,4 +208,4 @@ foreach ($levels as $level) {
 <script>
     var wpm_lng = <?php echo json_encode($wpm_lang) ?: []; ?>
 </script>
-<script src="/plugins/web-push-notification/assets/js/index.js"></script>
+<script src="/plugins/web-push-notification/assets/js/web-push-notification.js"></script>
