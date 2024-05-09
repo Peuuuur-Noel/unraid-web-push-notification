@@ -60,7 +60,8 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
         display: inline-block;
     }
 
-    #wpn-list-btn>span {
+    #wpn-list-btn>span,
+    #wpn-advanced-btn>span {
         pointer-events: none;
     }
 
