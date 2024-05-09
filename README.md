@@ -1,6 +1,6 @@
 # Web Push Notification Agent plugin for Unraid
 
-Add push notification agent to Unraid to receive notifications in your browser.
+An Unraid plugin to add push notifications to your browser.
 
 ## What is it?
 
@@ -12,14 +12,12 @@ Take a quick look to this [Push notifications overview](https://web.dev/articles
 
 Works like any default Unraid notification agents.
 
-Browse the Unraid notifications settings page with every devices you want to register and receive notifications.
+1. Browse the Unraid notifications settings page with the device you want to register and receive notifications.
+2. Request for notification to allow it in your browser and register to push service.
 
-1. On first use, generate VAPID keys. This keys will encrypt notification content when sent through push services.
-2. Request for notification to allow them in your browser and register to push service.
+Notification will be send to your devices through push service. Both your Unraid and devices must have access to internet. No need to keep Unraid interface open.
 
-You must have access to the Unraid interface with your devices for the registration. Notification will be send to your devices through push service. Both your Unraid and devices must have access to internet.
-
-Your browser must be open to receive notifications, otherwise they will be pending until opened.
+On desktop, your browser must be open to receive notifications, otherwise they will be pending until opened.
 
 ## Browser compatibility
 
@@ -39,12 +37,12 @@ More details on [Can I use](https://caniuse.com/push-api).
 
 * Safari (mobile)
 
-I don't have access to any Apple mobile devices, so I can't test Safari on them.
+I don't have access to an Apple mobile device, so I can't test Safari on it.
 
 ### Apple restrictions
 
 To enable push notifications, add unraid notifications settings page to Home Screen in iOS 16.4 or later.
 
-### Android devices
+### Mobile devices
 
-Notifications may not arrive instantly. It will depend on several factors: OS deep sleep, power management profile, application frozen when idle, battery level, network usage, ... and the way notifications are implemented (see this [comment](https://issues.chromium.org/issues/41351071#comment57) on Chromium Issue Tracker).
+Notifications may not arrive instantly. It will depend on several factors: OS deep sleep, power management profile, application frozen when idle, battery level, network usage, ... and the way notifications are implemented (see this [comment](https://issues.chromium.org/issues/41351071#comment57) for Android on Chromium Issue Tracker).
