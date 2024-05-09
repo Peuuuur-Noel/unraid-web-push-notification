@@ -235,7 +235,7 @@ class WebPushNotification {
                                         document.querySelector('#wpn-list-btn')?.classList.remove('active');
                                         const html = document.querySelector('#wpn-device-list');
                                         html.innerHTML = '';
-                                        html.style.display = 'none';
+                                        html.hidden = true;
 
                                         this.displayWebPushNotificationStatus();
                                     }).catch((e) => {
@@ -449,14 +449,23 @@ class WebPushNotification {
         document.querySelector('#wpn-list-btn').onclick = (event) => {
             const html = document.querySelector('#wpn-device-list');
             html.innerHTML = '';
+            html.hidden = !html.hidden;
 
             if (event.target.classList.contains('active')) {
                 event.target.classList.remove('active');
-                html.style.display = 'none';
             } else {
                 this.displayDevicesList();
                 event.target.classList.add('active');
-                html.style.display = 'block';
+            }
+        }
+        document.querySelector('#wpn-advanced-btn').onclick = (event) => {
+            const div = document.querySelector('.wpn-advanced-settings');
+            div.hidden = !div.hidden;
+
+            if (event.target.classList.contains('active')) {
+                event.target.classList.remove('active');
+            } else {
+                event.target.classList.add('active');
             }
         }
         document.querySelector('#wpn-permission-btn').onclick = (event) => {
@@ -478,7 +487,7 @@ class WebPushNotification {
                     document.querySelector('#wpn-list-btn')?.classList.remove('active');
                     const html = document.querySelector('#wpn-device-list');
                     html.innerHTML = '';
-                    html.style.display = 'none';
+                    html.hidden = true;
                 });
         }
         document.querySelector('#wpn-test-btn').onclick = async (event) => {

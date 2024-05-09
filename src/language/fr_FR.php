@@ -12,7 +12,7 @@
 $wpm_lang = [
     // index.page
     'help_agent_function' => <<<'EOD'
-Générer le VAPID en premier si ce n'est pas déjà fait, puis demandez l'autorisation afin de vous inscrire au service de notification push.
+Tout d'abord, demandez l'autorisation, puis inscrivez-vous au service de notification push.
 
 Vous devez aller sur cette page avec chaque appareil avec lequel vous souhaitez utiliser la notification push afin de les enregistrer aussi.
 Vous devez garder votre navigateur ouvert pour recevoir les notifications. S'il est fermé, les notifications seront en attente et arriveront lorsque vous l'ouvrirez à nouveau.
@@ -34,7 +34,7 @@ EOD,
     'error' => 'Erreur :',
     'button_request_register' => 'Autoriser et Inscrire',
     'silent_notification' => 'Notificiation silencieuse :',
-    'help_silent_notification' => 'Sélectionnez les niveaux de notification pour lesquels vous ne souhaitez pas qu\'elles vibrent/émettent de son à leur réception.',
+    'help_silent_notification' => 'Sélectionnez les niveaux de notification pour lesquels vous souhaitez qu\'elles soient silencieuses (pas de vibreur/son) à leur réception.',
 
     // actions.php
     'error_msg_default' => 'C\'est peut-être OK ou pas, mais quelque chose s\'est passé...',

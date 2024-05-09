@@ -12,7 +12,7 @@
 $wpm_lang = [
     // index.page
     'help_agent_function' => <<<'EOD'
-First generate a VAPID if not already done, then request permission and register to enable push notification on this browser.
+First, request permission, then register to enable push notification on this browser.
 
 You need to browse this page with each devices you want to use push notification and register them.
 You must keep your browser open to receive notifications. If it's closed, notifications will be pending and arrive when you start it.
@@ -21,6 +21,8 @@ On mobile, you may need to add this page to your device's Home Screen to enable 
 EOD,
     'button_show_registered_devices' => 'Show registered devices',
     'button_hide_registered_devices' => 'Hide registered devices',
+    'button_show_advanced_settings' => 'Show advanced settings',
+    'button_hide_advanced_settings' => 'Hide advanced settings',
     'vapid_public_key' => 'VAPID public key:',
     'vapid_private_key' => 'VAPID private key:',
     'help_vapid_public_key' => 'Key needed to encrypt and send notification to push notification service.',
@@ -34,7 +36,7 @@ EOD,
     'error' => 'Error:',
     'button_request_register' => 'Request permission and Register',
     'silent_notification' => 'Silent notification:',
-    'help_silent_notification' => 'Select which notification levels you don\'t want them to vibrate/play sound when received.',
+    'help_silent_notification' => 'Select which notification levels you want them to be silent (no vibrate/sound) when received.',
 
     // actions.php
     'error_msg_default' => 'Maybe or not OK, but something happened...',
