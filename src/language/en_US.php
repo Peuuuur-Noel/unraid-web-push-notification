@@ -19,8 +19,9 @@ You must keep your browser open to receive notifications. If it's closed, notifi
 
 On mobile, you may need to add this page to your device's Home Screen to enable push notifications.
 EOD,
-    'button_show_registered_devices' => 'Show registered devices',
-    'button_hide_registered_devices' => 'Hide registered devices',
+    'registered_devices' => 'Registered devices:',
+    'button_show_list' => 'Show list',
+    'button_hide_list' => 'Hide list',
     'button_show_advanced_settings' => 'Show advanced settings',
     'button_hide_advanced_settings' => 'Hide advanced settings',
     'vapid_public_key' => 'VAPID public key:',

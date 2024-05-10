@@ -203,7 +203,7 @@ class WebPushNotification {
     }
     registerServiceWorker() {
         // Register service worker
-        navigator.serviceWorker.register(this.pluginUrl + 'assets/js/serviceworker.php')
+        navigator.serviceWorker.register(this.pluginUrl + 'serviceworker.php')
             .then((registration) => {
                 let serviceWorker = null;
                 if (registration.installing)
@@ -389,6 +389,7 @@ class WebPushNotification {
     }
     parseUserAgent(userAgent = '') {
         const out = [];
+        const isIpadOS = /CPU\s+OS\s+([\d]+)_([\d]+)/i.exec(userAgent) ?? [];
 
         if (/Android/i.test(userAgent))
             out.push('Android');
@@ -396,6 +397,8 @@ class WebPushNotification {
             out.push('Edge');
         else if (/Windows/i.test(userAgent))
             out.push('Windows');
+        else if (/iPad/i.test(userAgent) && (isIpadOS.length && isIpadOS[1] > 13 || (isIpadOS.length > 1 && isIpadOS[1] == 13 && isIpadOS[2] >= 1)))
+            out.push('iPadOS');
         else if (/iPad|iPhone/i.test(userAgent))
             out.push('iOS');
         else if (/Macintosh/i.test(userAgent))
@@ -462,6 +465,8 @@ class WebPushNotification {
             }
         }
         document.querySelector('#wpn-permission-btn').onclick = (event) => {
+            document.querySelector('#wpn-error').style.display = '';
+            document.querySelector('#wpn-error-text').innerHTML = '';
             this.checkAPI();
             document.querySelector('#wpn-permission-status').innerText = this.__('registration_progress');
             document.querySelector('#wpn-permission-status').setAttribute('data-status', '');
@@ -505,11 +510,12 @@ class WebPushNotification {
         const text = document.querySelector('#wpn-error-text');
         text.innerText = msg;
         if (e) {
-            text.innerHTML += '<br>';
+            if (text.innerHTML) {
+                text.innerHTML += '<br>';
+            }
             text.innerText += e;
             console.error(e);
         }
-        text.style.display = 'block';
     }
 }
 new WebPushNotification();

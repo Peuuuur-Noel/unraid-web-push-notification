@@ -1,6 +1,9 @@
 <?php
-require_once __DIR__ . '/../../include/loader.php';
+require_once __DIR__ . '/include/loader.php';
 header('Content-type: application/javascript; charset=utf-8;');
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 ?>
 
 const WPM_SW_VERSION = '<?php echo WPN_SW_VERSION; ?>';

@@ -19,8 +19,11 @@ Vous devez garder votre navigateur ouvert pour recevoir les notifications. S'il 
 
 Sur mobile, il peut être nécessaire d'ajouter cette page à l'écran d'accueil de votre appareil afin d'activer les notifications push.
 EOD,
-    'button_show_registered_devices' => 'Afficher les appareils enregistrés',
-    'button_hide_registered_devices' => 'Cacher les appareils enregistrés',
+    'registered_devices' => 'Appareils enregistrés :',
+    'button_show_list' => 'Afficher la liste',
+    'button_hide_list' => 'Cacher la liste',
+    'button_show_advanced_settings' => 'Afficher les paramètres avancés',
+    'button_hide_advanced_settings' => 'Cacher les paramètres avancés',
     'vapid_public_key' => 'Clé publique VAPID :',
     'vapid_private_key' => 'Clé privée VAPID :',
     'help_vapid_public_key' => 'Clé nécessaire pour chiffrer et envoyer une notification au service de notification push.',

@@ -112,7 +112,7 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
 <blockquote class="inline_help">
     <?php wpm_e('help_agent_function'); ?>
 </blockquote>
-<div class="<?php echo $shade; ?>">
+<div>
     <dl>
         <dt><?php wpm_e('permission'); ?></dt>
         <dd>
@@ -131,7 +131,7 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
         <dd><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('button_request_register'); ?></button></dd>
     </dl>
 </div>
-<div class="<?php echo $shade; ?>">
+<div>
     <dl>
         <dt><?php wpm_e('silent_notification'); ?></dt>
         <dd>
@@ -168,13 +168,15 @@ foreach ($levels as $level) {
         <?php wpm_e('help_silent_notification'); ?>
     </blockquote>
 </div>
-<dl>
-    <dt>&nbsp;</dt>
-    <dd>
-        <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_registered_devices'); ?></span><span class="hide"><?php wpm_e('button_hide_registered_devices'); ?></span></button>
-    </dd>
-</dl>
-<div id="wpn-device-list" hidden></div>
+<div>
+    <dl>
+        <dt><?php wpm_e('registered_devices'); ?></dt>
+        <dd>
+            <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_list'); ?></span><span class="hide"><?php wpm_e('button_hide_list'); ?></span></button>
+        </dd>
+    </dl>
+    <div id="wpn-device-list" hidden></div>
+</div>
 <dl>
     <dt>&nbsp;</dt>
     <dd>
@@ -183,7 +185,7 @@ foreach ($levels as $level) {
         <button id="wpn-advanced-btn"><span class="show"><?php wpm_e('button_show_advanced_settings'); ?></span><span class="hide"><?php wpm_e('button_hide_advanced_settings'); ?></span></button>
     </dd>
 </dl>
-<div class="wpn-advanced-settings <?php echo $shade; ?>" hidden>
+<div class="wpn-advanced-settings" hidden>
     <dl>
         <dt><?php wpm_e('vapid_public_key'); ?></dt>
         <dd><input id="wpn-publicKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPublicKey(); ?>" disabled></dd>
