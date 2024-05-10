@@ -22,7 +22,7 @@
 - Fix error handling
 - Move serviceworker file
 - Files renamed
-- UserAgent parsing fo iPadOS
+- UserAgent parsing for iPadOS
 
 ###2024.04.26.2315
 - Fix array type error in setSilent()
