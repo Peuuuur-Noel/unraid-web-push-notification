@@ -10,9 +10,9 @@ use WebPushNotification\Models\Config;
 use WebPushNotification\Models\VAPID;
 
 $isWpnEnabled = false;
-$enabledAgent = agent_fullname(WPN_AGENT_NAME . ".sh", "enabled");
-$disabledAgent = agent_fullname(WPN_AGENT_NAME . ".sh", "disabled");
-$shade = "shade-" . ($display['theme'] ?? 'unk');
+$enabledAgent = agent_fullname(WPN_AGENT_NAME . '.sh', 'enabled');
+$disabledAgent = agent_fullname(WPN_AGENT_NAME . '.sh', 'disabled');
+$shade = 'shade-' . ($display['theme'] ?? 'unk');
 $vapid = new VAPID();
 
 // Generate VAPID keys if not already done
@@ -101,7 +101,7 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
     }
 </style>
 <dl>
-    <dt><?php echo _("Agent function"); ?>:</dt>
+    <dt><?php echo _('Agent function'); ?>:</dt>
     <dd>
         <select id="wpn-enable-select">
             <?php echo mk_option(!$isWpnEnabled, '0', _('Disabled')); ?>
@@ -112,30 +112,27 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
 <blockquote class="inline_help">
     <?php wpm_e('help_agent_function'); ?>
 </blockquote>
-<div>
-    <dl>
-        <dt><?php wpm_e('permission'); ?></dt>
-        <dd>
-            <span id="wpn-permission-status"><?php wpm_e('permission_status'); ?></span>
-        </dd>
-    </dl>
-    <blockquote class="inline_help">
-        <?php wpm_e('help_permission'); ?>
-    </blockquote>
-    <dl id="wpn-error">
-        <dt><?php wpm_e('error'); ?></dt>
-        <dd id="wpn-error-text"></dd>
-    </dl>
-    <dl>
-        <dt>&nbsp;</dt>
-        <dd><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('button_request_register'); ?></button></dd>
-    </dl>
-</div>
-<div>
-    <dl>
-        <dt><?php wpm_e('silent_notification'); ?></dt>
-        <dd>
-            <?php
+<dl>
+    <dt><?php wpm_e('permission'); ?></dt>
+    <dd>
+        <span id="wpn-permission-status"><?php wpm_e('permission_status'); ?></span>
+    </dd>
+</dl>
+<blockquote class="inline_help">
+    <?php wpm_e('help_permission'); ?>
+</blockquote>
+<dl id="wpn-error">
+    <dt><?php wpm_e('error'); ?></dt>
+    <dd id="wpn-error-text"></dd>
+</dl>
+<dl>
+    <dt>&nbsp;</dt>
+    <dd><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('button_request_register'); ?></button></dd>
+</dl>
+<dl>
+    <dt><?php wpm_e('silent_notification'); ?></dt>
+    <dd>
+        <?php
 $levels = [
     [
         'id' => 'wpn-silent-notices',
@@ -162,21 +159,18 @@ foreach ($levels as $level) {
     echo '<input type="checkbox" id="' . $level['id'] . '" name="' . $level['name'] . '" value="' . $level['value'] . '"' . (in_array($level['value'], $silent) ? ' checked' : '') . '><label for="' . $level['id'] . '">' . $level['label'] . '</label> &nbsp;';
 }
 ?>
-        </dd>
-    </dl>
-    <blockquote class="inline_help">
-        <?php wpm_e('help_silent_notification'); ?>
-    </blockquote>
-</div>
-<div>
-    <dl>
-        <dt><?php wpm_e('registered_devices'); ?></dt>
-        <dd>
-            <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_list'); ?></span><span class="hide"><?php wpm_e('button_hide_list'); ?></span></button>
-        </dd>
-    </dl>
-    <div id="wpn-device-list" hidden></div>
-</div>
+    </dd>
+</dl>
+<blockquote class="inline_help">
+    <?php wpm_e('help_silent_notification'); ?>
+</blockquote>
+<dl>
+    <dt><?php wpm_e('registered_devices'); ?></dt>
+    <dd>
+        <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_list'); ?></span><span class="hide"><?php wpm_e('button_hide_list'); ?></span></button>
+    </dd>
+</dl>
+<div id="wpn-device-list" hidden></div>
 <dl>
     <dt>&nbsp;</dt>
     <dd>
