@@ -1,9 +1,20 @@
 <?php
-require_once __DIR__ . '/include/loader.php';
+
+/*
+ * This file is part of Web Push Notification Agent plugin for Unraid.
+ *
+ * (c) Peuuuur Noel
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 header('Content-type: application/javascript; charset=utf-8;');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
+
+require_once __DIR__ . '/include/loader.php';
 ?>
 
 const WPM_SW_VERSION = '<?php echo WPN_SW_VERSION; ?>';

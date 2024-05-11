@@ -1,3 +1,11 @@
+/*
+ * This file is part of Web Push Notification Agent plugin for Unraid.
+ *
+ * (c) Peuuuur Noel
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 class WebPushNotification {
     pluginUrl = '/plugins/web-push-notification/';
