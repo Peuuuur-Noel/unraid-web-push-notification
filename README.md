@@ -29,20 +29,24 @@ On desktop, your browser must be open to receive notifications, otherwise they w
   * Opera 42+
   * ...
 * Firefox 44+
-* Safari 16.4+ (desktop)
+* Safari 16.4+
 
 More details on [Can I use](https://caniuse.com/push-api).
 
 ### Not tested on
 
-* Safari (mobile)
+* Safari (iPhone/iPad)
 
-I don't have access to an Apple mobile device, so I can't test Safari on it.
+I don't have access to an iPhone/iPad, so I can't test Safari on it.
 
-### Apple restrictions
+### Apple iPhone/iPad restrictions
 
-To enable push notifications, add unraid notifications settings page to Home Screen in iOS 16.4 or later.
+To enable push notifications, add unraid notifications settings page to the Home Screen in iOS 16.4 or later.
 
-### Mobile devices
+## Mobile devices
 
-Notifications may not arrive instantly. It will depend on several factors: OS deep sleep, power management profile, application frozen when idle, battery level, network usage, ... and the way notifications are implemented (see this [comment](https://issues.chromium.org/issues/41351071#comment57) for Android on Chromium Issue Tracker).
+Notifications may not arrive instantly. It will depend on several factors: OS deep sleep, power management profile, frozen application when idle, battery level, network usage, ... and the way notifications are implemented (see this [comment](https://issues.chromium.org/issues/41351071#comment57) for Android on Chromium Issue Tracker).
+
+## Ressources
+
+[minishlink/web-push](https://github.com/web-push-libs/web-push-php): Web Push library for PHP
