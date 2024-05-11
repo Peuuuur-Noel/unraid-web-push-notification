@@ -13,11 +13,10 @@ $wpm_lang = [
     // index.page
     'help_agent_function' => <<<'EOD'
 Tout d'abord, demandez l'autorisation, puis inscrivez-vous au service de notification push.
+Vous devez aller sur cette page avec chaque appareil sur lequel vous souhaitez utiliser la notification push afin de les enregistrer.
 
-Vous devez aller sur cette page avec chaque appareil avec lequel vous souhaitez utiliser la notification push afin de les enregistrer aussi.
-Vous devez garder votre navigateur ouvert pour recevoir les notifications. S'il est fermé, les notifications seront en attente et arriveront lorsque vous l'ouvrirez à nouveau.
-
-Sur mobile, il peut être nécessaire d'ajouter cette page à l'écran d'accueil de votre appareil afin d'activer les notifications push.
+Ordinateur (bureau/portable) : vous devez garder votre navigateur ouvert afin de recevoir les notifications. S'il est fermé, les notifications seront en attente et arriveront lorsque vous l'ouvrirez à nouveau.
+iPhone/iPad : il est nécessaire d'ajouter cette page à l'écran d'accueil afin d'activer les notifications push.
 EOD,
     'registered_devices' => 'Appareils enregistrés :',
     'button_show_list' => 'Afficher la liste',

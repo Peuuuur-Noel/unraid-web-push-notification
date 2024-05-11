@@ -13,11 +13,10 @@ $wpm_lang = [
     // index.page
     'help_agent_function' => <<<'EOD'
 First, request permission, then register to enable push notification on this browser.
-
 You need to browse this page with each devices you want to use push notification and register them.
-You must keep your browser open to receive notifications. If it's closed, notifications will be pending and arrive when you start it.
 
-On mobile, you may need to add this page to your device's Home Screen to enable push notifications.
+Computer (desktop/laptop): you must keep your browser open to receive notifications. If it's closed, notifications will be pending and arrive when you start it.
+iPhone/iPad: you need to add this page to your device's Home Screen to enable push notifications.
 EOD,
     'registered_devices' => 'Registered devices:',
     'button_show_list' => 'Show list',
