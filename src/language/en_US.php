@@ -10,7 +10,7 @@
  */
 
 $wpm_lang = [
-    // index.page
+    // web-push-notification.page
     'help_agent_function' => <<<'EOD'
 First, request permission, then register to enable push notification on this browser.
 You need to browse this page with each devices you want to use push notification and register them.
@@ -46,10 +46,11 @@ EOD,
     'push_to_x_devices' => 'Push to %1$d device%2$s.',
     'unknown_action' => 'Unknown action.',
 
-    // index.js
-    'no_service_worker_support' => 'No Service Worker browser support.',
+    // web-push-notification.js
+    'no_service_worker_support' => 'No service worker browser support.',
     'no_push_api_support' => 'No Push API browser support.',
-    'permissions_granted_not_registered' => 'Permissions granted but not registered. Register to push notification.',
+    'permissions_granted_sw_not_registered' => 'Permissions granted but service worker not registered.',
+    'permissions_granted_no_subscription' => 'Permissions granted but not registered to push service.',
     'permissions_granted_registered' => 'Permissions granted and registered to push notification.',
     'error_retrieving_subscription' => 'Error thrown while retrieving push notification subscription:',
     'error_retrieving_registrations' => 'Error thrown while retrieving service workers registrations:',

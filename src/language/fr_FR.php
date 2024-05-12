@@ -10,7 +10,7 @@
  */
 
 $wpm_lang = [
-    // index.page
+    // web-push-notification.page
     'help_agent_function' => <<<'EOD'
 Tout d'abord, demandez l'autorisation, puis inscrivez-vous au service de notification push.
 Vous devez aller sur cette page avec chaque appareil sur lequel vous souhaitez utiliser la notification push afin de les enregistrer.
@@ -46,10 +46,11 @@ EOD,
     'push_to_x_devices' => 'Message envoyé à %1$d appareil%2$s.',
     'unknown_action' => 'Action inconnue.',
 
-    // index.js
+    // web-push-notification.js
     'no_service_worker_support' => 'Service worker non pris en charge par le navigateur.',
     'no_push_api_support' => 'API Push non prise en charge par le navigateur.',
-    'permissions_granted_not_registered' => 'Autorisations accordées mais non inscrit au service. Inscrivez-vous pour recevoir les notifications push.',
+    'permissions_granted_sw_not_registered' => 'Autorisations accordées mais service worker non installé.',
+    'permissions_granted_no_subscription' => 'Autorisations accordées mais non inscrit au service de notifications push.',
     'permissions_granted_registered' => 'Autorisations accordées et inscription faite pour les notifications push.',
     'error_retrieving_subscription' => 'Erreur lors de la récupération de l\'inscription aux notifications push :',
     'error_retrieving_registrations' => 'Erreur lors de la récupération des inscriptions des service workers :',

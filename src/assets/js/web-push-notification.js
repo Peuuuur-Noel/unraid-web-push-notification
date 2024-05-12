@@ -29,7 +29,7 @@ class WebPushNotification {
         navigator.serviceWorker.getRegistrations()
             .then((registrations) => {
                 if (!registrations || !registrations.length) {
-                    document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_not_registered');
+                    document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_sw_not_registered');
                     document.querySelector('#wpn-permission-status').setAttribute('data-status', 'orange');
                     document.querySelectorAll('#wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));
                     return;
@@ -39,8 +39,7 @@ class WebPushNotification {
                     registration?.pushManager.getSubscription()
                         .then((subscription) => {
                             if (!subscription?.endpoint) {
-                                document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_not_registered');
-                                document.querySelector('#wpn-permission-status').setAttribute('data-status', 'orange');
+                                this.subscribeToPushService(registration);
                             } else {
                                 document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_registered');
                                 document.querySelector('#wpn-permission-status').setAttribute('data-status', 'green');
@@ -228,33 +227,38 @@ class WebPushNotification {
 
                 serviceWorker.onstatechange = async (event) => {
                     if (event.target.state == 'activated') {
-                        Promise.resolve(this.getPublicKey())
-                            .then((publicKey) => {
-                                const options = {
-                                    userVisibleOnly: true,
-                                    applicationServerKey: this.urlBase64ToUint8Array(publicKey),
-                                };
-
-                                // Subscribe to push service
-                                registration?.pushManager.subscribe(options)
-                                    .then(async (subscription) => {
-                                        if (!subscription?.endpoint)
-                                            throw this.__('error_subscribing');
-
-                                        await this.saveSubscription(subscription);
-
-                                        document.querySelector('#wpn-list-btn')?.classList.remove('active');
-                                        const html = document.querySelector('#wpn-device-list');
-                                        html.innerHTML = '';
-                                        html.hidden = true;
-
-                                        this.displayWebPushNotificationStatus();
-                                    }).catch((e) => {
-                                        this.error('', e);
-                                    });
-                            });
+                        this.subscribeToPushService(registration);
                     }
                 };
+            }).catch((e) => {
+                this.error('', e);
+            });
+    }
+    subscribeToPushService(registration) {
+        Promise.resolve(this.getPublicKey())
+            .then((publicKey) => {
+                const options = {
+                    userVisibleOnly: true,
+                    applicationServerKey: this.urlBase64ToUint8Array(publicKey),
+                };
+
+                // Subscribe to push service
+                registration?.pushManager.subscribe(options)
+                    .then(async (subscription) => {
+                        if (!subscription?.endpoint)
+                            throw this.__('error_subscribing');
+
+                        await this.saveSubscription(subscription);
+
+                        document.querySelector('#wpn-list-btn')?.classList.remove('active');
+                        const html = document.querySelector('#wpn-device-list');
+                        html.innerHTML = '';
+                        html.hidden = true;
+
+                        this.displayWebPushNotificationStatus();
+                    }).catch((e) => {
+                        this.error('', e);
+                    });
             }).catch((e) => {
                 this.error('', e);
             });
@@ -424,6 +428,8 @@ class WebPushNotification {
             out.push('Opera');
         else if (/Edg/i.test(userAgent))
             out.push('Edge');
+        else if (/SamsungBrowser/i.test(userAgent))
+            out.push('Samsung Internet');
         else if (/Chromium/i.test(userAgent))
             out.push('Chromium');
         else if (/Chrome/i.test(userAgent))
