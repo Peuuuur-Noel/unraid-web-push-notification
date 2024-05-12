@@ -37,6 +37,7 @@ On Apple iPhone/iPad, to enable push notifications, add Unraid notifications set
   * Chromium based:
     * Chrome 124+
     * Vivaldi 6.7+
+    * Samsung Internet 24+
   * Firefox 125+
 
 More details on [Can I use](https://caniuse.com/push-api).
