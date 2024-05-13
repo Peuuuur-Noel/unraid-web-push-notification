@@ -37,6 +37,7 @@ EOD,
     'button_request_register' => 'Autoriser et Inscrire',
     'silent_notification' => 'Notificiation silencieuse :',
     'help_silent_notification' => 'Sélectionnez les niveaux de notification pour lesquels vous souhaitez qu\'elles soient silencieuses (pas de vibreur/son) à leur réception.',
+    'http_plugin_disabled' => 'Ne fonctionne que sur une connexion/certificat HTTPS sécurisée/valide. Voir <a href="/Settings/ManagementAccess">Gestion des Accès</a>.',
 
     // actions.php
     'error_msg_default' => 'C\'est peut-être OK ou pas, mais quelque chose s\'est passé...',

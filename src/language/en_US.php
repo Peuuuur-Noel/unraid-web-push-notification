@@ -37,6 +37,7 @@ EOD,
     'button_request_register' => 'Request permission and Register',
     'silent_notification' => 'Silent notification:',
     'help_silent_notification' => 'Select which notification levels you want them to be silent (no vibrate/sound) when received.',
+    'http_plugin_disabled' => 'Works only over trusted HTTPS connections/certificate. Goto <a href="/Settings/ManagementAccess">Management Access</a>.',
 
     // actions.php
     'error_msg_default' => 'Maybe or not OK, but something happened...',
