@@ -31,7 +31,6 @@ class WebPushNotification {
                 if (!registrations || !registrations.length) {
                     document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_sw_not_registered');
                     document.querySelector('#wpn-permission-status').setAttribute('data-status', 'orange');
-                    document.querySelectorAll('#wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));
                     return;
                 }
 
@@ -41,14 +40,24 @@ class WebPushNotification {
                             if (!subscription?.endpoint) {
                                 this.subscribeToPushService(registration);
                             } else {
-                                // Resend the subscription in case it was deleted from the server
-                                await this.saveSubscription(subscription);
-
-                                document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_registered');
-                                document.querySelector('#wpn-permission-status').setAttribute('data-status', 'green');
+                                Promise.resolve(this.getDevicesList())
+                                    .then(async (devices) => {
+                                        // Check if subscription in server device list
+                                        const list = devices?.data?.filter((device) => device?.subscription?.endpoint && device.subscription.endpoint == subscription.endpoint);
+                                        if (!list.length) {
+                                            // Unsubscribe
+                                            subscription.unsubscribe().then(() => {
+                                                // Register again
+                                                this.subscribeToPushService(registration);
+                                            }).catch((e) => {
+                                                this.error(this.__('error_unsubscribing'), e);
+                                            });
+                                        } else {
+                                            document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_registered');
+                                            document.querySelector('#wpn-permission-status').setAttribute('data-status', 'green');
+                                        }
+                                    });
                             }
-
-                            document.querySelectorAll('#wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));
                         }).catch((e) => {
                             this.error(this.__('error_retrieving_subscription'), e);
                         });
@@ -71,7 +80,6 @@ class WebPushNotification {
             case 'default':
                 document.querySelector('#wpn-permission-status').innerText = this.__('permissions_not_granted');
                 document.querySelector('#wpn-permission-status').setAttribute('data-status', 'orange');
-                document.querySelector('#wpn-permission-btn').removeAttribute('disabled');
                 break;
         }
     };
@@ -88,11 +96,16 @@ class WebPushNotification {
     }
     async getCSRFToken() {
         try {
+            if (this.csrfToken)
+                return this.csrfToken;
+
             const response = await fetch(this.pluginUrl + 'actions.php?action=get_csrf_token');
             const result = await response.json();
 
             if (result.errno)
-                this.error(result.errmsg);
+                throw result.errmsg;
+
+            this.csrfToken = result;
 
             return result;
         } catch (e) {
@@ -105,7 +118,7 @@ class WebPushNotification {
             const result = await response.json();
 
             if (result.errno)
-                throw new Error(result.errmsg);
+                throw result.errmsg;
 
             return result;
         } catch (e) {
@@ -118,7 +131,7 @@ class WebPushNotification {
             const result = await response.json();
 
             if (result.errno)
-                this.error(result.errmsg);
+                throw result.errmsg;
 
             return result;
         } catch (e) {
@@ -131,7 +144,7 @@ class WebPushNotification {
             const result = await response.json();
 
             if (result.errno)
-                this.error(result.errmsg);
+                throw result.errmsg;
 
             return result.data.publicKey || false;
         } catch (e) {
@@ -202,11 +215,10 @@ class WebPushNotification {
     requestNotificationPermission() {
         Notification.requestPermission()
             .then((permission) => {
-                if (permission == 'granted') {
+                if (permission == 'granted')
                     this.registerServiceWorker();
-                } else {
+                else
                     this.displayWebPushNotificationStatus();
-                }
             }).catch((e) => {
                 this.error(e);
             });
@@ -229,9 +241,8 @@ class WebPushNotification {
                 }
 
                 serviceWorker.onstatechange = async (event) => {
-                    if (event.target.state == 'activated') {
+                    if (event.target.state == 'activated')
                         this.subscribeToPushService(registration);
-                    }
                 };
             }).catch((e) => {
                 this.error('', e);
@@ -240,6 +251,9 @@ class WebPushNotification {
     subscribeToPushService(registration) {
         Promise.resolve(this.getPublicKey())
             .then((publicKey) => {
+                if (!publicKey)
+                    return;
+
                 const options = {
                     userVisibleOnly: true,
                     applicationServerKey: this.urlBase64ToUint8Array(publicKey),
@@ -456,6 +470,7 @@ class WebPushNotification {
         });
         document.querySelector('#wpn-apply-btn').onclick = async (event) => {
             const result = await this.saveConfig();
+
             if (!result.errno)
                 location.reload();
         }
@@ -475,11 +490,10 @@ class WebPushNotification {
             const div = document.querySelector('.wpn-advanced-settings');
             div.hidden = !div.hidden;
 
-            if (event.target.classList.contains('active')) {
+            if (event.target.classList.contains('active'))
                 event.target.classList.remove('active');
-            } else {
+            else
                 event.target.classList.add('active');
-            }
         }
         document.querySelector('#wpn-permission-btn').onclick = (event) => {
             document.querySelector('#wpn-error').style.display = '';
@@ -492,12 +506,13 @@ class WebPushNotification {
         document.querySelector('#wpn-generate-vapid-btn').onclick = (event) => {
             if (!confirm(this.__('generate_vapid_keys')))
                 return;
+
             Promise.resolve(this.generateVapid())
                 .then((publicKey) => {
                     const data = publicKey.data || { 'publicKey': this.__('error_while_generating'), 'privateKey': this.__('error_while_generating') };
                     document.querySelector('#wpn-publicKey').value = data.publicKey;
                     document.querySelector('#wpn-privateKey').value = data.privateKey;
-                    document.querySelectorAll('#wpn-test-bt, #wpn-permission-btn').forEach(x => x.removeAttribute('disabled'));
+                    document.querySelectorAll('#wpn-test-bt').forEach(x => x.removeAttribute('disabled'));
 
                     document.querySelector('#wpn-list-btn')?.classList.remove('active');
                     const html = document.querySelector('#wpn-device-list');
@@ -526,10 +541,11 @@ class WebPushNotification {
 
         const text = document.querySelector('#wpn-error-text');
         text.innerText = msg;
+
         if (e) {
-            if (text.innerHTML) {
+            if (text.innerHTML)
                 text.innerHTML += '<br>';
-            }
+
             text.innerText += e;
             console.error(e);
         }
