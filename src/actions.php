@@ -29,8 +29,10 @@ try {
     $options = [];
     if (PHP_SAPI == 'cli' && $argc <= 1) {
         wpm_usage();
+
         exit;
-    } elseif (PHP_SAPI == 'cli' && $argc > 1) {
+    }
+    if (PHP_SAPI == 'cli' && $argc > 1) {
         $action = 'push';
         $options = getopt('e:i:s:d:c:l:t:o:', ['event:', 'importance:', 'subject:', 'description:', 'content:', 'link:', 'timestamp:', 'sound:']);
     } elseif (isset($_GET['action'])) {
@@ -43,9 +45,9 @@ try {
             $config = new Config();
 
             if (isset($_POST['wpn-enable'])) {
-                if ($_POST['wpn-enable'] == 'enable') {
+                if ('enable' == $_POST['wpn-enable']) {
                     $config->enableAgent();
-                } elseif ($_POST['wpn-enable'] == 'disable') {
+                } elseif ('disable' == $_POST['wpn-enable']) {
                     $config->disableAgent();
                 }
             }
@@ -54,6 +56,7 @@ try {
 
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';
+
             break;
 
         case 'test':
@@ -61,6 +64,7 @@ try {
 
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';
+
             break;
 
         case 'get_csrf_token':
@@ -71,6 +75,7 @@ try {
             $out['data'] = [
                 'csrf_token' => $stateVar['csrf_token'],
             ];
+
             break;
 
         case 'generate_vapid':
@@ -100,6 +105,7 @@ try {
                 'publicKey' => $vapid->getPublicKey(),
                 'privateKey' => $vapid->getPrivateKey(),
             ];
+
             break;
 
         case 'get_vapid_public_key':
@@ -115,6 +121,7 @@ try {
             $out['data'] = [
                 'publicKey' => $publicKey,
             ];
+
             break;
 
         case 'save_device':
@@ -132,6 +139,7 @@ try {
 
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';
+
             break;
 
         case 'remove_device':
@@ -157,6 +165,7 @@ try {
 
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = wpm__('device_removed');
+
             break;
 
         case 'get_devices_list':
@@ -166,6 +175,7 @@ try {
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';
             $out['data'] = $devices->getAll();
+
             break;
 
         case 'push':
@@ -181,6 +191,7 @@ try {
             if (!$description) {
                 $out['errno'] = WPN_NO_ERROR;
                 $out['errmsg'] = wpm__('no_message_to_push');
+
                 break;
             }
 
@@ -190,6 +201,7 @@ try {
             if (!$devicesList) {
                 $out['errno'] = WPN_NO_ERROR;
                 $out['errmsg'] = wpm__('no_registered_device');
+
                 break;
             }
 
@@ -225,9 +237,9 @@ try {
             $error_level = WPN_MESSAGE_ERROR_LEVEL[$importance] ?: WPN_MESSAGE_ERROR_LEVEL['unknown'];
             $body = '[' . $importance . '] ' . implode(PHP_EOL, $temp_body);
 
-            if (is_numeric($timestamp) && strlen($timestamp) == 10) {
+            if (is_numeric($timestamp) && 10 == strlen($timestamp)) {
                 $timestamp *= 1_000;
-            } elseif (is_numeric($timestamp) && strlen($timestamp) != 10) {
+            } elseif (is_numeric($timestamp) && 10 != strlen($timestamp)) {
                 $timestamp = 'now';
             } elseif ($timestamp && !is_numeric($timestamp)) {
                 $timestamp = date_timestamp_get(date_create($timestamp)) * 1_000;
@@ -239,7 +251,7 @@ try {
             $notification->setIcon($error_level['icon']);
             $notification->setBadge(WPN_NOTIFICATION_BADGE);
             $notification->setTimestamp($timestamp);
-            $notification->setData(['type' => 'version', 'version' => WPN_SW_VERSION,]);
+            $notification->setData(['type' => 'version', 'version' => WPN_SW_VERSION]);
             $notification->setSound($sound);
 
             $config = new Config();
@@ -256,15 +268,16 @@ try {
 
             if (PHP_SAPI == 'cli' && $argc > 1) {
                 exit;
-            } else {
-                $out['errno'] = WPN_NO_ERROR;
-                $out['errmsg'] = wpm__('push_to_x_devices', $count, $count > 1 ? 's' : '');
             }
+            $out['errno'] = WPN_NO_ERROR;
+            $out['errmsg'] = wpm__('push_to_x_devices', $count, $count > 1 ? 's' : '');
+
             break;
 
         default:
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = wpm__('unknown_action');
+
             break;
     }
 } catch (ExceptionToConsole $e) {

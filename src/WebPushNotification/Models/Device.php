@@ -11,9 +11,7 @@
 
 namespace WebPushNotification\Models;
 
-use JsonSerializable;
-
-class Device implements JsonSerializable
+class Device implements \JsonSerializable
 {
     private ?string $datetime;
     private ?string $ipAddress = null;

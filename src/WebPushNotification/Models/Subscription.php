@@ -11,9 +11,7 @@
 
 namespace WebPushNotification\Models;
 
-use JsonSerializable;
-
-class Subscription implements JsonSerializable
+class Subscription implements \JsonSerializable
 {
     private ?string $endpoint = null;
     private ?int $expirationTime = null;

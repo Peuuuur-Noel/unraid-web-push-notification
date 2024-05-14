@@ -11,10 +11,9 @@
 
 namespace WebPushNotification\Models;
 
-use JsonSerializable;
 use WebPushNotification\Libraries\ExceptionToConsole;
 
-class Config implements JsonSerializable
+class Config implements \JsonSerializable
 {
     private ?array $silent = [];
 
@@ -94,6 +93,18 @@ EOF;
         return $this->silent ?? [];
     }
 
+    public function toArray(): array
+    {
+        return [
+            'silent' => $this->silent,
+        ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
+    }
+
     private function readFromFile(): bool
     {
         if (!file_exists(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME)) {
@@ -102,14 +113,14 @@ EOF;
 
         $file = file_get_contents(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME);
 
-        if ($file === false) {
+        if (false === $file) {
             throw new ExceptionToConsole('[Config] Unable to read file "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
         $config = json_decode($file, true) ?: [];
         $this->silent = $config['silent'];
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (JSON_ERROR_NONE !== json_last_error()) {
             throw new ExceptionToConsole('[Config] JSON error: ' . json_last_error_msg(), WPN_LEVEL_ERROR);
         }
 
@@ -123,7 +134,7 @@ EOF;
         }
         $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
 
-        if ($return === false) {
+        if (false === $return) {
             throw new ExceptionToConsole('[Config] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
@@ -133,22 +144,10 @@ EOF;
         }
         $return = copy(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME, WPN_USB_FOLDER_PATH . WPN_CONFIG_FILENAME);
 
-        if ($return === false) {
+        if (false === $return) {
             throw new ExceptionToConsole('[Config] Unable to copy file to "' . WPN_USB_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
         return $return;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'silent' => $this->silent,
-        ];
-    }
-
-    public function jsonSerialize(): mixed
-    {
-        return $this->toArray();
     }
 }

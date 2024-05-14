@@ -13,8 +13,15 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 $rules = [
-    '@PER' => true,
+    '@PhpCsFixer' => true,
     '@PER-CS:risky' => true,
+    'blank_line_before_statement' => ['statements' => ['break', 'case', 'continue', 'declare', 'default', 'exit', 'goto', 'phpdoc', 'return', 'switch', 'throw', 'try', 'yield', 'yield_from']],
+    'concat_space' => ['spacing' => 'one'],
+    'doctrine_annotation_indentation' => true,
+    'modernize_strpos' => true,
+    'multiline_string_to_heredoc' => true,
+    'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
+    'numeric_literal_separator' => ['strategy' => 'use_separator'],
     'header_comment' => ['header' => <<<'EOF'
         This file is part of Web Push Notification Agent plugin for Unraid.
 
@@ -23,21 +30,6 @@ $rules = [
         This source file is subject to the MIT license that is bundled
         with this source code in the file LICENSE.
         EOF],
-    // 'declare_strict_types' => true,
-    'ordered_types' => ['null_adjustment' => 'always_first', 'sort_algorithm' => 'alpha'],
-    'ordered_imports' => ['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha'],
-    'modernize_strpos' => true,
-    'no_useless_concat_operator' => false,
-    'numeric_literal_separator' => ['strategy' => 'use_separator'],
-    'method_chaining_indentation' => true,
-    'phpdoc_indent' => true,
-    'doctrine_annotation_indentation' => true,
-    'heredoc_to_nowdoc' => true,
-    'multiline_string_to_heredoc' => true,
-    'single_quote' => ['strings_containing_single_quote_chars' => true],
-    'explicit_string_variable' => true,
-    'simple_to_complex_string_variable' => true,
-    'array_indentation' => true,
 ];
 
 $finder = (new Finder())

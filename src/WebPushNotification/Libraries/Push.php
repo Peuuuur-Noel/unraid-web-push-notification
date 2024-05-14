@@ -65,7 +65,7 @@ class Push
                     'reason' => $report->getReason(),
                 ];
             } else {
-                $count++;
+                ++$count;
             }
         }
 

@@ -11,10 +11,9 @@
 
 namespace WebPushNotification\Models;
 
-use JsonSerializable;
 use WebPushNotification\Libraries\ExceptionToConsole;
 
-class VAPID implements JsonSerializable
+class VAPID implements \JsonSerializable
 {
     private ?array $vapid = [];
 
@@ -46,6 +45,11 @@ class VAPID implements JsonSerializable
         return $this->vapid['privateKey'] ?? null;
     }
 
+    public function jsonSerialize(): mixed
+    {
+        return $this->vapid;
+    }
+
     private function readFromFile(): bool
     {
         if (!file_exists(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME)) {
@@ -54,13 +58,13 @@ class VAPID implements JsonSerializable
 
         $file = file_get_contents(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME);
 
-        if ($file === false) {
+        if (false === $file) {
             throw new ExceptionToConsole('[VAPID] Unable to read file "' . WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
         $this->vapid = json_decode($file, true) ?: [];
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (JSON_ERROR_NONE !== json_last_error()) {
             throw new ExceptionToConsole('[VAPID] JSON error: ' . json_last_error_msg(), WPN_LEVEL_ERROR);
         }
 
@@ -74,7 +78,7 @@ class VAPID implements JsonSerializable
         }
         $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
 
-        if ($return === false) {
+        if (false === $return) {
             throw new ExceptionToConsole('[VAPID] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
@@ -84,15 +88,10 @@ class VAPID implements JsonSerializable
         }
         $return = copy(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME, WPN_USB_DATA_FOLDER_PATH . WPN_VAPID_FILENAME);
 
-        if ($return === false) {
+        if (false === $return) {
             throw new ExceptionToConsole('[VAPID] Unable to copy file to "' . WPN_USB_DATA_FOLDER_PATH . WPN_VAPID_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
         return $return;
-    }
-
-    public function jsonSerialize(): mixed
-    {
-        return $this->vapid;
     }
 }

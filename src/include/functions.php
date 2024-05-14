@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-spl_autoload_register(fn($class_name) => require_once WPN_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $class_name) . '.php');
+spl_autoload_register(fn ($class_name) => require_once WPN_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $class_name) . '.php');
 
 function wpm_log_to_console(string $message = ''): void
 {
@@ -47,5 +47,6 @@ function wpm_usage(): int
       All options are optional
 
     EOT;
+
     return 1;
 }

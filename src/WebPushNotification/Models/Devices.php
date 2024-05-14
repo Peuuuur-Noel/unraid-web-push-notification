@@ -11,12 +11,9 @@
 
 namespace WebPushNotification\Models;
 
-use JsonSerializable;
 use WebPushNotification\Libraries\ExceptionToConsole;
-use WebPushNotification\Models\Device;
-use WebPushNotification\Models\Subscription;
 
-class Devices implements JsonSerializable
+class Devices implements \JsonSerializable
 {
     private ?array $devices = [];
 
@@ -39,7 +36,7 @@ class Devices implements JsonSerializable
 
     public function getByEndpoint(string $endpoint): ?Device
     {
-        return current(array_filter($this->devices, fn($var) => $var?->getSubscription()?->getEndpoint() == $endpoint) ?? []) ?: null;
+        return current(array_filter($this->devices, fn ($var) => $var?->getSubscription()?->getEndpoint() == $endpoint) ?? []) ?: null;
     }
 
     public function clear(): bool
@@ -81,12 +78,15 @@ class Devices implements JsonSerializable
             return false;
         }
 
-        $this->devices = array_values(array_filter($this->devices, fn($var) => $var?->getSubscription()?->getEndpoint() != $endpoint) ?? []);
+        $this->devices = array_values(array_filter($this->devices, fn ($var) => $var?->getSubscription()?->getEndpoint() != $endpoint) ?? []);
 
         return $this->writeToFile();
     }
 
-
+    public function jsonSerialize(): mixed
+    {
+        return $this->devices;
+    }
 
     private function readFromFile(): bool
     {
@@ -96,7 +96,7 @@ class Devices implements JsonSerializable
 
         $file = file_get_contents(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME);
 
-        if ($file === false) {
+        if (false === $file) {
             throw new ExceptionToConsole('[DEVICES] Unable to read file "' . WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
@@ -107,7 +107,7 @@ class Devices implements JsonSerializable
             $this->devices[] = new Device($subscription, $device['datetime'], $device['user_agent'], $device['ip_address']);
         }
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (JSON_ERROR_NONE !== json_last_error()) {
             throw new ExceptionToConsole('[DEVICES] JSON error: ' . json_last_error_msg(), WPN_LEVEL_ERROR);
         }
 
@@ -121,7 +121,7 @@ class Devices implements JsonSerializable
         }
         $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
 
-        if ($return === false) {
+        if (false === $return) {
             throw new ExceptionToConsole('[DEVICES] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
@@ -131,15 +131,10 @@ class Devices implements JsonSerializable
         }
         $return = copy(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME, WPN_USB_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME);
 
-        if ($return === false) {
+        if (false === $return) {
             throw new ExceptionToConsole('[DEVICES] Unable to copy file to "' . WPN_USB_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
         return $return;
-    }
-
-    public function jsonSerialize(): mixed
-    {
-        return $this->devices;
     }
 }

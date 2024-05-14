@@ -11,9 +11,7 @@
 
 namespace WebPushNotification\Models;
 
-use JsonSerializable;
-
-class Notification implements JsonSerializable
+class Notification implements \JsonSerializable
 {
     private string $title = '';
     private string $body = '';
@@ -64,7 +62,7 @@ class Notification implements JsonSerializable
         $this->timestamp = $timestamp;
     }
 
-    public function setData(array $data = null): void
+    public function setData(?array $data = null): void
     {
         $this->data[] = $data;
     }
