@@ -37,10 +37,13 @@ class WebPushNotification {
 
                 registrations.forEach((registration) => {
                     registration?.pushManager.getSubscription()
-                        .then((subscription) => {
+                        .then(async (subscription) => {
                             if (!subscription?.endpoint) {
                                 this.subscribeToPushService(registration);
                             } else {
+                                // Resend the subscription in case it was deleted from the server
+                                await this.saveSubscription(subscription);
+
                                 document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_registered');
                                 document.querySelector('#wpn-permission-status').setAttribute('data-status', 'green');
                             }
