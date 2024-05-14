@@ -19,8 +19,12 @@ class Devices implements \JsonSerializable
 
     public function __construct()
     {
-        if (file_exists(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME)) {
-            $this->readFromFile();
+        $this->config = new Config();
+        $devices = $this->config->getDevices();
+
+        foreach ($devices as $device) {
+            $subscription = new Subscription($device['subscription']['endpoint'], $device['subscription']['expirationTime'], $device['subscription']['keys']);
+            $this->devices[] = new Device($subscription, $device['datetime'], $device['user_agent'], $device['ip_address']);
         }
     }
 
@@ -42,8 +46,9 @@ class Devices implements \JsonSerializable
     public function clear(): bool
     {
         $this->devices = [];
+        $this->config->setDevices($this->devices);
 
-        return $this->writeToFile();
+        return $this->config->writeToFile();
     }
 
     public function register(array $data = [], ?string $userAgent = null, ?string $ipAddress = null): ?bool
@@ -65,8 +70,9 @@ class Devices implements \JsonSerializable
             // If no duplicate, append to file
             $device = new Device($subscription, date_format(date_create(), 'c'), $userAgent, $ipAddress);
             $this->devices = [...$this->devices, ...[$device]];
+            $this->config->setDevices($this->devices);
 
-            return $this->writeToFile();
+            return $this->config->writeToFile();
         }
 
         return true;
@@ -79,62 +85,13 @@ class Devices implements \JsonSerializable
         }
 
         $this->devices = array_values(array_filter($this->devices, fn ($var) => $var?->getSubscription()?->getEndpoint() != $endpoint) ?? []);
+        $this->config->setDevices($this->devices);
 
-        return $this->writeToFile();
+        return $this->config->writeToFile();
     }
 
     public function jsonSerialize(): mixed
     {
         return $this->devices;
-    }
-
-    private function readFromFile(): bool
-    {
-        if (!file_exists(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME)) {
-            throw new ExceptionToConsole('[DEVICES] File not found "' . WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        $file = file_get_contents(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME);
-
-        if (false === $file) {
-            throw new ExceptionToConsole('[DEVICES] Unable to read file "' . WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        $devices = json_decode($file, true) ?: [];
-
-        foreach ($devices as $device) {
-            $subscription = new Subscription($device['subscription']['endpoint'], $device['subscription']['expirationTime'], $device['subscription']['keys']);
-            $this->devices[] = new Device($subscription, $device['datetime'], $device['user_agent'], $device['ip_address']);
-        }
-
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new ExceptionToConsole('[DEVICES] JSON error: ' . json_last_error_msg(), WPN_LEVEL_ERROR);
-        }
-
-        return true;
-    }
-
-    private function writeToFile(): bool
-    {
-        if (!is_dir(WPN_DATA_FOLDER_PATH)) {
-            mkdir(WPN_DATA_FOLDER_PATH, 0700, true);
-        }
-        $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
-
-        if (false === $return) {
-            throw new ExceptionToConsole('[DEVICES] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        // Copy .dat file to USB device to keep data after a reboot
-        if (!is_dir(WPN_USB_DATA_FOLDER_PATH)) {
-            mkdir(WPN_USB_DATA_FOLDER_PATH, 0700, true);
-        }
-        $return = copy(WPN_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME, WPN_USB_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME);
-
-        if (false === $return) {
-            throw new ExceptionToConsole('[DEVICES] Unable to copy file to "' . WPN_USB_DATA_FOLDER_PATH . WPN_DEVICES_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        return $return;
     }
 }

@@ -15,16 +15,16 @@ use WebPushNotification\Libraries\ExceptionToConsole;
 
 class VAPID implements \JsonSerializable
 {
+    private Config $config;
     private ?array $vapid = [];
 
     public function __construct()
     {
-        if (file_exists(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME)) {
-            $this->readFromFile();
-        }
+        $this->config = new Config();
+        $this->vapid = $this->config->getVapid();
     }
 
-    public function generateKeys(): bool
+    public function generateKeys(): void
     {
         $this->vapid = \Minishlink\WebPush\VAPID::createVapidKeys();
 
@@ -32,7 +32,8 @@ class VAPID implements \JsonSerializable
             throw new ExceptionToConsole('[VAPID] Error while generating keys', WPN_LEVEL_ERROR);
         }
 
-        return $this->writeToFile();
+        $this->config->setVapid($this->vapid);
+        $this->config->writeToFile();
     }
 
     public function getPublicKey(): ?string
@@ -48,50 +49,5 @@ class VAPID implements \JsonSerializable
     public function jsonSerialize(): mixed
     {
         return $this->vapid;
-    }
-
-    private function readFromFile(): bool
-    {
-        if (!file_exists(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME)) {
-            throw new ExceptionToConsole('[VAPID] File not found "' . WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        $file = file_get_contents(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME);
-
-        if (false === $file) {
-            throw new ExceptionToConsole('[VAPID] Unable to read file "' . WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        $this->vapid = json_decode($file, true) ?: [];
-
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new ExceptionToConsole('[VAPID] JSON error: ' . json_last_error_msg(), WPN_LEVEL_ERROR);
-        }
-
-        return true;
-    }
-
-    private function writeToFile(): bool
-    {
-        if (!is_dir(WPN_DATA_FOLDER_PATH)) {
-            mkdir(WPN_DATA_FOLDER_PATH, 0700, true);
-        }
-        $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
-
-        if (false === $return) {
-            throw new ExceptionToConsole('[VAPID] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        // Copy .dat file to USB device to keep data after a reboot
-        if (!is_dir(WPN_USB_DATA_FOLDER_PATH)) {
-            mkdir(WPN_USB_DATA_FOLDER_PATH, 0700, true);
-        }
-        $return = copy(WPN_DATA_FOLDER_PATH . WPN_VAPID_FILENAME, WPN_USB_DATA_FOLDER_PATH . WPN_VAPID_FILENAME);
-
-        if (false === $return) {
-            throw new ExceptionToConsole('[VAPID] Unable to copy file to "' . WPN_USB_DATA_FOLDER_PATH . WPN_VAPID_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        return $return;
     }
 }

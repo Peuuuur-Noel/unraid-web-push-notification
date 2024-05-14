@@ -52,7 +52,11 @@ try {
                 }
             }
 
-            $config->setSilent(explode(',', $_POST['wpn-silent'] ?? ''));
+            if (isset($_POST['wpn-silent'])) {
+                $silent = trim($_POST['wpn-silent']);
+                $config->setSilent(!$silent ? [] : explode(',', $silent));
+                $config->writeToFile();
+            }
 
             $out['errno'] = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';

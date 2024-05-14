@@ -194,8 +194,8 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
     <dt>&nbsp;</dt>
     <dd>
         <button id="wpn-apply-btn" disabled><?php echo _('Apply'); ?></button>
-        <button id="wpn-test-btn" <?php echo $vapid->getPrivateKey() && $vapid->getPublicKey() && $isWpnEnabled ? '' : 'disabled'; ?>><?php echo _('Test'); ?></button>
-        <button id="wpn-advanced-btn"><span class="show"><?php wpm_e('button_show_advanced_settings'); ?></span><span class="hide"><?php wpm_e('button_hide_advanced_settings'); ?></span></button>
+        <button id="wpn-test-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><?php echo _('Test'); ?></button>
+        <button id="wpn-advanced-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_advanced_settings'); ?></span><span class="hide"><?php wpm_e('button_hide_advanced_settings'); ?></span></button>
     </dd>
 </dl>
 <div class="wpn-advanced-settings" hidden>

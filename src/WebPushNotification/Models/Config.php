@@ -15,7 +15,9 @@ use WebPushNotification\Libraries\ExceptionToConsole;
 
 class Config implements \JsonSerializable
 {
+    private ?array $devices = [];
     private ?array $silent = [];
+    private ?array $vapid = [];
 
     public function __construct()
     {
@@ -82,10 +84,19 @@ EOF;
         exec(WPN_DOCROOT . 'webGui/scripts/agent disable ' . WPN_AGENT_NAME . '.sh');
     }
 
+    public function setDevices(array $devices = []): void
+    {
+        $this->devices = $devices;
+    }
+
+    public function getDevices(): array
+    {
+        return $this->devices ?? [];
+    }
+
     public function setSilent(array $silent = []): void
     {
         $this->silent = $silent;
-        $this->writeToFile();
     }
 
     public function getSilent(): array
@@ -93,16 +104,54 @@ EOF;
         return $this->silent ?? [];
     }
 
+    public function setVapid(array $vapid = []): void
+    {
+        $this->vapid = $vapid;
+    }
+
+    public function getVapid(): array
+    {
+        return $this->vapid ?? [];
+    }
+
     public function toArray(): array
     {
         return [
+            'devices' => $this->devices,
             'silent' => $this->silent,
+            'vapid' => $this->vapid,
         ];
     }
 
     public function jsonSerialize(): mixed
     {
         return $this->toArray();
+    }
+
+    public function writeToFile(): bool
+    {
+        if (!is_dir(WPN_DATA_FOLDER_PATH)) {
+            mkdir(WPN_DATA_FOLDER_PATH, 0700, true);
+        }
+
+        $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
+
+        if (false === $return) {
+            throw new ExceptionToConsole('[Config] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
+        }
+
+        // Copy .dat file to USB device to keep data after a reboot
+        if (!is_dir(WPN_USB_FOLDER_PATH)) {
+            mkdir(WPN_USB_FOLDER_PATH, 0700, true);
+        }
+
+        $return = copy(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME, WPN_USB_FOLDER_PATH . WPN_CONFIG_FILENAME);
+
+        if (false === $return) {
+            throw new ExceptionToConsole('[Config] Unable to copy file to "' . WPN_USB_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
+        }
+
+        return $return;
     }
 
     private function readFromFile(): bool
@@ -118,36 +167,14 @@ EOF;
         }
 
         $config = json_decode($file, true) ?: [];
+        $this->devices = $config['devices'];
         $this->silent = $config['silent'];
+        $this->vapid = $config['vapid'];
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new ExceptionToConsole('[Config] JSON error: ' . json_last_error_msg(), WPN_LEVEL_ERROR);
         }
 
         return true;
-    }
-
-    private function writeToFile(): bool
-    {
-        if (!is_dir(WPN_DATA_FOLDER_PATH)) {
-            mkdir(WPN_DATA_FOLDER_PATH, 0700, true);
-        }
-        $return = file_put_contents(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME, json_encode($this, JSON_PRETTY_PRINT));
-
-        if (false === $return) {
-            throw new ExceptionToConsole('[Config] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        // Copy .dat file to USB device to keep data after a reboot
-        if (!is_dir(WPN_USB_FOLDER_PATH)) {
-            mkdir(WPN_USB_FOLDER_PATH, 0700, true);
-        }
-        $return = copy(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME, WPN_USB_FOLDER_PATH . WPN_CONFIG_FILENAME);
-
-        if (false === $return) {
-            throw new ExceptionToConsole('[Config] Unable to copy file to "' . WPN_USB_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
-        }
-
-        return $return;
     }
 }
