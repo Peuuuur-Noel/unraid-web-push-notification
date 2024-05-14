@@ -10,8 +10,8 @@ Take a quick look to this [Push notifications overview](https://web.dev/articles
 
 ## Usage
 
-1. Browse the Unraid notifications settings page with the device you want to register and receive notifications.
-2. Request for notification to allow it in your browser and register to push service.
+1. Browse the Unraid notifications settings page with the device you want to receive notifications.
+2. Click on "Request permission and register" button to allow notifications in your browser.
 
 Notification will be send to your devices through push service. Both your Unraid and devices must have access to internet. No need to keep Unraid interface open.
 
@@ -19,16 +19,16 @@ On desktop, your browser must be open to receive notifications, otherwise they w
 
 On Apple iPhone/iPad, to enable push notifications, add Unraid notifications settings page to the Home Screen.
 
-**If you have issue, try to revoke notification permissions and clear all browser cache or specific site.**
+**If you have issue, try to clear notification permissions and browser cache.**
 
 ## Browser compatibility
 
-### Tested on
+### Works on
 
 * Desktop:
   * Chromium based:
     * Chrome 50+
-    * Vivaldi 6.7+
+    * Vivaldi 6+
     * Edge 17+
     * Opera 42+
   * Firefox 44+
@@ -36,7 +36,8 @@ On Apple iPhone/iPad, to enable push notifications, add Unraid notifications set
 * Mobile (Android):
   * Chromium based:
     * Chrome 124+
-    * Vivaldi 6.7+
+    * Vivaldi 6+
+    * Opera 80+ (not Opera Mini)
     * Samsung Internet 24+
   * Firefox 125+
 
