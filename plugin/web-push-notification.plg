@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.05.10.2218">
+<!ENTITY version "2024.05.15.0023">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,12 +10,16 @@
 <!ENTITY emhttpPATH "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varStatePATH "/var/local/emhttp/plugins/&name;">
 <!ENTITY notificationsPATH "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "dafb6d41c16dd8fc7a1a3edfe6e160bb">
-<!ENTITY SHA256 "89884efc8603d7efe086cfcd8c8a2d007e076f8ca6a3bb35cb76138d7236e077">
+<!ENTITY MD5 "561a8d9ac5216b8294fa6af389500792">
+<!ENTITY SHA256 "7e8b56ce7a4357d1f542c498997b81fab2ea7cc68db2cf3a2818b1b0410e31aa">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.13" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
+###2024.05.15.0023
+- Resend the subscription in case it was deleted from the server
+- Merge config files in one
+
 ###2024.05.10.2218
 - Invalid .page format
 - Update dependances
@@ -75,19 +79,16 @@
 # Remove old package when new is available
 find &pluginPATH;/*.txz ! -name '&name;-plugin-&version;-x86_64.txz' -type f -exec rm -f {} +
 
-if [ -d &pluginPATH;/private ]; then
-    mkdir &varStatePATH;
-    cp -r &pluginPATH;/private/*.json &varStatePATH;
-fi
 if [ -f &pluginPATH;/config.json ]; then
+    mkdir &varStatePATH;
     cp &pluginPATH;/config.json &varStatePATH;
 fi
 
 echo ""
-echo "---------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
 echo " &name; has been installed."
 echo " Version: &version;"
-echo "---------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
 echo ""
         </INLINE>
     </FILE>
@@ -97,7 +98,6 @@ echo ""
 echo "Removing &name;..."
 removepkg &pluginPATH;/*.txz
 rm &pluginPATH;/*.txz
-rm &pluginPATH;/config.json
 rm -rf &emhttpPATH;
 if [ -d &varStatePATH; ]; then
     rm -rf &varStatePATH;
@@ -110,14 +110,14 @@ if [ -f &notificationsPATH;/agents-disabled/WebPushNotification.sh ]; then
 fi
 
 echo ""
-echo "---------------------------------------------------------------------------"
+echo "------------------------------------------------------------------------------"
 echo "&name; has been removed"
 echo ""
-echo "Note:"
-echo "⚠️ VAPID and Devices config files not removed from the USB stick."
+echo "⚠️ Note:"
+echo "Config file with VAPID and Devices list not removed from the USB stick."
 echo "You can remove them manually if not reinstalling this plugin."
-echo "Files location on USB stick: \"config/plugins/&name;/private\""
-echo "---------------------------------------------------------------------------"
+echo "File location on USB stick: \"config/plugins/&name;/config.json\""
+echo "------------------------------------------------------------------------------"
 echo ""
         </INLINE>
     </FILE>
