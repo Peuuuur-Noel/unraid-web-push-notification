@@ -28,27 +28,27 @@ define('WPN_LEVEL_UNKNOWN', -1);
 define('WPN_NOTIFICATION_BADGE', 'https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/unraid-icon.png');
 define('WPN_MESSAGE_ERROR_LEVEL', [
     'normal' => [
-        'errorno' => 0,
-        'level' => 'info',
-        'icon' => 'https://craftassets.unraid.net/uploads/discord/notify-normal.png',
+        'errorno'      => 0,
+        'level'        => 'info',
+        'icon'         => 'https://craftassets.unraid.net/uploads/discord/notify-normal.png',
         'push_urgency' => 'normal',
     ],
     'warning' => [
-        'errorno' => 1,
-        'level' => 'warning',
-        'icon' => 'https://craftassets.unraid.net/uploads/discord/notify-warning.png',
+        'errorno'      => 1,
+        'level'        => 'warning',
+        'icon'         => 'https://craftassets.unraid.net/uploads/discord/notify-warning.png',
         'push_urgency' => 'normal',
     ],
     'alert' => [
-        'errorno' => 2,
-        'level' => 'error',
-        'icon' => 'https://craftassets.unraid.net/uploads/discord/notify-alert.png',
+        'errorno'      => 2,
+        'level'        => 'error',
+        'icon'         => 'https://craftassets.unraid.net/uploads/discord/notify-alert.png',
         'push_urgency' => 'high',
     ],
     'unknown' => [
-        'errorno' => -1,
-        'level' => 'unknown',
-        'icon' => 'https://craftassets.unraid.net/uploads/discord/notify-warning.png',
+        'errorno'      => -1,
+        'level'        => 'unknown',
+        'icon'         => 'https://craftassets.unraid.net/uploads/discord/notify-warning.png',
         'push_urgency' => 'normal',
     ],
 ]);

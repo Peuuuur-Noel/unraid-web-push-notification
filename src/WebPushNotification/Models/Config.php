@@ -16,8 +16,8 @@ use WebPushNotification\Libraries\ExceptionToConsole;
 class Config implements \JsonSerializable
 {
     private ?array $devices = [];
-    private ?array $silent = [];
-    private ?array $vapid = [];
+    private ?array $silent  = [];
+    private ?array $vapid   = [];
 
     public function __construct()
     {
@@ -118,8 +118,8 @@ EOF;
     {
         return [
             'devices' => $this->devices,
-            'silent' => $this->silent,
-            'vapid' => $this->vapid,
+            'silent'  => $this->silent,
+            'vapid'   => $this->vapid,
         ];
     }
 
@@ -166,10 +166,10 @@ EOF;
             throw new ExceptionToConsole('[Config] Unable to read file "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
-        $config = json_decode($file, true) ?: [];
+        $config        = json_decode($file, true) ?: [];
         $this->devices = $config['devices'];
-        $this->silent = $config['silent'];
-        $this->vapid = $config['vapid'];
+        $this->silent  = $config['silent'];
+        $this->vapid   = $config['vapid'];
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new ExceptionToConsole('[Config] JSON error: ' . json_last_error_msg(), WPN_LEVEL_ERROR);

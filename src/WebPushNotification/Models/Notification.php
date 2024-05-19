@@ -13,19 +13,19 @@ namespace WebPushNotification\Models;
 
 class Notification implements \JsonSerializable
 {
-    private string $title = '';
-    private string $body = '';
-    private string $icon = '';
-    private string $image = '';
-    private string $badge = '';
-    private string $dir = 'auto';
+    private string $title  = '';
+    private string $body   = '';
+    private string $icon   = '';
+    private string $image  = '';
+    private string $badge  = '';
+    private string $dir    = 'auto';
     private int $timestamp = 0;
-    private array $data = [];
-    private string $tag = '';
+    private array $data    = [];
+    private string $tag    = '';
     private bool $renotify = false;
     private array $vibrate = [];
-    private string $sound = '';
-    private bool $silent = false;
+    private string $sound  = '';
+    private bool $silent   = false;
 
     public function setTitle(string $title = ''): void
     {
@@ -95,19 +95,19 @@ class Notification implements \JsonSerializable
     public function toArray(): array
     {
         return [
-            'title' => $this->title,
-            'body' => $this->body,
-            'icon' => $this->icon,
-            'image' => $this->image,
-            'badge' => $this->badge,
-            'dir' => $this->dir,
+            'title'     => $this->title,
+            'body'      => $this->body,
+            'icon'      => $this->icon,
+            'image'     => $this->image,
+            'badge'     => $this->badge,
+            'dir'       => $this->dir,
             'timestamp' => $this->timestamp,
-            'data' => $this->data,
-            'tag' => $this->tag,
-            'renotify' => $this->renotify,
-            'vibrate' => $this->vibrate,
-            'sound' => $this->sound,
-            'silent' => $this->silent,
+            'data'      => $this->data,
+            'tag'       => $this->tag,
+            'renotify'  => $this->renotify,
+            'vibrate'   => $this->vibrate,
+            'sound'     => $this->sound,
+            'silent'    => $this->silent,
         ];
     }
 

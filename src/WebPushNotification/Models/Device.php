@@ -20,9 +20,9 @@ class Device implements \JsonSerializable
 
     public function __construct(Subscription $subscription, ?string $datetime = null, ?string $userAgent = null, ?string $ipAddress = null)
     {
-        $this->datetime = $datetime;
-        $this->ipAddress = $ipAddress;
-        $this->userAgent = $userAgent;
+        $this->datetime     = $datetime;
+        $this->ipAddress    = $ipAddress;
+        $this->userAgent    = $userAgent;
         $this->subscription = $subscription;
     }
 
@@ -49,9 +49,9 @@ class Device implements \JsonSerializable
     public function toArray(): array
     {
         return [
-            'datetime' => $this->datetime,
-            'ip_address' => $this->ipAddress,
-            'user_agent' => $this->userAgent,
+            'datetime'     => $this->datetime,
+            'ip_address'   => $this->ipAddress,
+            'user_agent'   => $this->userAgent,
             'subscription' => $this->getSubscription(true),
         ];
     }

@@ -21,7 +21,7 @@ class VAPID implements \JsonSerializable
     public function __construct()
     {
         $this->config = new Config();
-        $this->vapid = $this->config->getVapid();
+        $this->vapid  = $this->config->getVapid();
     }
 
     public function generateKeys(): void

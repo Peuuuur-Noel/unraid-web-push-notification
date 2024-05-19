@@ -20,10 +20,10 @@ class Devices implements \JsonSerializable
     public function __construct()
     {
         $this->config = new Config();
-        $devices = $this->config->getDevices();
+        $devices      = $this->config->getDevices();
 
         foreach ($devices as $device) {
-            $subscription = new Subscription($device['subscription']['endpoint'], $device['subscription']['expirationTime'], $device['subscription']['keys']);
+            $subscription    = new Subscription($device['subscription']['endpoint'], $device['subscription']['expirationTime'], $device['subscription']['keys']);
             $this->devices[] = new Device($subscription, $device['datetime'], $device['user_agent'], $device['ip_address']);
         }
     }
@@ -58,7 +58,7 @@ class Devices implements \JsonSerializable
         }
 
         $subscription = new Subscription($data['endpoint'], $data['expirationTime'], $data['keys']);
-        $endpoint = $subscription->getEndpoint();
+        $endpoint     = $subscription->getEndpoint();
 
         // Check if there is no duplicate
         $isDuplicate = false;
@@ -68,7 +68,7 @@ class Devices implements \JsonSerializable
 
         if (!$isDuplicate) {
             // If no duplicate, append to file
-            $device = new Device($subscription, date_format(date_create(), 'c'), $userAgent, $ipAddress);
+            $device        = new Device($subscription, date_format(date_create(), 'c'), $userAgent, $ipAddress);
             $this->devices = [...$this->devices, ...[$device]];
             $this->config->setDevices($this->devices);
 

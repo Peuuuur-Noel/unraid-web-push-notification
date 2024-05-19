@@ -19,12 +19,12 @@ require_once $docroot . '/plugins/web-push-notification/include/loader.php';
 use WebPushNotification\Models\Config;
 use WebPushNotification\Models\VAPID;
 
-$nginxVar = @parse_ini_file('/usr/local/emhttp/state/nginx.ini');
-$isWpnEnabled = false;
-$enabledAgent = agent_fullname(WPN_AGENT_NAME . '.sh', 'enabled');
+$nginxVar      = @parse_ini_file('/usr/local/emhttp/state/nginx.ini');
+$isWpnEnabled  = false;
+$enabledAgent  = agent_fullname(WPN_AGENT_NAME . '.sh', 'enabled');
 $disabledAgent = agent_fullname(WPN_AGENT_NAME . '.sh', 'disabled');
-$shade = 'shade-' . ($display['theme'] ?? 'unk');
-$vapid = new VAPID();
+$shade         = 'shade-' . ($display['theme'] ?? 'unk');
+$vapid         = new VAPID();
 
 // Generate VAPID keys if not already done
 if (!$vapid->getPublicKey() || !$vapid->getPrivateKey()) {
@@ -154,20 +154,20 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
         <?php
             $levels = [
                 [
-                    'id' => 'wpn-silent-notices',
-                    'name' => 'wpn-silent[]',
+                    'id'    => 'wpn-silent-notices',
+                    'name'  => 'wpn-silent[]',
                     'value' => 'notice',
                     'label' => 'Notices',
                 ],
                 [
-                    'id' => 'wpn-silent-warnings',
-                    'name' => 'wpn-silent[]',
+                    'id'    => 'wpn-silent-warnings',
+                    'name'  => 'wpn-silent[]',
                     'value' => 'warning',
                     'label' => 'Warnings',
                 ],
                 [
-                    'id' => 'wpn-silent-alerts',
-                    'name' => 'wpn-silent[]',
+                    'id'    => 'wpn-silent-alerts',
+                    'name'  => 'wpn-silent[]',
                     'value' => 'alert',
                     'label' => 'Alerts',
                 ],

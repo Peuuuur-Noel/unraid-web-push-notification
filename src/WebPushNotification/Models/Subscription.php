@@ -13,15 +13,15 @@ namespace WebPushNotification\Models;
 
 class Subscription implements \JsonSerializable
 {
-    private ?string $endpoint = null;
+    private ?string $endpoint    = null;
     private ?int $expirationTime = null;
-    private array $keys = [];
+    private array $keys          = [];
 
     public function __construct(?string $endpoint = null, ?int $expirationTime = null, array $keys = [])
     {
-        $this->endpoint = $endpoint;
+        $this->endpoint       = $endpoint;
         $this->expirationTime = $expirationTime;
-        $this->keys = $keys;
+        $this->keys           = $keys;
     }
 
     public function getEndpoint(): ?string
@@ -42,9 +42,9 @@ class Subscription implements \JsonSerializable
     public function toArray(): array
     {
         return [
-            'endpoint' => $this->endpoint,
+            'endpoint'       => $this->endpoint,
             'expirationTime' => $this->expirationTime,
-            'keys' => $this->keys,
+            'keys'           => $this->keys,
         ];
     }
 

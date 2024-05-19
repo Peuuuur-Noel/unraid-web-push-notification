@@ -28,8 +28,8 @@ class Push
 
         $this->webPush = new WebPush([
             'VAPID' => [
-                'subject' => 'http://127.0.0.1', // Add localhost address to allow push on Apple push service
-                'publicKey' => $vapid->getPublicKey(),
+                'subject'    => 'http://127.0.0.1', // Add localhost address to allow push on Apple push service
+                'publicKey'  => $vapid->getPublicKey(),
                 'privateKey' => $vapid->getPrivateKey(),
             ],
         ], [
@@ -55,14 +55,14 @@ class Push
 
     public function send(): int
     {
-        $count = 0;
+        $count             = 0;
         $unregisterDevices = [];
 
         foreach ($this->webPush->flush() as $report) {
             if (!$report->isSuccess() || $report->isSubscriptionExpired()) {
                 $unregisterDevices[] = [
                     'endpoint' => $report->getEndpoint(),
-                    'reason' => $report->getReason(),
+                    'reason'   => $report->getReason(),
                 ];
             } else {
                 ++$count;

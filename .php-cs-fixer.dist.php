@@ -15,6 +15,7 @@ use PhpCsFixer\Finder;
 $rules = [
     '@PhpCsFixer' => true,
     '@PER-CS:risky' => true,
+    'binary_operator_spaces' => ['default' => 'align_single_space_minimal'],
     'blank_line_before_statement' => ['statements' => ['break', 'case', 'continue', 'declare', 'default', 'exit', 'goto', 'phpdoc', 'return', 'switch', 'throw', 'try', 'yield', 'yield_from']],
     'concat_space' => ['spacing' => 'one'],
     'doctrine_annotation_indentation' => true,
