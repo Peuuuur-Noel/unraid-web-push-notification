@@ -37,7 +37,7 @@ EOD,
     'button_request_register'       => 'Autoriser et Inscrire',
     'silent_notification'           => 'Notificiation silencieuse :',
     'help_silent_notification'      => 'Sélectionnez les niveaux de notification pour lesquels vous souhaitez qu\'elles soient silencieuses (pas de vibreur/son) à leur réception.',
-    'http_plugin_disabled'          => 'Ne fonctionne que sur une connexion/certificat HTTPS sécurisée/valide. Voir <a href="/Settings/ManagementAccess">Gestion des Accès</a>.',
+    'http_plugin_disabled'          => 'Ne fonctionne que sur une connexion HTTPS avec un certificat valide. Voir <a href="/Settings/ManagementAccess">Gestion des Accès</a>.',
 
     // actions.php
     'error_msg_default'    => 'C\'est peut-être OK ou pas, mais quelque chose s\'est passé...',
@@ -50,6 +50,7 @@ EOD,
     // web-push-notification.js
     'no_service_worker_support'             => 'Service worker non pris en charge par le navigateur.',
     'no_push_api_support'                   => 'API Push non prise en charge par le navigateur.',
+    'safari_ios_home_screen'                => 'iPhone/iPad: vous devez ajouter cette page à l\'écran d\'accueil afin d\'activer les notifications push.',
     'permissions_granted_sw_not_registered' => 'Autorisations accordées mais service worker non installé.',
     'permissions_granted_no_subscription'   => 'Autorisations accordées mais non inscrit au service de notifications push.',
     'permissions_granted_registered'        => 'Autorisations accordées et inscription faite pour les notifications push.',

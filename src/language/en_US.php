@@ -37,7 +37,7 @@ EOD,
     'button_request_register'       => 'Request permission and Register',
     'silent_notification'           => 'Silent notification:',
     'help_silent_notification'      => 'Select which notification levels you want them to be silent (no vibrate/sound) when received.',
-    'http_plugin_disabled'          => 'Works only over trusted HTTPS connections/certificate. Goto <a href="/Settings/ManagementAccess">Management Access</a>.',
+    'http_plugin_disabled'          => 'Works only over a trusted HTTPS connection/certificate. Goto <a href="/Settings/ManagementAccess">Management Access</a>.',
 
     // actions.php
     'error_msg_default'    => 'Maybe or not OK, but something happened...',
@@ -50,6 +50,7 @@ EOD,
     // web-push-notification.js
     'no_service_worker_support'             => 'No service worker browser support.',
     'no_push_api_support'                   => 'No Push API browser support.',
+    'safari_ios_home_screen'                => 'iPhone/iPad: you need to add this page to your device\'s Home Screen to enable push notifications.',
     'permissions_granted_sw_not_registered' => 'Permissions granted but service worker not registered.',
     'permissions_granted_no_subscription'   => 'Permissions granted but not registered to push service.',
     'permissions_granted_registered'        => 'Permissions granted and registered to push notification.',

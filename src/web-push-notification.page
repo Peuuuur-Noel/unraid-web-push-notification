@@ -115,7 +115,7 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
 <dl>
     <dt><?php echo _('Agent function'); ?>:</dt>
     <dd>
-        <span style="color: red;">Works only over trusted HTTPS connections/certificate. Goto <a href="/Settings/ManagementAccess">Management Access</a>.</span>
+        <span style="color: red;"><?php wpm_e('http_plugin_disabled'); ?></span>
     </dd>
 </dl>
 <?php } else { ?>

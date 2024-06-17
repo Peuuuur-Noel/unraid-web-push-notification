@@ -18,11 +18,26 @@ class WebPushNotification {
         return wpm_lng[text] || text;
     }
     checkAPI() {
-        if (!('serviceWorker' in navigator))
+        if (!('serviceWorker' in navigator)) {
             this.error(this.__('no_service_worker_support'));
+            return false;
+        }
 
-        if (!('PushManager' in window))
+        if (!('PushManager' in window)) {
             this.error(this.__('no_push_api_support'));
+            return false;
+        }
+
+        return true;
+    }
+    checkIOSHomeScreen() {
+        const deviceUserAgent = this.parseUserAgent();
+        if ((deviceUserAgent.indexOf('iPadOS') != -1 || deviceUserAgent.indexOf('iOS') != -1) && deviceUserAgent.indexOf('Safari') != -1 && window.navigator.standalone !== true) {
+            this.error(this.__('safari_ios_home_screen'));
+            return false;
+        }
+
+        return true;
     }
     checkResgistration() {
         // Get service worker registrations
@@ -398,8 +413,8 @@ class WebPushNotification {
 
                         const tdUserAgent = document.createElement('td');
                         tr.append(tdUserAgent);
-                        const d = this.parseUserAgent(device.user_agent);
-                        tdUserAgent.innerHTML = d ? `<strong>${d}</strong>` : '';
+                        const deviceUserAgent = this.parseUserAgent(device.user_agent);
+                        tdUserAgent.innerHTML = deviceUserAgent.length ? `<strong>${deviceUserAgent.join(' / ')}</strong>` : '';
                         if (subscription?.endpoint && device?.subscription?.endpoint && device.subscription.endpoint == subscription.endpoint) {
                             const currentDevice = document.createElement('strong');
                             tdUserAgent.append(currentDevice);
@@ -417,6 +432,9 @@ class WebPushNotification {
             });
     }
     parseUserAgent(userAgent = '') {
+        if (!userAgent)
+            userAgent = navigator.userAgent;
+
         const out = [];
         const isIpadOS = /CPU\s+OS\s+([\d]+)_([\d]+)/i.exec(userAgent) ?? [];
 
@@ -454,7 +472,7 @@ class WebPushNotification {
         else if (/Safari/i.test(userAgent))
             out.push('Safari');
 
-        return out.join(' / ');
+        return out;
     }
     bindEvents() {
         const csrfToken = new NchanSubscriber('/sub/session,var');
@@ -498,10 +516,11 @@ class WebPushNotification {
         document.querySelector('#wpn-permission-btn').onclick = (event) => {
             document.querySelector('#wpn-error').style.display = '';
             document.querySelector('#wpn-error-text').innerHTML = '';
-            this.checkAPI();
-            document.querySelector('#wpn-permission-status').innerText = this.__('registration_progress');
-            document.querySelector('#wpn-permission-status').setAttribute('data-status', '');
-            this.requestNotificationPermission();
+            if (this.checkAPI() && this.checkIOSHomeScreen()) {
+                document.querySelector('#wpn-permission-status').innerText = this.__('registration_progress');
+                document.querySelector('#wpn-permission-status').setAttribute('data-status', '');
+                this.requestNotificationPermission();
+            }
         };
         document.querySelector('#wpn-generate-vapid-btn').onclick = (event) => {
             if (!confirm(this.__('generate_vapid_keys')))
