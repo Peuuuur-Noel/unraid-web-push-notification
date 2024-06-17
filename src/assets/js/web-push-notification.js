@@ -387,6 +387,21 @@ class WebPushNotification {
                         const tdAction = document.createElement('td');
                         tr.append(tdAction);
 
+                        const tdActionTest = document.createElement('button');
+                        tdAction.append(tdActionTest);
+                        tdActionTest.innerText = this.__('test');
+                        tdActionTest.onclick = async () => {
+                            try {
+                                const data = {
+                                    'subscription': JSON.stringify(device?.subscription)
+                                };
+
+                                return await this.postRequest(this.pluginUrl + 'actions.php?action=test', data);
+                            } catch (e) {
+                                this.error(e);
+                            }
+                        };
+
                         const tdActionRemove = document.createElement('button');
                         tdAction.append(tdActionRemove);
                         tdActionRemove.innerText = this.__('remove');
@@ -538,13 +553,6 @@ class WebPushNotification {
                     html.innerHTML = '';
                     html.hidden = true;
                 });
-        }
-        document.querySelector('#wpn-test-btn').onclick = async (event) => {
-            try {
-                fetch(this.pluginUrl + 'actions.php?action=test');
-            } catch (e) {
-                this.error(e);
-            }
         }
     }
     addPwaManifest() {

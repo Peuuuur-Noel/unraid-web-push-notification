@@ -126,11 +126,36 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
             <?php echo mk_option(!$isWpnEnabled, '0', _('Disabled')); ?>
             <?php echo mk_option($isWpnEnabled, '1', _('Enabled')); ?>
         </select>
+        <button id="wpn-apply-btn" disabled><?php echo _('Apply'); ?></button>
+        <button id="wpn-advanced-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_advanced_settings'); ?></span><span class="hide"><?php wpm_e('button_hide_advanced_settings'); ?></span></button>
     </dd>
 </dl>
 <blockquote class="inline_help">
     <?php wpm_e('help_agent_function'); ?>
 </blockquote>
+<div class="wpn-advanced-settings" hidden>
+    <dl>
+        <dt><?php wpm_e('vapid_public_key'); ?></dt>
+        <dd><input id="wpn-publicKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPublicKey(); ?>" disabled></dd>
+    </dl>
+    <blockquote class="inline_help">
+        <?php wpm_e('help_vapid_public_key'); ?>
+    </blockquote>
+    <dl>
+        <dt><?php wpm_e('vapid_private_key'); ?></dt>
+        <dd><input id="wpn-privateKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPrivateKey(); ?>" disabled></dd>
+    </dl>
+    <blockquote class="inline_help">
+        <?php wpm_e('help_vapid_private_key'); ?>
+    </blockquote>
+    <dl>
+        <dt>&nbsp;</dt>
+        <dd>
+            <button id="wpn-generate-vapid-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><?php wpm_e('button_generate_vapid_keys'); ?></button>
+            <?php wpm_e('help_generate_vapid_keys'); ?>
+        </dd>
+    </dl>
+</div>
 <dl>
     <dt><?php wpm_e('permission'); ?></dt>
     <dd>
@@ -190,37 +215,6 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
     </dd>
 </dl>
 <div id="wpn-device-list" hidden></div>
-<dl>
-    <dt>&nbsp;</dt>
-    <dd>
-        <button id="wpn-apply-btn" disabled><?php echo _('Apply'); ?></button>
-        <button id="wpn-test-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><?php echo _('Test'); ?></button>
-        <button id="wpn-advanced-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_advanced_settings'); ?></span><span class="hide"><?php wpm_e('button_hide_advanced_settings'); ?></span></button>
-    </dd>
-</dl>
-<div class="wpn-advanced-settings" hidden>
-    <dl>
-        <dt><?php wpm_e('vapid_public_key'); ?></dt>
-        <dd><input id="wpn-publicKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPublicKey(); ?>" disabled></dd>
-    </dl>
-    <blockquote class="inline_help">
-        <?php wpm_e('help_vapid_public_key'); ?>
-    </blockquote>
-    <dl>
-        <dt><?php wpm_e('vapid_private_key'); ?></dt>
-        <dd><input id="wpn-privateKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPrivateKey(); ?>" disabled></dd>
-    </dl>
-    <blockquote class="inline_help">
-        <?php wpm_e('help_vapid_private_key'); ?>
-    </blockquote>
-    <dl>
-        <dt>&nbsp;</dt>
-        <dd>
-            <button id="wpn-generate-vapid-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><?php wpm_e('button_generate_vapid_keys'); ?></button>
-            <?php wpm_e('help_generate_vapid_keys'); ?>
-        </dd>
-    </dl>
-</div>
 <script>
     var wpm_lng = <?php echo json_encode($wpm_lang) ?: []; ?>
 </script>

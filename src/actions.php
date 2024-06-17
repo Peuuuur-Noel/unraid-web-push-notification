@@ -63,14 +63,6 @@ try {
 
             break;
 
-        case 'test':
-            exec(WPN_DOCROOT . 'webGui/scripts/agent test ' . WPN_AGENT_NAME . '.sh');
-
-            $out['errno']  = WPN_NO_ERROR;
-            $out['errmsg'] = 'ok';
-
-            break;
-
         case 'get_csrf_token':
             $stateVar = @parse_ini_file(WPN_DOCROOT . 'state/var.ini');
 
@@ -182,6 +174,31 @@ try {
 
             break;
 
+        case 'test':
+            $subscription = json_decode($_POST['subscription'] ?? '', true) ?: [];
+
+            if (!$subscription) {
+                throw new ExceptionToConsole('[ACTIONS] Error Processing Request', WPN_LEVEL_ERROR);
+            }
+
+            $options['event']       = wpm__('test_event');
+            $options['importance']  = 'warning';
+            $options['subject']     = wpm__('test_subject');
+            $options['description'] = wpm__('test_description');
+
+            $devices     = new Devices();
+            $device      = $devices->getByEndpoint($subscription['endpoint']);
+            $devicesList = [];
+            if ($device) {
+                $devicesList[] = $device;
+            } else {
+                $out['errno']  = WPN_LEVEL_ERROR;
+                $out['errmsg'] = wpm__('device_not_found');
+
+                break;
+            }
+
+            // no break
         case 'push':
             $event       = $options['e'] ?? $options['event'] ?? null;
             $importance  = $options['i'] ?? $options['importance'] ?? 'unknown';
@@ -199,8 +216,10 @@ try {
                 break;
             }
 
-            $devices     = new Devices();
-            $devicesList = $devices->getAll();
+            if (!isset($devicesList) || !$devicesList) {
+                $devices     = new Devices();
+                $devicesList = $devices->getAll();
+            }
 
             if (!$devicesList) {
                 $out['errno']  = WPN_NO_ERROR;
