@@ -85,7 +85,7 @@ const onNotificationclick = (event) => {
     const notificationclick = (event) => {
         event.notification.close();
 
-        const url = event.notification.data.filter(x => x.type == 'url')[0]?.url || '<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] ?>';
+        const url = event.notification.data.filter(x => x.type == 'url')[0]?.url || '<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']; ?>';
         const clientList = self.clients.matchAll({ type: "window", includeUncontrolled: true });
 
         for (let i = 0; i < clientList.length; i++) {

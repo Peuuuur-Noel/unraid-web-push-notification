@@ -193,7 +193,7 @@ class WebPushNotification {
     async removeSubscription(endpoint, remoteDelete = false) {
         try {
             const data = {
-                'subscription': JSON.stringify(endpoint),
+                'endpoint': endpoint,
                 'remote_delete': remoteDelete
             };
 
@@ -341,59 +341,101 @@ class WebPushNotification {
     displayDevicesList() {
         Promise.resolve(this.getDevicesList())
             .then((devices) => {
-                const tableCols = [
-                    this.__('action'),
-                    this.__('date'),
-                    this.__('user_agent'),
-                    this.__('ip_address'),
-                ];
                 const html = document.querySelector('#wpn-device-list');
 
-                const table = document.createElement('table');
-                html.append(table);
-                table.classList.add('tablesorter');
+                const tableHTML = `<table class="tablesorter">
+                    <thead><tr><th>${this.__('action')}</th><th>${this.__('device_info')}</th><th>${this.__('notification_settings')}</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <p class="loading">${this.__('loading')}</p>`;
+                html.innerHTML = tableHTML;
 
-                const thead = document.createElement('thead');
-                table.append(thead);
+                const tbody = html.querySelector('tbody');
+                const pLoading = html.querySelector('p.loading');
+                const availableLevels = [];
+                const unraidLevels = {
+                    'unraid3': '2',
+                    'normal3': '0',
+                    'warning3': '1',
+                    'alert3': '2',
+                };
 
-                const tr = document.createElement('tr');
-                thead.append(tr);
-
-                tableCols.forEach((col) => {
-                    const th = document.createElement('th');
-                    tr.append(th);
-                    th.innerText = col;
+                document.querySelectorAll('input[name="unraid3"]:checked, input[name="normal3"]:checked, input[name="warning3"]:checked, input[name="alert3"]:checked').forEach((elem) => {
+                    if (elem.name in unraidLevels) {
+                        availableLevels.push(unraidLevels[elem.name]);
+                    }
                 });
-
-                const p = document.createElement('p');
-                html.append(p);
-                p.innerText = this.__('loading');
 
                 this.getCurrentSubscription((subscription) => {
                     if (!devices?.data?.length) {
-                        p.innerText = this.__('no_devices');
+                        pLoading.innerText = this.__('no_devices');
                         return;
                     } else {
-                        p.remove();
+                        pLoading.remove();
                     }
 
-                    const tbody = document.createElement('tbody');
-                    table.append(tbody);
+                    devices?.data?.forEach((device, index) => {
+                        const row = document.createElement('tr');
+                        tbody.append(row);
 
-                    devices?.data?.forEach((device) => {
-                        const tr = document.createElement('tr');
-                        tbody.append(tr);
+                        const deviceUserAgent = this.parseUserAgent(device.user_agent);
+                        let currentDevice = '';
+                        if (subscription?.endpoint && device?.subscription?.endpoint && device.subscription.endpoint == subscription.endpoint) {
+                            currentDevice = ` <strong style="color: green;">(${this.__('current_device')})</strong>`;
+                        }
 
-                        const tdAction = document.createElement('td');
-                        tr.append(tdAction);
+                        let deviceName = `<input type="text" value="${device.name ?? (deviceUserAgent.length ? deviceUserAgent.join(' / ') : '')}" class="wpn-device-name">`;
+                        deviceName += `<button class="btn-rename" style="margin: 0; padding: 6px;" disabled>${this.__('rename')}</button>`;
 
-                        const tdActionTest = document.createElement('button');
-                        tdAction.append(tdActionTest);
-                        tdActionTest.innerText = this.__('test');
-                        tdActionTest.onclick = async () => {
+                        const rowHTML = `<tr>
+                            <td>
+                                <button class="btn-test">${this.__('test')}</button><br>
+                                <button class="btn-remove">${this.__('remove')}</button>
+                            </td>
+                            <td>
+                                <p><strong>${this.__('device_name')}</strong>${currentDevice}<br> ${deviceName}</p>
+                                <p><strong>${this.__('user_agent')}</strong><br> ${device.user_agent}</p>
+                                <p><strong>${this.__('date')}</strong><br> ${new Date(device.datetime).toLocaleString()}</p>
+                                <p><strong>${this.__('ip_address')}</strong><br> ${device.ip_address}</p>
+                            </td>
+                            <td>
+                                <p>
+                                    <label for="wpn-silent-notifications-${index}"><strong>${this.__('silent_notifications')}</strong></label> <input id="wpn-silent-notifications-${index}" class="wpn-silent-notifications" type="checkbox">
+                                </p>
+                                <p>
+                                    <label for="wpn-notification-level-${index}"><strong>${this.__('notification_level_lowest')}</strong></label><br>
+                                    <select id="wpn-notification-level-${index}" class="wpn-notification-level">
+                                        <option value="0">${this.__('notification_level_notices')}</option>
+                                        <option value="1">${this.__('notification_level_warnings')}</option>
+                                        <option value="2">${this.__('notification_level_alerts')}</option>
+                                    </select>
+                                </p>
+                                <p><button class="btn-save" disabled>${this.__('save')}</button></p>
+                            </td>
+                        </tr>`;
+                        row.innerHTML = rowHTML;
+
+                        row.querySelector('.wpn-silent-notifications').checked = device.silentNotifications;
+                        row.querySelector('.wpn-notification-level').value = device.notificationLevel;
+
+                        row.querySelectorAll('.wpn-notification-level option').forEach((elem) => {
+                            if (availableLevels.indexOf(elem.value) == -1) {
+                                elem.disabled = true;
+                            }
+                        });
+
+                        row.querySelectorAll('.wpn-silent-notifications, .wpn-notification-level').forEach((elem) => {
+                            elem.onchange = () => row.querySelector('.btn-save').disabled = false;
+                        });
+                        row.querySelector('.wpn-device-name').onkeydown = () => {
+                            row.querySelector('.btn-rename').disabled = false
+                            return true;
+                        };
+
+                        row.querySelector('.btn-test').onclick = async () => {
                             try {
                                 const data = {
-                                    'subscription': JSON.stringify(device?.subscription)
+                                    'endpoint': device?.subscription?.endpoint
                                 };
 
                                 return await this.postRequest(this.pluginUrl + 'actions.php?action=test', data);
@@ -401,11 +443,7 @@ class WebPushNotification {
                                 this.error(e);
                             }
                         };
-
-                        const tdActionRemove = document.createElement('button');
-                        tdAction.append(tdActionRemove);
-                        tdActionRemove.innerText = this.__('remove');
-                        tdActionRemove.onclick = async () => {
+                        row.querySelector('.btn-remove').onclick = async () => {
                             if (!confirm(this.__('remove_device')))
                                 return;
 
@@ -421,27 +459,39 @@ class WebPushNotification {
                             html.innerHTML = '';
                             this.displayDevicesList();
                         };
+                        row.querySelector('.btn-rename').onclick = async () => {
+                            try {
+                                const data = {
+                                    'endpoint': device?.subscription?.endpoint,
+                                    'name': row.querySelector('.wpn-device-name').value,
+                                };
 
-                        const tdDate = document.createElement('td');
-                        tr.append(tdDate);
-                        tdDate.innerText = new Date(device.datetime).toLocaleString();
+                                await this.postRequest(this.pluginUrl + 'actions.php?action=set_device_name', data);
 
-                        const tdUserAgent = document.createElement('td');
-                        tr.append(tdUserAgent);
-                        const deviceUserAgent = this.parseUserAgent(device.user_agent);
-                        tdUserAgent.innerHTML = deviceUserAgent.length ? `<strong>${deviceUserAgent.join(' / ')}</strong>` : '';
-                        if (subscription?.endpoint && device?.subscription?.endpoint && device.subscription.endpoint == subscription.endpoint) {
-                            const currentDevice = document.createElement('strong');
-                            tdUserAgent.append(currentDevice);
-                            currentDevice.innerText = ` (${this.__('current_device')})`;
-                            currentDevice.style.color = 'green';
-                        }
-                        tdUserAgent.innerHTML += '<br>';
-                        tdUserAgent.innerHTML += device.user_agent;
+                                row.querySelector('.btn-rename').disabled = true;
 
-                        const tdIpAddress = document.createElement('td');
-                        tr.append(tdIpAddress);
-                        tdIpAddress.innerText = device.ip_address;
+                                return;
+                            } catch (e) {
+                                this.error(e);
+                            }
+                        };
+                        row.querySelector('.btn-save').onclick = async () => {
+                            try {
+                                const data = {
+                                    'endpoint': device?.subscription?.endpoint,
+                                    'silent-notifications': row.querySelector('.wpn-silent-notifications').checked,
+                                    'notification-level': row.querySelector('.wpn-notification-level').value,
+                                };
+
+                                await this.postRequest(this.pluginUrl + 'actions.php?action=set_device_notifications', data);
+
+                                row.querySelector('.btn-save').disabled = true;
+
+                                return;
+                            } catch (e) {
+                                this.error(e);
+                            }
+                        };
                     });
                 });
             });

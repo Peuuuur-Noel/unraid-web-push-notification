@@ -52,12 +52,6 @@ try {
                 }
             }
 
-            if (isset($_POST['wpn-silent'])) {
-                $silent = trim($_POST['wpn-silent']);
-                $config->setSilent(!$silent ? [] : explode(',', $silent));
-                $config->writeToFile();
-            }
-
             $out['errno']  = WPN_NO_ERROR;
             $out['errmsg'] = 'ok';
 
@@ -138,8 +132,41 @@ try {
 
             break;
 
+        case 'set_device_name':
+            $endpoint = $_POST['endpoint'] ?: null;
+            $name     = $_POST['name'] ?? null;
+
+            if (!$endpoint) {
+                throw new ExceptionToConsole('[ACTIONS] Error Processing Request', WPN_LEVEL_ERROR);
+            }
+
+            $devices = new Devices();
+            $devices->setDeviceName($endpoint, $name);
+
+            $out['errno']  = WPN_NO_ERROR;
+            $out['errmsg'] = 'ok';
+
+            break;
+
+        case 'set_device_notifications':
+            $endpoint            = $_POST['endpoint'] ?: null;
+            $silentNotifications = json_decode($_POST['silent-notifications'] ?? '', true) ?: false;
+            $notificationLevel   = $_POST['notification-level'] ?? null;
+
+            if (!$endpoint) {
+                throw new ExceptionToConsole('[ACTIONS] Error Processing Request', WPN_LEVEL_ERROR);
+            }
+
+            $devices = new Devices();
+            $devices->setDeviceNotifications($endpoint, $silentNotifications, $notificationLevel);
+
+            $out['errno']  = WPN_NO_ERROR;
+            $out['errmsg'] = 'ok';
+
+            break;
+
         case 'remove_device':
-            $endpoint = json_decode($_POST['subscription'] ?? '', true) ?: null;
+            $endpoint = $_POST['endpoint'] ?: null;
 
             $devices = new Devices();
             $device  = $devices->getByEndpoint($endpoint);
@@ -175,11 +202,13 @@ try {
             break;
 
         case 'test':
-            $subscription = json_decode($_POST['subscription'] ?? '', true) ?: [];
+            $endpoint = $_POST['endpoint'] ?: null;
 
-            if (!$subscription) {
+            if (!$endpoint) {
                 throw new ExceptionToConsole('[ACTIONS] Error Processing Request', WPN_LEVEL_ERROR);
             }
+
+            $isTest = true;
 
             $options['event']       = wpm__('test_event');
             $options['importance']  = 'warning';
@@ -187,7 +216,7 @@ try {
             $options['description'] = wpm__('test_description');
 
             $devices     = new Devices();
-            $device      = $devices->getByEndpoint($subscription['endpoint']);
+            $device      = $devices->getByEndpoint($endpoint);
             $devicesList = [];
             if ($device) {
                 $devicesList[] = $device;
@@ -214,6 +243,10 @@ try {
                 $out['errmsg'] = wpm__('no_message_to_push');
 
                 break;
+            }
+
+            if ('unraid' == $importance) {
+                $importance = 'alert';
             }
 
             if (!isset($devicesList) || !$devicesList) {
@@ -277,21 +310,30 @@ try {
             $notification->setData(['type' => 'version', 'version' => WPN_SW_VERSION]);
             $notification->setSound($sound);
 
-            $config = new Config();
-            $silent = $config->getSilent();
-            $notification->setSilent(in_array($error_level['level'], $silent));
-
             if ($link) {
                 $notification->setData(['type' => 'url', 'url' => $link]);
             }
 
             $push = new Push();
-            $push->queueDevices($notification, $devicesList);
+
+            foreach ($devicesList as $device) {
+                $notificationLevel = $device->getNotificationLevel();
+
+                if (('' !== $notificationLevel || null !== $notificationLevel) && !isset($isTest) && $error_level['errorno'] < $notificationLevel) {
+                    continue;
+                }
+
+                $notification->setSilent($device->getSilentNotifications());
+
+                $push->queueDevice($notification, $device);
+            }
+
             $count = $push->send();
 
             if (PHP_SAPI == 'cli' && $argc > 1) {
                 exit;
             }
+
             $out['errno']  = WPN_NO_ERROR;
             $out['errmsg'] = wpm__('push_to_x_devices', $count, $count > 1 ? 's' : '');
 

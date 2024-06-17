@@ -16,7 +16,6 @@ Tag="bell"
 
 require_once $docroot . '/plugins/web-push-notification/include/loader.php';
 
-use WebPushNotification\Models\Config;
 use WebPushNotification\Models\VAPID;
 
 $nginxVar      = @parse_ini_file('/usr/local/emhttp/state/nginx.ini');
@@ -100,46 +99,14 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
     <dd><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('button_request_register'); ?></button></dd>
 </dl>
 <dl>
-    <dt><?php wpm_e('silent_notification'); ?></dt>
-    <dd>
-        <?php
-            $levels = [
-                [
-                    'id'    => 'wpn-silent-notices',
-                    'name'  => 'wpn-silent[]',
-                    'value' => 'notice',
-                    'label' => 'Notices',
-                ],
-                [
-                    'id'    => 'wpn-silent-warnings',
-                    'name'  => 'wpn-silent[]',
-                    'value' => 'warning',
-                    'label' => 'Warnings',
-                ],
-                [
-                    'id'    => 'wpn-silent-alerts',
-                    'name'  => 'wpn-silent[]',
-                    'value' => 'alert',
-                    'label' => 'Alerts',
-                ],
-            ];
-    $config = new Config();
-    $silent = $config->getSilent();
-    foreach ($levels as $level) {
-        echo '<input type="checkbox" id="' . $level['id'] . '" name="' . $level['name'] . '" value="' . $level['value'] . '"' . (in_array($level['value'], $silent) ? ' checked' : '') . '><label for="' . $level['id'] . '">' . $level['label'] . '</label> &nbsp;';
-    }
-    ?>
-    </dd>
-</dl>
-<blockquote class="inline_help">
-    <?php wpm_e('help_silent_notification'); ?>
-</blockquote>
-<dl>
     <dt><?php wpm_e('registered_devices'); ?></dt>
     <dd>
         <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_list'); ?></span><span class="hide"><?php wpm_e('button_hide_list'); ?></span></button>
     </dd>
 </dl>
+<blockquote class="inline_help">
+    <?php wpm_e('help_notifications_silent_level'); ?>
+</blockquote>
 <div id="wpn-device-list" hidden></div>
 <script>
     var wpm_lng = <?php echo json_encode($wpm_lang) ?: []; ?>

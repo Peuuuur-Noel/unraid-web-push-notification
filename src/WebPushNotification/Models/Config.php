@@ -16,7 +16,6 @@ use WebPushNotification\Libraries\ExceptionToConsole;
 class Config implements \JsonSerializable
 {
     private ?array $devices = [];
-    private ?array $silent  = [];
     private ?array $vapid   = [];
 
     public function __construct()
@@ -84,29 +83,9 @@ EOF;
         exec(WPN_DOCROOT . 'webGui/scripts/agent disable ' . WPN_AGENT_NAME . '.sh');
     }
 
-    public function setDevices(array $devices = []): void
-    {
-        $this->devices = $devices;
-    }
-
     public function getDevices(): array
     {
         return $this->devices ?? [];
-    }
-
-    public function setSilent(array $silent = []): void
-    {
-        $this->silent = $silent;
-    }
-
-    public function getSilent(): array
-    {
-        return $this->silent ?? [];
-    }
-
-    public function setVapid(array $vapid = []): void
-    {
-        $this->vapid = $vapid;
     }
 
     public function getVapid(): array
@@ -114,18 +93,14 @@ EOF;
         return $this->vapid ?? [];
     }
 
-    public function toArray(): array
+    public function setDevices(array $devices = []): void
     {
-        return [
-            'devices' => $this->devices,
-            'silent'  => $this->silent,
-            'vapid'   => $this->vapid,
-        ];
+        $this->devices = $devices;
     }
 
-    public function jsonSerialize(): mixed
+    public function setVapid(array $vapid = []): void
     {
-        return $this->toArray();
+        $this->vapid = $vapid;
     }
 
     public function writeToFile(): bool
@@ -154,6 +129,19 @@ EOF;
         return $return;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'devices' => $this->devices,
+            'vapid'   => $this->vapid,
+        ];
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
+    }
+
     private function readFromFile(): bool
     {
         if (!file_exists(WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME)) {
@@ -168,7 +156,6 @@ EOF;
 
         $config        = json_decode($file, true) ?: [];
         $this->devices = $config['devices'];
-        $this->silent  = $config['silent'];
         $this->vapid   = $config['vapid'];
 
         if (JSON_ERROR_NONE !== json_last_error()) {

@@ -24,13 +24,8 @@ class Devices implements \JsonSerializable
 
         foreach ($devices as $device) {
             $subscription    = new Subscription($device['subscription']['endpoint'], $device['subscription']['expirationTime'], $device['subscription']['keys']);
-            $this->devices[] = new Device($subscription, $device['datetime'], $device['user_agent'], $device['ip_address']);
+            $this->devices[] = new Device($subscription, $device['name'], $device['datetime'], $device['user_agent'], $device['ip_address'], $device['silentNotifications'], $device['notificationLevel']);
         }
-    }
-
-    public function hasRegisteredDevices(): bool
-    {
-        return $this->devices ? true : false;
     }
 
     public function getAll(): ?array
@@ -38,8 +33,12 @@ class Devices implements \JsonSerializable
         return $this->devices;
     }
 
-    public function getByEndpoint(string $endpoint): ?Device
+    public function getByEndpoint(?string $endpoint = null): ?Device
     {
+        if (!$endpoint) {
+            throw new ExceptionToConsole('[DEVICES] Error on endpoint data', WPN_LEVEL_ERROR);
+        }
+
         return current(array_filter($this->devices, fn ($var) => $var?->getSubscription()?->getEndpoint() == $endpoint) ?? []) ?: null;
     }
 
@@ -51,6 +50,50 @@ class Devices implements \JsonSerializable
         return $this->config->writeToFile();
     }
 
+    public function setDeviceName(?string $endpoint = null, ?string $name = null): ?bool
+    {
+        if (!$endpoint) {
+            throw new ExceptionToConsole('[DEVICES] Error on endpoint data', WPN_LEVEL_ERROR);
+        }
+
+        foreach ($this->devices as &$device) {
+            if ($device->getSubscription()->getEndpoint() == $endpoint) {
+                $device->setName($name);
+
+                break;
+            }
+        }
+
+        $this->config->setDevices($this->devices);
+
+        return $this->config->writeToFile();
+    }
+
+    public function setDeviceNotifications(?string $endpoint = null, bool $silentNotifications = false, ?string $notificationLevel = null): ?bool
+    {
+        if (!$endpoint) {
+            throw new ExceptionToConsole('[DEVICES] Error on endpoint data', WPN_LEVEL_ERROR);
+        }
+
+        foreach ($this->devices as &$device) {
+            if ($device->getSubscription()->getEndpoint() == $endpoint) {
+                $device->setSilentNotifications($silentNotifications);
+                $device->setNotificationLevel($notificationLevel);
+
+                break;
+            }
+        }
+
+        $this->config->setDevices($this->devices);
+
+        return $this->config->writeToFile();
+    }
+
+    public function hasRegisteredDevices(): bool
+    {
+        return $this->devices ? true : false;
+    }
+
     public function register(array $data = [], ?string $userAgent = null, ?string $ipAddress = null): ?bool
     {
         if (!isset($data['endpoint']) || !isset($data['keys'])) {
@@ -60,15 +103,15 @@ class Devices implements \JsonSerializable
         $subscription = new Subscription($data['endpoint'], $data['expirationTime'], $data['keys']);
         $endpoint     = $subscription->getEndpoint();
 
-        // Check if there is no duplicate
+        // Check if there is no duplicate device
         $isDuplicate = false;
         if ($this->devices) {
             $isDuplicate = $this->getByEndpoint($endpoint);
         }
 
         if (!$isDuplicate) {
-            // If no duplicate, append to file
-            $device        = new Device($subscription, date_format(date_create(), 'c'), $userAgent, $ipAddress);
+            // If no duplicate device, append to file
+            $device        = new Device($subscription, null, date_format(date_create(), 'c'), $userAgent, $ipAddress);
             $this->devices = [...$this->devices, ...[$device]];
             $this->config->setDevices($this->devices);
 
