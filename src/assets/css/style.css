@@ -1,0 +1,72 @@
+#wpn-permission-status[data-status='green'] {
+    color: green;
+}
+
+#wpn-permission-status[data-status='red'] {
+    color: red;
+}
+
+#wpn-permission-status[data-status='orange'] {
+    color: orange;
+}
+
+#wpn-device-list {
+    margin: 10px 0 0 0;
+    padding: 0;
+}
+
+#wpn-device-list>table {
+    margin: 0;
+}
+
+#wpn-list-btn .hide,
+#wpn-advanced-btn .hide,
+#wpn-list-btn.active .show,
+#wpn-advanced-btn.active .show {
+    display: none;
+}
+
+#wpn-list-btn.active .hide,
+#wpn-advanced-btn.active .hide {
+    display: inline-block;
+}
+
+#wpn-list-btn>span,
+#wpn-advanced-btn>span {
+    pointer-events: none;
+}
+
+#wpn-error {
+    display: none;
+}
+
+#wpn-error-text {
+    margin-left: 0;
+    flex: 1;
+    color: #ff0000;
+    overflow: auto;
+}
+
+div.shade-white {
+    background-color: #ededed;
+    margin-top: 10px;
+    padding: 8px 0 3px 0
+}
+
+div.shade-black {
+    background-color: #212121;
+    margin-top: 10px;
+    padding: 8px 0 3px 0
+}
+
+div.shade-azure {
+    background-color: #edeaef;
+    margin-top: 10px;
+    padding: 8px 0 3px 0
+}
+
+div.shade-gray {
+    background-color: #121510;
+    margin-top: 10px;
+    padding: 8px 0 3px 0
+}
