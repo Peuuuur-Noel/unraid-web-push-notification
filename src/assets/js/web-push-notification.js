@@ -70,6 +70,10 @@ class WebPushNotification {
                                         } else {
                                             document.querySelector('#wpn-permission-status').innerText = this.__('permissions_granted_registered');
                                             document.querySelector('#wpn-permission-status').setAttribute('data-status', 'green');
+
+                                            if (!document.querySelector('#wpn-device-list').hidden) {
+                                                this.displayDevicesList();
+                                            }
                                         }
                                     });
                             }
@@ -283,9 +287,6 @@ class WebPushNotification {
                         await this.saveSubscription(subscription);
 
                         document.querySelector('#wpn-list-btn')?.classList.remove('active');
-                        const html = document.querySelector('#wpn-device-list');
-                        html.innerHTML = '';
-                        html.hidden = true;
 
                         this.displayWebPushNotificationStatus();
                     }).catch((e) => {
@@ -324,7 +325,10 @@ class WebPushNotification {
             subscription.unsubscribe()
                 .then(() => {
                     // Remove subscription on server
-                    this.removeSubscription(subscription.endpoint);
+                    this.removeSubscription(subscription.endpoint)
+                        .then(() => {
+                            this.displayDevicesList();
+                        });
 
                     // Remove service worker
                     registration.unregister()
@@ -339,16 +343,17 @@ class WebPushNotification {
         });
     }
     displayDevicesList() {
-        Promise.resolve(this.getDevicesList())
-            .then((devices) => {
-                const html = document.querySelector('#wpn-device-list');
+        const html = document.querySelector('#wpn-device-list');
 
-                const tableHTML = `<table class="tablesorter">
+        const tableHTML = `<table class="tablesorter">
                     <thead><tr><th>${this.__('action')}</th><th>${this.__('device_info')}</th><th>${this.__('notification_settings')}</th></tr></thead>
                     <tbody></tbody>
                 </table>
                 <p class="loading">${this.__('loading')}</p>`;
-                html.innerHTML = tableHTML;
+        html.innerHTML = tableHTML;
+
+        Promise.resolve(this.getDevicesList())
+            .then((devices) => {
 
                 const tbody = html.querySelector('tbody');
                 const pLoading = html.querySelector('p.loading');
@@ -439,7 +444,6 @@ class WebPushNotification {
                             row.querySelector('.btn-rename').disabled = false
                             return true;
                         };
-
                         row.querySelector('.btn-test').onclick = async () => {
                             try {
                                 const data = {
@@ -455,17 +459,12 @@ class WebPushNotification {
                             if (!confirm(this.__('remove_device')))
                                 return;
 
-                            let remoteDelete = true;
                             if (subscription?.endpoint && device?.subscription?.endpoint && device.subscription.endpoint == subscription.endpoint) {
                                 this.unregisterServiceWorker();
-                                remoteDelete = false;
+                            } else {
+                                await this.removeSubscription(device.subscription.endpoint, true);
+                                this.displayDevicesList();
                             }
-
-                            await this.removeSubscription(device.subscription.endpoint, remoteDelete);
-
-                            const html = document.querySelector('#wpn-device-list');
-                            html.innerHTML = '';
-                            this.displayDevicesList();
                         };
                         row.querySelector('.btn-rename').onclick = async () => {
                             try {
@@ -487,9 +486,12 @@ class WebPushNotification {
                             try {
                                 const data = {
                                     'endpoint': device?.subscription?.endpoint,
-                                    'silent-notifications': row.querySelector('.wpn-silent-notifications').checked,
                                     'notification-level': row.querySelector('.wpn-notification-level').value,
                                 };
+
+                                if (row.querySelector('.wpn-silent-notifications')) {
+                                    data['silent-notifications'] = row.querySelector('.wpn-silent-notifications').checked;
+                                }
 
                                 await this.postRequest(this.pluginUrl + 'actions.php?action=set_device_notifications', data);
 
@@ -567,7 +569,6 @@ class WebPushNotification {
         }
         document.querySelector('#wpn-list-btn').onclick = (event) => {
             const html = document.querySelector('#wpn-device-list');
-            html.innerHTML = '';
             html.hidden = !html.hidden;
 
             if (event.target.classList.contains('active')) {
@@ -589,7 +590,7 @@ class WebPushNotification {
         document.querySelector('#wpn-permission-btn').onclick = (event) => {
             document.querySelector('#wpn-error').style.display = '';
             document.querySelector('#wpn-error-text').innerHTML = '';
-            if (this.checkAPI() && this.checkIOSHomeScreen()) {
+            if (this.checkIOSHomeScreen() && this.checkAPI()) {
                 document.querySelector('#wpn-permission-status').innerText = this.__('registration_progress');
                 document.querySelector('#wpn-permission-status').setAttribute('data-status', '');
                 this.requestNotificationPermission();
@@ -608,7 +609,6 @@ class WebPushNotification {
 
                     document.querySelector('#wpn-list-btn')?.classList.remove('active');
                     const html = document.querySelector('#wpn-device-list');
-                    html.innerHTML = '';
                     html.hidden = true;
                 });
         }
