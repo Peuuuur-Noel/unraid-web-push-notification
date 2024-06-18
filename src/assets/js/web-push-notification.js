@@ -415,7 +415,15 @@ class WebPushNotification {
                         </tr>`;
                         row.innerHTML = rowHTML;
 
-                        row.querySelector('.wpn-silent-notifications').checked = device.silentNotifications;
+                        const silentNotifications = row.querySelector('.wpn-silent-notifications');
+                        if (deviceUserAgent.indexOf('Firefox') != -1) {
+                            const span = document.createElement('span');
+                            span.innerText = this.__('unsupported_firefox');
+                            silentNotifications.parentNode.append(span);
+                            silentNotifications.remove();
+                        } else {
+                            silentNotifications.checked = device.silentNotifications;
+                        }
                         row.querySelector('.wpn-notification-level').value = device.notificationLevel;
 
                         row.querySelectorAll('.wpn-notification-level option').forEach((elem) => {
