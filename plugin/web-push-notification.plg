@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.05.15.0023">
+<!ENTITY version "2024.06.18.0210">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,12 +10,19 @@
 <!ENTITY emhttpPATH "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varStatePATH "/var/local/emhttp/plugins/&name;">
 <!ENTITY notificationsPATH "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "561a8d9ac5216b8294fa6af389500792">
-<!ENTITY SHA256 "7e8b56ce7a4357d1f542c498997b81fab2ea7cc68db2cf3a2818b1b0410e31aa">
+<!ENTITY MD5 "69658cc28b04342f8e5e0d0d3753b2ef">
+<!ENTITY SHA256 "ec9738e0cdcbc73532a999141440b6e7e03b5b53052f80147c2ee94e8228ebd1">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.13" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
+###2024.06.18.0210
+- Add check for iOS Home screen
+- Test button moved to each device
+- Notification setting for each devices
+- Can set a device name
+- Silent notifications unsupported on Firefox
+
 ###2024.05.15.0023
 - Resend the subscription in case it was deleted from the server
 - Merge config files in one
