@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.06.18.1947">
+<!ENTITY version "2024.06.20.0133">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,12 +10,15 @@
 <!ENTITY emhttpPATH "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varStatePATH "/var/local/emhttp/plugins/&name;">
 <!ENTITY notificationsPATH "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "72dde1f68fab544b38b78177f9519f11">
-<!ENTITY SHA256 "9c45933899f10059ff24b20247f09cd1e4df9d3794e80684b0af2f5a2e099b1b">
+<!ENTITY MD5 "179e039a7adabd62086cdcca78663b87">
+<!ENTITY SHA256 "74e9fb6d75d989ef9f2b98e4c61ce4317073c2900b5d6b5301855b3f6acd3211">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.13" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
+###2024.06.20.0133
+- Translations updated
+
 ###2024.06.18.1947
 - Code optimization
 
