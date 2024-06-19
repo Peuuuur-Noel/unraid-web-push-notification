@@ -1,6 +1,6 @@
 # Web Push Notification Agent plugin for Unraid
 
-An Unraid plugin to add push notifications to your browser.
+An Unraid plugin to add browser push notifications.
 
 ## What is it?
 
@@ -10,10 +10,10 @@ Take a quick look to this [Push notifications overview](https://web.dev/articles
 
 ## Usage
 
-1. Browse the Unraid notifications settings page (over a HTTPS connection) with the device you want to receive notifications.
+1. Browse the Unraid notifications settings page (over a HTTPS connection with a valid certificate) with the device you want to receive notifications on.
 2. Click on "Request permission and register" button to allow notifications in your browser.
 
-Notification will be send to your devices through push service. Both your Unraid and devices must have access to internet. No need to keep Unraid interface open.
+Notification will be send to your devices through push service. Both your Unraid and devices must have access to internet. No need to keep Unraid web UI open.
 
 On desktop, your browser must be open to receive notifications, otherwise they will be pending until opened.
 
@@ -48,11 +48,11 @@ More details on [Can I use](https://caniuse.com/push-api).
 * Mobile (Apple):
   * Safari
 
-I don't have access to an iPhone/iPad, so I can't test Safari on it.
+I don't have access to an iPhone/iPad, so I can't test on it.
 
 ## Mobile devices
 
-Notifications may not arrive instantly. It will depend on several factors: OS deep sleep, power management profile, frozen application when idle, battery level, network usage, ... and the way notifications are implemented (see this [comment](https://issues.chromium.org/issues/41351071#comment57) for Android on Chromium Issue Tracker).
+Notification may not arrive instantly. It will depend on several factors: OS deep sleep, power management profile, frozen application when idle, battery level, network usage, ... and the way notifications are implemented (see this [comment](https://issues.chromium.org/issues/41351071#comment57) for Android on Chromium Issue Tracker).
 
 ## Ressources
 
