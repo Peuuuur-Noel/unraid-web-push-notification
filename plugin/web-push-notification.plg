@@ -14,7 +14,7 @@
 <!ENTITY SHA256 "74e9fb6d75d989ef9f2b98e4c61ce4317073c2900b5d6b5301855b3f6acd3211">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.8" max="6.13" support="https://forums.unraid.net/forum/61-plugin-support/">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.0" support="https://forums.unraid.net/forum/61-plugin-support/">
     <CHANGES>
 ###2024.06.20.0133
 - Translations updated
