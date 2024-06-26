@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-require_once 'include/loader.php';
+require_once __DIR__ . '/include/loader.php';
 
 use WebPushNotification\Libraries\ExceptionToConsole;
 use WebPushNotification\Libraries\Push;
