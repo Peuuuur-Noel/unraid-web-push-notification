@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-$wpm_lang = [
+$wpmLang = [
     // web-push-notification.page
     'help_agent_function' => <<<'EOD'
 Tout d'abord, demandez l'autorisation, puis inscrivez-vous au service de notification push.
@@ -83,7 +83,7 @@ EOD,
     'notification_level_default'            => 'Défaut',
     'notification_level_notices'            => 'Annonces',
     'notification_level_warnings'           => 'Avertissements',
-    'notification_level_alerts'             => 'Alertes / Mise à jour d\'Unraid OS',
+    'notification_level_alerts'             => 'Alertes',
     'silent_notifications'                  => 'Notificiations silencieuses :',
     'unsupported_firefox'                   => 'Non pris en charge par Firefox',
     'save'                                  => 'Enregistrer',

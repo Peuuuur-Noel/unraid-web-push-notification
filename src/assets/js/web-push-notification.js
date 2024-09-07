@@ -359,13 +359,12 @@ class WebPushNotification {
                 const pLoading = html.querySelector('p.loading');
                 const availableLevels = [];
                 const unraidLevels = {
-                    'unraid3': '2',
                     'normal3': '0',
                     'warning3': '1',
                     'alert3': '2',
                 };
 
-                document.querySelectorAll('input[name="unraid3"]:checked, input[name="normal3"]:checked, input[name="warning3"]:checked, input[name="alert3"]:checked').forEach((elem) => {
+                document.querySelectorAll('input[name="normal3"]:checked, input[name="warning3"]:checked, input[name="alert3"]:checked').forEach((elem) => {
                     if (elem.name in unraidLevels) {
                         availableLevels.push(unraidLevels[elem.name]);
                     }

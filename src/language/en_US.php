@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-$wpm_lang = [
+$wpmLang = [
     // web-push-notification.page
     'help_agent_function' => <<<'EOD'
 First, request permission, then register to enable push notification on this browser.
@@ -83,7 +83,7 @@ EOD,
     'notification_level_default'            => 'Default',
     'notification_level_notices'            => 'Notices',
     'notification_level_warnings'           => 'Warnings',
-    'notification_level_alerts'             => 'Alerts / Unraid OS update',
+    'notification_level_alerts'             => 'Alerts',
     'silent_notifications'                  => 'Silent notifications:',
     'unsupported_firefox'                   => 'Not supported on Firefox',
     'save'                                  => 'Save',

@@ -115,7 +115,7 @@ EOF;
             throw new ExceptionToConsole('[Config] Unable to write file "' . WPN_DATA_FOLDER_PATH . WPN_CONFIG_FILENAME . '"', WPN_LEVEL_ERROR);
         }
 
-        // Copy .dat file to USB device to keep data after a reboot
+        // Copy .json file to USB device to keep data after reboot
         if (!is_dir(WPN_USB_FOLDER_PATH)) {
             mkdir(WPN_USB_FOLDER_PATH, 0700, true);
         }

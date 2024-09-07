@@ -15,6 +15,7 @@ use WebPushNotification\Libraries\ExceptionToConsole;
 
 class Devices implements \JsonSerializable
 {
+    private Config $config;
     private ?array $devices = [];
 
     public function __construct()
@@ -111,7 +112,14 @@ class Devices implements \JsonSerializable
 
         if (!$isDuplicate) {
             // If no duplicate device, append to file
-            $device        = new Device($subscription, null, date_format(date_create(), 'c'), $userAgent, $ipAddress);
+            $dynamixVar = @parse_ini_file('/boot/config/plugins/dynamix/dynamix.cfg');
+            $level      = match (true) {
+                ($dynamixVar['normal'] & 4)  == 4 => '0',
+                ($dynamixVar['warning'] & 4) == 4 => '1',
+                ($dynamixVar['alert'] & 4)   == 4 => '2',
+                default                           => null,
+            };
+            $device        = new Device($subscription, null, date_format(date_create(), 'c'), $userAgent, $ipAddress, false, $level);
             $this->devices = [...$this->devices, ...[$device]];
             $this->config->setDevices($this->devices);
 

@@ -13,7 +13,7 @@ Take a quick look to this [Push notifications overview](https://web.dev/articles
 1. Browse the Unraid notifications settings page (over a HTTPS connection with a valid certificate) with the device you want to receive notifications on.
 2. Click on "Request permission and register" button to allow notifications in your browser.
 
-Notification will be send to your devices through push service. Both your Unraid and devices must have access to internet. No need to keep Unraid web UI open.
+Notification will be send to your devices through push service. Both your Unraid and devices must have access to internet. No need to keep Unraid web UI open to receive them.
 
 On desktop, your browser must be open to receive notifications, otherwise they will be pending until opened.
 

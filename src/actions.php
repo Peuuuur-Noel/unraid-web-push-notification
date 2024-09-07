@@ -267,31 +267,31 @@ try {
              * DESCRIPTION
              * CONTENT
              */
-            $temp_body    = [];
-            $temp_message = [];
+            $tempBody    = [];
+            $tempMessage = [];
             if ($event) {
-                $temp_message[] = $event;
+                $tempMessage[] = $event;
             }
             if ($subject) {
-                $temp_message[] = $subject;
+                $tempMessage[] = $subject;
             }
-            if ($temp_message) {
-                $temp_body[] = implode(' - ', $temp_message);
+            if ($tempMessage) {
+                $tempBody[] = implode(' - ', $tempMessage);
             }
 
-            $temp_message = [];
+            $tempMessage = [];
             if ($description) {
-                $temp_message[] = $description;
+                $tempMessage[] = $description;
             }
             if ($content) {
-                $temp_message[] = $content;
+                $tempMessage[] = $content;
             }
-            if ($temp_message) {
-                $temp_body[] = implode(PHP_EOL, $temp_message);
+            if ($tempMessage) {
+                $tempBody[] = implode(PHP_EOL, $tempMessage);
             }
 
-            $error_level = WPN_MESSAGE_ERROR_LEVEL[$importance] ?: WPN_MESSAGE_ERROR_LEVEL['unknown'];
-            $body        = '[' . $importance . '] ' . implode(PHP_EOL, $temp_body);
+            $errorLevel = WPN_MESSAGE_ERROR_LEVEL[$importance] ?: WPN_MESSAGE_ERROR_LEVEL['unknown'];
+            $body       = '[' . $importance . '] ' . implode(PHP_EOL, $tempBody);
 
             if (is_numeric($timestamp) && 10 == strlen($timestamp)) {
                 $timestamp *= 1_000;
@@ -304,7 +304,7 @@ try {
             $notification = new Notification();
             $notification->setTitle(gethostname());
             $notification->setBody($body);
-            $notification->setIcon($error_level['icon']);
+            $notification->setIcon($errorLevel['icon']);
             $notification->setBadge(WPN_NOTIFICATION_BADGE);
             $notification->setTimestamp($timestamp);
             $notification->setData(['type' => 'version', 'version' => WPN_SW_VERSION]);
@@ -319,7 +319,7 @@ try {
             foreach ($devicesList as $device) {
                 $notificationLevel = $device->getNotificationLevel();
 
-                if (('' !== $notificationLevel || null !== $notificationLevel) && !isset($isTest) && $error_level['errorno'] < $notificationLevel) {
+                if (('' !== $notificationLevel || null !== $notificationLevel) && !isset($isTest) && $errorLevel['errorno'] < $notificationLevel) {
                     continue;
                 }
 

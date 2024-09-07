@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-spl_autoload_register(fn ($class_name) => require_once WPN_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $class_name) . '.php');
+spl_autoload_register(fn ($className) => require_once WPN_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
 
 function wpm_log_to_console(string $message = ''): void
 {
@@ -18,9 +18,9 @@ function wpm_log_to_console(string $message = ''): void
 
 function wpm__(string $text = '', int|string ...$args): string
 {
-    global $wpm_lang;
+    global $wpmLang;
 
-    return nl2br(sprintf(isset($wpm_lang[$text]) ? $wpm_lang[$text] : $text, ...$args));
+    return nl2br(sprintf($wpmLang[$text] ?? $text, ...$args));
 }
 
 function wpm_e(string $text = '', int|string ...$args): void

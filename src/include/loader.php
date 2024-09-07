@@ -13,9 +13,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/functions.php';
 
-$wpm_local_file_path = WPN_PATH . '/language/' . WPN_LOCALE . '.php';
-if (file_exists($wpm_local_file_path)) {
-    require_once $wpm_local_file_path;
+$wpmLocalFilePath = WPN_PATH . '/language/' . WPN_LOCALE . '.php';
+if (file_exists($wpmLocalFilePath)) {
+    require_once $wpmLocalFilePath;
 } else {
     require_once WPN_PATH . '/language/en_US.php';
 }
