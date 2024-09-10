@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.07.07.1512">
+<!ENTITY version "2024.09.10.2135">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,12 +10,15 @@
 <!ENTITY emhttpPATH "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varStatePATH "/var/local/emhttp/plugins/&name;">
 <!ENTITY notificationsPATH "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "a7985f7be9138508a5e9f428699e7d56">
-<!ENTITY SHA256 "4005a4b22c096f05faff63041d51ba2845e8add6ce7792de78b51f49835699be">
+<!ENTITY MD5 "e286c52db13dcc4474b23d4d258aaf49">
+<!ENTITY SHA256 "8808e95ac37dd2a7f0971fae1d277ed0de968886d44c6e12ebaab82a43743cb0">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.0" support="https://forums.unraid.net/topic/168775-plugin-web-push-notification-agent/">
     <CHANGES>
+###2024.09.10.2135
+- Fix empty notification level on new registered device.
+
 ###2024.07.07.1512
 - Added description in Plugins page.
 
