@@ -18,7 +18,7 @@
     <CHANGES>
 ###2024.09.10.2146
 - Fix empty notification level on new registered device.
-- Fix CRLF end on line in code.
+- Fix CRLF end of line in code.
 
 ###2024.07.07.1512
 - Added description in Plugins page.
