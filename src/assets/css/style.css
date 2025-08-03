@@ -11,12 +11,69 @@
 }
 
 #wpn-device-list {
-    margin: 10px 0 0 0;
+    margin: 10px auto 0 auto;
     padding: 0;
 }
 
-#wpn-device-list>table {
+@media (min-width: 769px) {
+    #wpn-device-list {
+        max-width: calc(100% - 20px);
+    }
+}
+
+#wpn-device-list-table {
     margin: 0;
+}
+
+#wpn-device-list-table .wpn-device-list-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--text-color);
+}
+
+@media (min-width: 769px) {
+    #wpn-device-list-table .wpn-device-list-row {
+        grid-template-columns: 110px auto 250px;
+    }
+}
+
+#wpn-device-list-table .wpn-device-list-row:nth-child(even) {
+    background-color: var(--dynamix-tablesorter-tbody-row-alt-bg-color);
+}
+
+#wpn-device-list-table .wpn-device-list-row>.inline-block {
+    padding: 0 10px;
+}
+
+#wpn-device-list-table .wpn-device-list-row .wpn-device {
+    display: flex;
+}
+
+#wpn-device-list-table .wpn-device-list-row .wpn-device-name {
+    flex: 0 1 300px;
+    margin-right: 10px;
+}
+
+@media (min-width: 769px) {
+    #wpn-device-list-table .wpn-device-list-row select {
+        max-width: 166px;
+    }
+}
+
+@media (max-width: 768px) {
+    #wpn-device-list-table .wpn-device-list-row .wpn-actions {
+        padding-top: 10px;
+    }
+    #wpn-device-list-table .wpn-device-list-row .wpn-device-info p:first-child {
+        margin-top: 0;
+    }
+
+    #wpn-device-list-table .wpn-notification-level-bottom {
+        margin-bottom: 0;
+    }
 }
 
 #wpn-list-btn .hide,

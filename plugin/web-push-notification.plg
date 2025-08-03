@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name "web-push-notification">
 <!ENTITY author "Peuuuur Noel">
-<!ENTITY version "2024.09.10.2146">
+<!ENTITY version "2025.08.03.2359">
 <!ENTITY launch "Settings/Notifications">
 <!ENTITY gitURL "https://github.com/Peuuuur-Noel/unraid-web-push-notification/">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/Peuuuur-Noel/unraid-web-push-notification/master/plugin/&name;.plg">
@@ -10,81 +10,84 @@
 <!ENTITY emhttpPATH "/usr/local/emhttp/plugins/&name;">
 <!ENTITY varStatePATH "/var/local/emhttp/plugins/&name;">
 <!ENTITY notificationsPATH "/boot/config/plugins/dynamix/notifications">
-<!ENTITY MD5 "2886cf618b3fcb5e55068df10d3b8541">
-<!ENTITY SHA256 "17f8ea82bcdfdaa4766301f36072eb4916f258e44b4b99bd6e02f4b9217fdc40">
+<!ENTITY MD5 "54e49b15f2c2fa5fa3599c8b402b09c1">
+<!ENTITY SHA256 "3b9e758e4e9aca911f95c43731146b8e1e9d651f807ffe5dfeeffb245008404a">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" icon="bell" min="6.12.0" support="https://forums.unraid.net/topic/168775-plugin-web-push-notification-agent/">
     <CHANGES>
+###2025.08.03.2359
+- Fixed: Broken UI in Unraid 7.2+
+
 ###2024.09.10.2146
-- Fix empty notification level on new registered device.
-- Fix CRLF end of line in code.
+- Fixed: Empty notification level on new registered device.
+- Fixed: CRLF end of line in code.
 
 ###2024.07.07.1512
-- Added description in Plugins page.
+- Added: Description in Plugins page.
 
 ###2024.06.26.1300
-- If current language not available, fallback to english.
+- Changed: If current language not available, fallback to english.
 
 ###2024.06.20.0133
-- Translations updated
+- Changed: Translations
 
 ###2024.06.18.1947
-- Code optimization
+- Changed: Code optimization
 
 ###2024.06.18.0210
-- Add check for iOS Home screen
-- Test button moved to each device
-- Notification setting for each devices
-- Can set a device name
-- Silent notifications unsupported on Firefox
+- Added: Check for iOS Home screen
+- Added: Notification setting for each devices
+- Added: Can set device name
+- Changed: Test button moved to each device
+- Changed: Silent notifications unsupported on Firefox
 
 ###2024.05.15.0023
-- Resend the subscription in case it was deleted from the server
-- Merge config files in one
+- Changed: Resend the subscription in case it was deleted from the server
+- Changed: Merge config files in one
 
 ###2024.05.10.2218
-- Invalid .page format
-- Update dependances
+- Fixed: Invalid .page format
+- Changed: Update dependances
 
 ###2024.05.10.2156
-- UI changes
-- Fixes for Safari desktop
-- Fix error handling
-- Move serviceworker file
-- Files renamed
-- UserAgent parsing for iPadOS
+- Fixed: Display error on Safari desktop
+- Fixed: Error handling
+- Changed: UI changes
+- Changed: Move serviceworker file
+- Changed: Files renamed
+- Changed: UserAgent parsing for iPadOS
 
 ###2024.04.26.2315
-- Fix array type error in setSilent()
-- Update readme
-- Update composer.json
+- Fixed: Array type error in setSilent()
+- Changed: Readme
+- Changed: composer.json
 
 ###2024.04.02.0043
-- Fix package version naming
+- Fixed: Package version naming
 
 ###2024.04.02.0032
-- Fix status message on registration check
-- Change package version naming
+- Fixed: Status message on registration check
+- Changed: Package version naming
 
 ###2024.03.23a
-- Update languages
+- Changed: Translations
 
 ###2024.03.20c
-- Fix CRLF in bash script
+- Fixed: CRLF in bash script
 
 ###2024.03.20
-- Add ability to silent notifications by level
+- Added: Ability to silent notifications by level
 
 ###2024.03.12
-- Add help text
-- Fix "REQUEST PERMISSION AND REGISTER" disabled button after VAPID is generate
-- Remove notification on service worker update failure
+- Added: Help text
+- Fixed: "REQUEST PERMISSION AND REGISTER" button disabled after VAPID is generate
+- Changed: Remove notification on service worker update failure
 
 ###2024.03.12
-- Create agents-disabled folder if not present
-- Fix some path errors
-- Fix release url
+- Fixed: Some path errors
+- Fixed: Release url
+- Changed: Create agents-disabled folder if not present
 
 ###2024.03.09
 - Initial release

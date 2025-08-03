@@ -19,11 +19,13 @@ require_once $docroot . '/plugins/web-push-notification/include/loader.php';
 use WebPushNotification\Models\VAPID;
 
 $nginxVar      = @parse_ini_file('/usr/local/emhttp/state/nginx.ini');
+$unraidVar     = @parse_ini_file('/usr/local/emhttp/state/var.ini');
 $isWpnEnabled  = false;
 $enabledAgent  = agent_fullname(WPN_AGENT_NAME . '.sh', 'enabled');
 $disabledAgent = agent_fullname(WPN_AGENT_NAME . '.sh', 'disabled');
 $shade         = 'shade-' . ($display['theme'] ?? 'unk');
 $vapid         = new VAPID();
+$version72     = version_compare($unraidVar['version'], '7.2.0-beta.1', '>=');
 
 // Generate VAPID keys if not already done
 if (!$vapid->getPublicKey() || !$vapid->getPrivateKey()) {
@@ -40,19 +42,23 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
 <dl>
     <dt><?php echo _('Agent function'); ?>:</dt>
     <dd>
-        <span style="color: red;"><?php wpm_e('http_plugin_disabled'); ?></span>
+        <span style="color: red;" class="inline-block"><?php wpm_e('http_plugin_disabled'); ?></span>
     </dd>
 </dl>
 <?php } else { ?>
 <dl>
     <dt><?php echo _('Agent function'); ?>:</dt>
     <dd>
-        <select id="wpn-enable-select">
-            <?php echo mk_option(!$isWpnEnabled, '0', _('Disabled')); ?>
-            <?php echo mk_option($isWpnEnabled, '1', _('Enabled')); ?>
-        </select>
-        <button id="wpn-apply-btn" disabled><?php echo _('Apply'); ?></button>
-        <button id="wpn-advanced-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_advanced_settings'); ?></span><span class="hide"><?php wpm_e('button_hide_advanced_settings'); ?></span></button>
+        <span class="inline-block">
+            <select id="wpn-enable-select">
+                <?php echo mk_option(!$isWpnEnabled, '0', _('Disabled')); ?>
+                <?php echo mk_option($isWpnEnabled, '1', _('Enabled')); ?>
+            </select>
+        </span>
+        <span class="inline-block">
+            <button id="wpn-apply-btn" disabled><?php echo _('Apply'); ?></button>
+            <button id="wpn-advanced-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_advanced_settings'); ?></span><span class="hide"><?php wpm_e('button_hide_advanced_settings'); ?></span></button>
+        </span>
     </dd>
 </dl>
 <blockquote class="inline_help">
@@ -61,14 +67,14 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
 <div class="wpn-advanced-settings" hidden>
     <dl>
         <dt><?php wpm_e('vapid_public_key'); ?></dt>
-        <dd><input id="wpn-publicKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPublicKey(); ?>" disabled></dd>
+        <dd><span class="inline-block"><input id="wpn-publicKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPublicKey(); ?>" disabled></span></dd>
     </dl>
     <blockquote class="inline_help">
         <?php wpm_e('help_vapid_public_key'); ?>
     </blockquote>
     <dl>
         <dt><?php wpm_e('vapid_private_key'); ?></dt>
-        <dd><input id="wpn-privateKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPrivateKey(); ?>" disabled></dd>
+        <dd><span class="inline-block"><input id="wpn-privateKey" type="text" placeholder="<?php wpm_e('must_be_generated'); ?>" value="<?php echo $vapid->getPrivateKey(); ?>" disabled></span></dd>
     </dl>
     <blockquote class="inline_help">
         <?php wpm_e('help_vapid_private_key'); ?>
@@ -76,15 +82,17 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
     <dl>
         <dt>&nbsp;</dt>
         <dd>
-            <button id="wpn-generate-vapid-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><?php wpm_e('button_generate_vapid_keys'); ?></button>
-            <?php wpm_e('help_generate_vapid_keys'); ?>
+            <span class="inline-block">
+                <button id="wpn-generate-vapid-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><?php wpm_e('button_generate_vapid_keys'); ?></button>
+                <?php wpm_e('help_generate_vapid_keys'); ?>
+            </span>
         </dd>
     </dl>
 </div>
 <dl>
     <dt><?php wpm_e('permission'); ?></dt>
     <dd>
-        <span id="wpn-permission-status"><?php wpm_e('permission_status'); ?></span>
+        <span id="wpn-permission-status" class="inline-block"><?php wpm_e('permission_status'); ?></span>
     </dd>
 </dl>
 <blockquote class="inline_help">
@@ -94,14 +102,18 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
     <dt><?php wpm_e('error'); ?></dt>
     <dd id="wpn-error-text"></dd>
 </dl>
+<div></div>
 <dl>
     <dt>&nbsp;</dt>
-    <dd><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('button_request_register'); ?></button></dd>
+    <dd><span class="inline-block"><button id="wpn-permission-btn" <?php echo $vapid->getPrivateKey() && $isWpnEnabled ? '' : ' disabled'; ?>><?php wpm_e('button_request_register'); ?></button></span></dd>
 </dl>
+<div></div>
 <dl>
     <dt><?php wpm_e('registered_devices'); ?></dt>
     <dd>
-        <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_list'); ?></span><span class="hide"><?php wpm_e('button_hide_list'); ?></span></button>
+        <span class="inline-block">
+            <button id="wpn-list-btn" <?php echo $isWpnEnabled ? '' : 'disabled'; ?>><span class="show"><?php wpm_e('button_show_list'); ?></span><span class="hide"><?php wpm_e('button_hide_list'); ?></span></button>
+        </span>
     </dd>
 </dl>
 <blockquote class="inline_help">
@@ -109,7 +121,8 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
 </blockquote>
 <div id="wpn-device-list" hidden></div>
 <script>
-    var wpm_lng = <?php echo json_encode($wpmLang) ?: []; ?>
+    var wpm_lng = <?php echo json_encode($wpmLang) ?: []; ?>;
+    var wpm_v72 = <?php echo var_export($version72, true); ?>;
 </script>
 <link rel="stylesheet" href="/plugins/web-push-notification/assets/css/style.css">
 <script src="/plugins/web-push-notification/assets/js/web-push-notification.js"></script>

@@ -12,7 +12,9 @@ class WebPushNotification {
     csrfToken = null;
     constructor() {
         this.bindEvents();
-        this.addPwaManifest();
+        if (!wpm_v72) {
+            this.addPwaManifest();
+        }
     }
     __(text = '') {
         return wpm_lng[text] || text;
@@ -345,17 +347,13 @@ class WebPushNotification {
     displayDevicesList() {
         const html = document.querySelector('#wpn-device-list');
 
-        const tableHTML = `<table class="tablesorter">
-                    <thead><tr><th>${this.__('action')}</th><th>${this.__('device_info')}</th><th>${this.__('notification_settings')}</th></tr></thead>
-                    <tbody></tbody>
-                </table>
+        const tableHTML = `<div id="wpn-device-list-table"></div>
                 <p class="loading">${this.__('loading')}</p>`;
         html.innerHTML = tableHTML;
 
         Promise.resolve(this.getDevicesList())
             .then((devices) => {
-
-                const tbody = html.querySelector('tbody');
+                const deviceListTable = html.querySelector('#wpn-device-list-table');
                 const pLoading = html.querySelector('p.loading');
                 const availableLevels = [];
                 const unraidLevels = {
@@ -379,8 +377,9 @@ class WebPushNotification {
                     }
 
                     devices?.data?.forEach((device, index) => {
-                        const row = document.createElement('tr');
-                        tbody.append(row);
+                        const row = document.createElement('div');
+                        row.classList.add('wpn-device-list-row');
+                        deviceListTable.append(row);
 
                         const deviceUserAgent = this.parseUserAgent(device.user_agent);
                         let currentDevice = '';
@@ -388,21 +387,20 @@ class WebPushNotification {
                             currentDevice = ` <strong style="color: green;">(${this.__('current_device')})</strong>`;
                         }
 
-                        let deviceName = `<input type="text" value="${device.name ?? (deviceUserAgent.length ? deviceUserAgent.join(' / ') : '')}" class="wpn-device-name">`;
-                        deviceName += `<button class="btn-rename" style="margin: 0; padding: 6px;" disabled>${this.__('rename')}</button>`;
+                        let deviceName = `<span class="wpn-device"><input id="wpn-notification-device-${index}" type="text" value="${device.name ?? (deviceUserAgent.length ? deviceUserAgent.join(' / ') : '')}" class="wpn-device-name"><button class="btn-rename" style="margin: 0; padding: 6px;" disabled>${this.__('rename')}</button></span>`;
 
-                        const rowHTML = `<tr>
-                            <td>
-                                <button class="btn-test">${this.__('test')}</button><br>
+                        const rowHTML = `
+                            <span class="inline-block wpn-actions">
+                                <button class="btn-test">${this.__('test')}</button>
                                 <button class="btn-remove">${this.__('remove')}</button>
-                            </td>
-                            <td>
+                            </span>
+                            <span class="inline-block wpn-device-info">
                                 <p><strong>${this.__('device_name')}</strong>${currentDevice}<br> ${deviceName}</p>
                                 <p><strong>${this.__('user_agent')}</strong><br> ${device.user_agent}</p>
                                 <p><strong>${this.__('date')}</strong><br> ${new Date(device.datetime).toLocaleString()}</p>
                                 <p><strong>${this.__('ip_address')}</strong><br> ${device.ip_address}</p>
-                            </td>
-                            <td>
+                            </span>
+                            <span class="inline-block wpn-settings">
                                 <p>
                                     <label for="wpn-silent-notifications-${index}"><strong>${this.__('silent_notifications')}</strong></label> <input id="wpn-silent-notifications-${index}" class="wpn-silent-notifications" type="checkbox">
                                 </p>
@@ -414,9 +412,8 @@ class WebPushNotification {
                                         <option value="2">${this.__('notification_level_alerts')}</option>
                                     </select>
                                 </p>
-                                <p><button class="btn-save" disabled>${this.__('save')}</button></p>
-                            </td>
-                        </tr>`;
+                                <p class="wpn-notification-level-bottom"><button class="btn-save" disabled>${this.__('save')}</button></p>
+                            </span>`;
                         row.innerHTML = rowHTML;
 
                         const silentNotifications = row.querySelector('.wpn-silent-notifications');
@@ -621,7 +618,7 @@ class WebPushNotification {
     }
     error(msg, e = null) {
         const error = document.querySelector('#wpn-error');
-        error.style.display = 'flex';
+        error.style.display = wpm_v72 ? 'grid' : 'flex';
 
         const text = document.querySelector('#wpn-error-text');
         text.innerText = msg;
