@@ -38,7 +38,7 @@ if (is_file($disabledAgent) && is_file($enabledAgent)) {
     $isWpnEnabled = true;
 }
 ?>
-<?php if (!isset($_SERVER['HTTPS']) || 'on' != $_SERVER['HTTPS'] || $nginxVar['NGINX_LANFQDN'] != $_SERVER['HTTP_HOST']) { ?>
+<?php if (wpm_get_request_scheme() !== 'https') { ?>
 <dl>
     <dt><?php echo _('Agent function'); ?>:</dt>
     <dd>

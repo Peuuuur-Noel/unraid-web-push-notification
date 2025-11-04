@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-spl_autoload_register(fn ($className) => require_once WPN_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
+spl_autoload_register(fn($className) => require_once WPN_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
 
 function wpm_log_to_console(string $message = ''): void
 {
@@ -49,4 +49,21 @@ function wpm_usage(): int
     EOT;
 
     return 1;
+}
+
+function wpm_get_request_scheme(): string
+{
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+        return 'https';
+    }
+
+    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https') {
+        return 'https';
+    }
+
+    if (isset($_SERVER['HTTP_FORWARDED']) && preg_match('/proto=https/i', $_SERVER['HTTP_FORWARDED'])) {
+        return 'https';
+    }
+
+    return 'http';
 }
